@@ -4,6 +4,7 @@ import {
   Button,
   Checkbox,
   Dialog,
+  Drawer,
   DropdownMenu,
   DropdownMenuItem,
   DropdownMenuSeparator,
@@ -76,6 +77,30 @@ const checked = ref(false)
           </template>
           <p class="text-sm text-neutral-500">Dialog body content goes here.</p>
         </Dialog>
+      </section>
+
+      <section>
+        <h2 class="mb-4 text-lg font-semibold">Drawer</h2>
+        <div class="flex flex-wrap items-center gap-3">
+          <Drawer title="Right drawer" description="Slides in from the right (default).">
+            <template #trigger>
+              <Button>Open right drawer</Button>
+            </template>
+            <p class="text-sm text-neutral-500">Drawer content goes here.</p>
+          </Drawer>
+          <Drawer side="left" title="Left drawer">
+            <template #trigger>
+              <Button variant="outline">Open left drawer</Button>
+            </template>
+            <p class="text-sm text-neutral-500">Slides in from the left.</p>
+          </Drawer>
+          <Drawer side="bottom" title="Bottom drawer">
+            <template #trigger>
+              <Button variant="outline">Open bottom drawer</Button>
+            </template>
+            <p class="text-sm text-neutral-500">Slides in from the bottom.</p>
+          </Drawer>
+        </div>
       </section>
 
       <section>

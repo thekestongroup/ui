@@ -38,6 +38,12 @@ Components are styled with Tailwind utility classes, so each consuming app must 
 @source "../node_modules/@thekestongroup/ui/src";
 ```
 
+Some components (e.g. the `Drawer`) also ship a small amount of CSS for animation keyframes. Import it once in your app entry:
+
+```ts
+import '@thekestongroup/ui/style.css'
+```
+
 ## Publishing
 
 Publishes to GitHub Packages (`npm.pkg.github.com`):

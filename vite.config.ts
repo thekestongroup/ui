@@ -19,6 +19,7 @@ export default defineConfig({
       entry: 'src/index.ts',
       name: 'KestonUI',
       fileName: 'keston-ui',
+      cssFileName: 'keston-ui',
       formats: ['es', 'cjs'],
     },
     rollupOptions: {

@@ -16,9 +16,12 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/keston-ui.js",
       "require": "./dist/keston-ui.cjs"
-    }
+    },
+    "./style.css": "./dist/keston-ui.css"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
