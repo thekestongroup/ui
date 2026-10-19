@@ -49,7 +49,9 @@ const checked = ref(false)
       <section>
         <h2 class="mb-4 text-lg font-semibold">Tooltip</h2>
         <Tooltip content="Add a new item">
-          <Button variant="outline">Hover me</Button>
+          <template #trigger>
+            <Button variant="outline">Hover me</Button>
+          </template>
         </Tooltip>
       </section>
 
