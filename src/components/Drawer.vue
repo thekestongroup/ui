@@ -58,7 +58,7 @@ const contentClasses = computed(() => {
       <slot name="trigger" />
     </DrawerTrigger>
     <DrawerPortal>
-      <DrawerOverlay class="fixed inset-0 z-50 bg-black/50" />
+      <DrawerOverlay class="kui-drawer-overlay fixed inset-0 z-50 bg-black/50" />
       <DrawerContent :class="contentClasses">
         <DrawerTitle v-if="title" class="text-lg font-semibold text-neutral-900">
           {{ title }}
@@ -89,7 +89,7 @@ const contentClasses = computed(() => {
 <style>
 .kui-drawer-content {
   outline: none;
-  transition: transform 450ms cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform 300ms ease-out;
 }
 
 .kui-drawer-content[data-swiping] {
@@ -107,28 +107,35 @@ const contentClasses = computed(() => {
 }
 
 .kui-drawer-right[data-state='open'] {
-  animation: kui-drawer-in-right 450ms cubic-bezier(0.32, 0.72, 0, 1);
+  animation: kui-drawer-in-right 300ms ease-out;
 }
 .kui-drawer-right[data-state='closed'] {
-  animation: kui-drawer-out-right 450ms cubic-bezier(0.32, 0.72, 0, 1);
+  animation: kui-drawer-out-right 300ms ease-out;
 }
 .kui-drawer-left[data-state='open'] {
-  animation: kui-drawer-in-left 450ms cubic-bezier(0.32, 0.72, 0, 1);
+  animation: kui-drawer-in-left 300ms ease-out;
 }
 .kui-drawer-left[data-state='closed'] {
-  animation: kui-drawer-out-left 450ms cubic-bezier(0.32, 0.72, 0, 1);
+  animation: kui-drawer-out-left 300ms ease-out;
 }
 .kui-drawer-top[data-state='open'] {
-  animation: kui-drawer-in-top 450ms cubic-bezier(0.32, 0.72, 0, 1);
+  animation: kui-drawer-in-top 300ms ease-out;
 }
 .kui-drawer-top[data-state='closed'] {
-  animation: kui-drawer-out-top 450ms cubic-bezier(0.32, 0.72, 0, 1);
+  animation: kui-drawer-out-top 300ms ease-out;
 }
 .kui-drawer-bottom[data-state='open'] {
-  animation: kui-drawer-in-bottom 450ms cubic-bezier(0.32, 0.72, 0, 1);
+  animation: kui-drawer-in-bottom 300ms ease-out;
 }
 .kui-drawer-bottom[data-state='closed'] {
-  animation: kui-drawer-out-bottom 450ms cubic-bezier(0.32, 0.72, 0, 1);
+  animation: kui-drawer-out-bottom 300ms ease-out;
+}
+
+.kui-drawer-overlay[data-state='open'] {
+  animation: kui-drawer-overlay-in 300ms ease-out;
+}
+.kui-drawer-overlay[data-state='closed'] {
+  animation: kui-drawer-overlay-out 300ms ease-out;
 }
 
 @keyframes kui-drawer-in-right {
@@ -169,6 +176,23 @@ const contentClasses = computed(() => {
 @keyframes kui-drawer-out-bottom {
   to {
     translate: 0 100%;
+  }
+}
+
+@keyframes kui-drawer-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes kui-drawer-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
 </style>
