@@ -2,7 +2,7 @@
   "name": "@thekestongroup/ui",
   "version": "0.0.2",
   "description": "Keston UI — Vue 3 + Reka UI + Tailwind CSS component library",
-  "license": "UNLICENSED",
+  "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "files": [
     "dist",
@@ -36,7 +36,9 @@
     "@types/node": "^24.13.3",
     "@vitejs/plugin-vue": "^6.0.10",
     "@vue/tsconfig": "^0.9.1",
+    "clsx": "^2.1.1",
     "reka-ui": "^2.11.0",
+    "tailwind-merge": "^3.7.0",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.2",
     "vite": "^7.0.0",

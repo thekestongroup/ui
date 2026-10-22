@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { CheckboxIndicator, CheckboxRoot } from 'reka-ui'
+import { cn } from '../lib/cn'
 
 const model = defineModel<boolean>({ default: false })
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     id?: string
     disabled?: boolean
+    class?: string
   }>(),
   {
     disabled: false,
@@ -16,10 +18,15 @@ withDefaults(
 
 <template>
   <CheckboxRoot
-    :id="id"
+    :id="props.id"
     v-model="model"
-    :disabled="disabled"
-    class="peer h-4 w-4 shrink-0 rounded border border-neutral-300 bg-white outline-none data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    :disabled="props.disabled"
+    :class="
+      cn(
+        'peer h-4 w-4 shrink-0 rounded border border-neutral-300 bg-white outline-none data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+        props.class,
+      )
+    "
   >
     <CheckboxIndicator class="flex h-full w-full items-center justify-center text-white">
       <svg

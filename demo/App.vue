@@ -11,11 +11,29 @@ import {
   Input,
   Label,
   Popover,
+  Select,
+  Separator,
+  Toaster,
   Tooltip,
+  toast,
 } from '../src'
 
 const checked = ref(false)
 const email = ref('')
+const selected = ref('')
+
+const plans = [
+  { value: 'free', label: 'Free' },
+  { value: 'pro', label: 'Pro' },
+  { value: 'enterprise', label: 'Enterprise', disabled: true },
+]
+
+function showToast() {
+  toast.add({
+    title: 'Saved',
+    description: 'Your changes have been saved.',
+  })
+}
 </script>
 
 <template>
@@ -64,6 +82,34 @@ const email = ref('')
           <Input id="email-input" v-model="email" placeholder="you@example.com" />
           <p class="text-xs text-neutral-500">Value: {{ email || '(empty)' }}</p>
         </div>
+      </section>
+
+      <section>
+        <h2 class="mb-4 text-lg font-semibold">Select</h2>
+        <div class="max-w-sm space-y-2">
+          <Label for="plan-select">Plan</Label>
+          <Select id="plan-select" v-model="selected" :items="plans" placeholder="Choose a plan" />
+          <p class="text-xs text-neutral-500">Value: {{ selected || '(empty)' }}</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="mb-4 text-lg font-semibold">Separator</h2>
+        <div class="space-y-4">
+          <p class="text-sm text-neutral-500">Above</p>
+          <Separator />
+          <p class="text-sm text-neutral-500">Below</p>
+          <div class="flex h-5 items-center gap-4">
+            <span class="text-sm text-neutral-500">Vertical</span>
+            <Separator orientation="vertical" />
+            <span class="text-sm text-neutral-500">separator</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="mb-4 text-lg font-semibold">Toast</h2>
+        <Button variant="outline" @click="showToast">Show toast</Button>
       </section>
 
       <section>
@@ -135,5 +181,6 @@ const email = ref('')
         </DropdownMenu>
       </section>
     </div>
+    <Toaster />
   </div>
 </template>

@@ -8,8 +8,11 @@ import {
   DrawerRoot,
   DrawerTitle,
   DrawerTrigger,
+  VisuallyHidden,
 } from 'reka-ui'
 import { computed } from 'vue'
+import { cn } from '../lib/cn'
+import CloseButton from './CloseButton.vue'
 
 type Side = 'top' | 'right' | 'bottom' | 'left'
 
@@ -18,6 +21,7 @@ const props = withDefaults(
     title?: string
     description?: string
     side?: Side
+    class?: string
   }>(),
   {
     title: '',
@@ -38,16 +42,17 @@ const swipeDirection = computed(() => {
 })
 
 const contentClasses = computed(() => {
+  const base = 'kui-drawer-content kui-drawer-'
   switch (props.side) {
     case 'top':
-      return 'kui-drawer-content kui-drawer-top fixed inset-x-0 top-0 z-50 w-full max-h-[85vh] rounded-b-2xl border-b border-neutral-200 bg-white p-6 shadow-lg'
+      return cn(base + 'top fixed inset-x-0 top-0 z-50 w-full max-h-[85vh] rounded-b-2xl border-b border-neutral-200 bg-white p-6 shadow-lg', props.class)
     case 'bottom':
-      return 'kui-drawer-content kui-drawer-bottom fixed inset-x-0 bottom-0 z-50 w-full max-h-[85vh] rounded-t-2xl border-t border-neutral-200 bg-white p-6 shadow-lg'
+      return cn(base + 'bottom fixed inset-x-0 bottom-0 z-50 w-full max-h-[85vh] rounded-t-2xl border-t border-neutral-200 bg-white p-6 shadow-lg', props.class)
     case 'left':
-      return 'kui-drawer-content kui-drawer-left fixed inset-y-0 left-0 z-50 h-full w-full max-w-sm border-r border-neutral-200 bg-white p-6 shadow-lg'
+      return cn(base + 'left fixed inset-y-0 left-0 z-50 h-full w-full max-w-sm border-r border-neutral-200 bg-white p-6 shadow-lg', props.class)
     case 'right':
     default:
-      return 'kui-drawer-content kui-drawer-right fixed inset-y-0 right-0 z-50 h-full w-full max-w-sm border-l border-neutral-200 bg-white p-6 shadow-lg'
+      return cn(base + 'right fixed inset-y-0 right-0 z-50 h-full w-full max-w-sm border-l border-neutral-200 bg-white p-6 shadow-lg', props.class)
   }
 })
 </script>
@@ -60,26 +65,23 @@ const contentClasses = computed(() => {
     <DrawerPortal>
       <DrawerOverlay class="kui-drawer-overlay fixed inset-0 z-50 bg-black/50" />
       <DrawerContent :class="contentClasses">
-        <DrawerTitle v-if="title" class="text-lg font-semibold text-neutral-900">
-          {{ title }}
+        <DrawerTitle v-if="props.title" class="text-lg font-semibold text-neutral-900">
+          {{ props.title }}
         </DrawerTitle>
-        <DrawerDescription v-if="description" class="mt-1 text-sm text-neutral-500">
-          {{ description }}
+        <DrawerTitle v-else>
+          <VisuallyHidden>Drawer</VisuallyHidden>
+        </DrawerTitle>
+        <DrawerDescription v-if="props.description" class="mt-1 text-sm text-neutral-500">
+          {{ props.description }}
         </DrawerDescription>
         <div class="mt-4">
           <slot />
         </div>
         <DrawerClose
+          aria-label="Close"
           class="absolute right-4 top-4 rounded-sm text-neutral-400 outline-none hover:text-neutral-600 focus-visible:ring-2 focus-visible:ring-blue-500"
         >
-          <svg class="h-4 w-4" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z"
-              fill="currentColor"
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-            />
-          </svg>
+          <CloseButton />
         </DrawerClose>
       </DrawerContent>
     </DrawerPortal>
@@ -89,7 +91,7 @@ const contentClasses = computed(() => {
 <style>
 .kui-drawer-content {
   outline: none;
-  transition: transform 300ms ease-out;
+  transition: transform 300ms ease-in-out;
 }
 
 .kui-drawer-content[data-swiping] {
@@ -107,35 +109,35 @@ const contentClasses = computed(() => {
 }
 
 .kui-drawer-right[data-state='open'] {
-  animation: kui-drawer-in-right 300ms ease-out;
+  animation: kui-drawer-in-right 300ms ease-in-out;
 }
 .kui-drawer-right[data-state='closed'] {
-  animation: kui-drawer-out-right 300ms ease-out;
+  animation: kui-drawer-out-right 300ms ease-in-out;
 }
 .kui-drawer-left[data-state='open'] {
-  animation: kui-drawer-in-left 300ms ease-out;
+  animation: kui-drawer-in-left 300ms ease-in-out;
 }
 .kui-drawer-left[data-state='closed'] {
-  animation: kui-drawer-out-left 300ms ease-out;
+  animation: kui-drawer-out-left 300ms ease-in-out;
 }
 .kui-drawer-top[data-state='open'] {
-  animation: kui-drawer-in-top 300ms ease-out;
+  animation: kui-drawer-in-top 300ms ease-in-out;
 }
 .kui-drawer-top[data-state='closed'] {
-  animation: kui-drawer-out-top 300ms ease-out;
+  animation: kui-drawer-out-top 300ms ease-in-out;
 }
 .kui-drawer-bottom[data-state='open'] {
-  animation: kui-drawer-in-bottom 300ms ease-out;
+  animation: kui-drawer-in-bottom 300ms ease-in-out;
 }
 .kui-drawer-bottom[data-state='closed'] {
-  animation: kui-drawer-out-bottom 300ms ease-out;
+  animation: kui-drawer-out-bottom 300ms ease-in-out;
 }
 
 .kui-drawer-overlay[data-state='open'] {
-  animation: kui-drawer-overlay-in 300ms ease-out;
+  animation: kui-drawer-overlay-in 300ms ease-in-out;
 }
 .kui-drawer-overlay[data-state='closed'] {
-  animation: kui-drawer-overlay-out 300ms ease-out;
+  animation: kui-drawer-overlay-out 300ms ease-in-out;
 }
 
 @keyframes kui-drawer-in-right {

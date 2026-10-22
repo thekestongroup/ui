@@ -20,9 +20,15 @@ importers:
       '@vue/tsconfig':
         specifier: ^0.9.1
         version: 0.9.1(typescript@6.0.3)(vue@3.5.44(typescript@6.0.3))
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       reka-ui:
         specifier: ^2.11.0
         version: 2.11.0(vue@3.5.44(typescript@6.0.3))
+      tailwind-merge:
+        specifier: ^3.7.0
+        version: 3.7.0
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
@@ -705,6 +711,10 @@ packages:
     resolution: {integrity: sha512-ik3ZgC9dY/lYVVM++OISsaYDeg1tb0VtP5uL3ouh1koGOaUMDPpbFIei4JkFimWUFPn90sbMNMXQAIVOlnYKJA==}
     engines: {node: '>=10'}
 
+  clsx@2.1.1:
+    resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
+    engines: {node: '>=6'}
+
   compare-versions@6.1.1:
     resolution: {integrity: sha512-4hm4VPpIecmlg59CHXnRDnqGplJFrbLG4aFEl5vl6cK1u76ws3LLvX7ikFnTDl5vo39sjWD6AaDPYodJp/NNHg==}
 
@@ -995,6 +1005,9 @@ packages:
   source-map-js@1.2.2:
     resolution: {integrity: sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==}
     engines: {node: '>=0.10.0'}
+
+  tailwind-merge@3.7.0:
+    resolution: {integrity: sha512-XPPUyAc+cvspz3lHTcR/QgPfW2A0lv/xQNIjX3HGhLR+Nq2lHaLq5MtTesHn8GUr3W3DguT2KT5x3NVgRtYwmA==}
 
   tailwindcss@4.3.3:
     resolution: {integrity: sha512-gOhV3P7ufE62QDGg1zVaTgCR+EtPv92k2nIhVcVKcLmxT1sUBsQGhnZj175j+MqRt4zLF7ic+sCYjfhxMxj7YQ==}
@@ -1597,6 +1610,8 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  clsx@2.1.1: {}
+
   compare-versions@6.1.1: {}
 
   confbox@0.1.8: {}
@@ -1888,6 +1903,8 @@ snapshots:
       fsevents: 2.3.3
 
   source-map-js@1.2.2: {}
+
+  tailwind-merge@3.7.0: {}
 
   tailwindcss@4.3.3: {}
 

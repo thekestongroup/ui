@@ -5,10 +5,12 @@ import {
   DropdownMenuRoot,
   DropdownMenuTrigger,
 } from 'reka-ui'
+import { cn } from '../lib/cn'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     align?: 'start' | 'center' | 'end'
+    class?: string
   }>(),
   {
     align: 'center',
@@ -23,9 +25,14 @@ withDefaults(
     </DropdownMenuTrigger>
     <DropdownMenuPortal>
       <DropdownMenuContent
-        :align="align"
+        :align="props.align"
         :side-offset="5"
-        class="z-50 min-w-[10rem] rounded-md border border-neutral-200 bg-white p-1 shadow-md outline-none"
+        :class="
+          cn(
+            'z-50 min-w-[10rem] rounded-md border border-neutral-200 bg-white p-1 shadow-md outline-none',
+            props.class,
+          )
+        "
       >
         <slot />
       </DropdownMenuContent>

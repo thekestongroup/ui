@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { cn } from '../lib/cn'
 
 type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive'
 type Size = 'sm' | 'md' | 'lg'
@@ -10,6 +11,7 @@ const props = withDefaults(
     size?: Size
     type?: 'button' | 'submit' | 'reset'
     disabled?: boolean
+    class?: string
   }>(),
   {
     variant: 'primary',
@@ -34,13 +36,14 @@ const sizeClasses: Record<Size, string> = {
 }
 
 const classes = computed(() =>
-  [
+  cn(
     'inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
     'disabled:pointer-events-none disabled:opacity-50',
     variantClasses[props.variant],
     sizeClasses[props.size],
-  ].join(' '),
+    props.class,
+  ),
 )
 </script>
 

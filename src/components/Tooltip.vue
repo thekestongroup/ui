@@ -7,11 +7,13 @@ import {
   TooltipRoot,
   TooltipTrigger,
 } from 'reka-ui'
+import { cn } from '../lib/cn'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     content?: string
     side?: 'top' | 'right' | 'bottom' | 'left'
+    class?: string
   }>(),
   {
     content: '',
@@ -28,11 +30,16 @@ withDefaults(
       </TooltipTrigger>
       <TooltipPortal>
         <TooltipContent
-          :side="side"
+          :side="props.side"
           :side-offset="5"
-          class="z-50 rounded-md bg-neutral-900 px-2 py-1 text-xs text-white shadow-md outline-none"
+          :class="
+            cn(
+              'z-50 rounded-md bg-neutral-900 px-2 py-1 text-xs text-white shadow-md outline-none',
+              props.class,
+            )
+          "
         >
-          <slot>{{ content }}</slot>
+          <slot>{{ props.content }}</slot>
           <TooltipArrow class="fill-neutral-900" />
         </TooltipContent>
       </TooltipPortal>
