@@ -8,11 +8,14 @@ import {
   DropdownMenu,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  Input,
+  Label,
   Popover,
   Tooltip,
 } from '../src'
 
 const checked = ref(false)
+const email = ref('')
 </script>
 
 <template>
@@ -45,6 +48,23 @@ const checked = ref(false)
           <Checkbox v-model="checked" />
           Accept terms and conditions (checked: {{ checked }})
         </label>
+      </section>
+
+      <section>
+        <h2 class="mb-4 text-lg font-semibold">Label</h2>
+        <div class="flex flex-wrap items-center gap-3">
+          <Label>Default label</Label>
+          <Label class="text-neutral-400">Muted label (via class attr)</Label>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="mb-4 text-lg font-semibold">Input</h2>
+        <div class="max-w-sm space-y-2">
+          <Label for="email-input">Email</Label>
+          <Input id="email-input" v-model="email" placeholder="you@example.com" />
+          <p class="text-xs text-neutral-500">Value: {{ email || '(empty)' }}</p>
+        </div>
       </section>
 
       <section>
