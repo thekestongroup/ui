@@ -54,7 +54,6 @@ const email = ref('')
         <h2 class="mb-4 text-lg font-semibold">Label</h2>
         <div class="flex flex-wrap items-center gap-3">
           <Label>Default label</Label>
-          <Label class="text-neutral-400">Muted label (via class attr)</Label>
         </div>
       </section>
 
