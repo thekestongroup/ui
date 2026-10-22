@@ -1,6 +1,6 @@
 {
   "name": "@thekestongroup/ui",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Keston UI — Vue 3 + Reka UI + Tailwind CSS component library",
   "license": "UNLICENSED",
   "type": "module",
