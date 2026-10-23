@@ -46,11 +46,18 @@ import '@thekestongroup/ui/style.css'
 
 ## Publishing
 
-Publishes to GitHub Packages (`npm.pkg.github.com`):
+Publishing is done **manually** (no CI auto-publish), to the public npm registry.
 
 ```sh
+# 1. Bump the version
+npm version patch   # or minor / major
+
+# 2. Build and publish (public)
 pnpm build
-pnpm publish
+pnpm publish --no-git-checks --access public
 ```
 
-Requires a GitHub Packages auth token configured for the `@thekestongroup` scope.
+`--access public` is required because scoped packages (`@scope/name`) default to
+private on npm. `pnpm publish` reads the registry + access defaults from
+`publishConfig` in `package.json`, but you'll still need to be logged in
+(`npm login`) or pass `--//registry.npmjs.org/:_authToken=YOUR_TOKEN`.
