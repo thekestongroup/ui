@@ -47,6 +47,6 @@
     "vue-tsc": "^3.3.13"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://registry.npmjs.org/"
   }
 }

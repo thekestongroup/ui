@@ -6,7 +6,6 @@ on:
 
 permissions:
   contents: write
-  packages: write
 
 jobs:
   publish:
@@ -32,12 +31,14 @@ jobs:
         run: pnpm build
 
       - name: Configure registry auth
-        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Bump patch version
         run: npm version patch --no-git-tag-version
 
-      - name: Publish to GitHub Packages
+      - name: Publish to npm
         run: pnpm publish --no-git-checks
 
       - name: Commit version bump
