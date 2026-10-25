@@ -1,6 +1,7 @@
 import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
+import cssInjectedByJs from 'vite-plugin-css-injected-by-js'
 import dts from 'vite-plugin-dts'
 
 // https://vite.dev/config/
@@ -8,6 +9,7 @@ export default defineConfig({
   plugins: [
     vue(),
     tailwindcss(),
+    cssInjectedByJs(),
     dts({
       tsconfigPath: './tsconfig.app.json',
       insertTypesEntry: true,
