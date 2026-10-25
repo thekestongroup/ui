@@ -14,6 +14,8 @@ import { computed } from 'vue'
 import { cn } from '../lib/cn'
 import CloseButton from './CloseButton.vue'
 
+const open = defineModel<boolean>('open', { default: false })
+
 type Side = 'top' | 'right' | 'bottom' | 'left'
 
 const props = withDefaults(
@@ -58,7 +60,7 @@ const contentClasses = computed(() => {
 </script>
 
 <template>
-  <DrawerRoot :swipe-direction="swipeDirection">
+  <DrawerRoot :swipe-direction="swipeDirection" v-model:open="open">
     <DrawerTrigger as-child>
       <slot name="trigger" />
     </DrawerTrigger>
