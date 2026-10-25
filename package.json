@@ -3,6 +3,10 @@
   "version": "0.1.2",
   "description": "Keston UI — Vue 3 + Reka UI + Tailwind CSS component library",
   "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thekestongroup/ui.git"
+  },
   "type": "module",
   "files": [
     "dist",
