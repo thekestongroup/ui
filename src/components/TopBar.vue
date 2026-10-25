@@ -22,7 +22,7 @@ defineEmits<{
 </script>
 
 <template>
-  <header class="flex h-16 items-center gap-2 border-b border-neutral-200 bg-white px-3 sm:px-4">
+  <header class="flex h-12 items-center gap-2 border-b border-neutral-200 bg-white px-3 sm:px-4">
     <AppLauncher :apps="apps" :current="current" />
 
     <button
