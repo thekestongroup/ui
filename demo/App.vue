@@ -28,11 +28,18 @@ const plans = [
   { value: 'enterprise', label: 'Enterprise', disabled: true },
 ]
 
-function showToast() {
-  toast.add({
-    title: 'Saved',
-    description: 'Your changes have been saved.',
-  })
+const toastStatuses = ['success', 'warning', 'error', 'info', 'plain'] as const
+
+const toastCopy = {
+  success: { title: 'Saved', description: 'Your changes have been saved.' },
+  warning: { title: 'Heads up', description: 'Your session expires soon.' },
+  error: { title: 'Something went wrong', description: 'Please try again.' },
+  info: { title: 'New version available', description: 'Reload to get the latest updates.' },
+  plain: { title: 'Saved', description: 'Your changes have been saved.' },
+}
+
+function showToast(status: (typeof toastStatuses)[number]) {
+  toast.add({ ...toastCopy[status], status, duration: 6000 })
 }
 </script>
 
@@ -109,7 +116,17 @@ function showToast() {
 
       <section>
         <h2 class="mb-4 text-lg font-semibold">Toast</h2>
-        <Button variant="outline" @click="showToast">Show toast</Button>
+        <div class="flex flex-wrap items-center gap-3">
+          <Button
+            v-for="status in toastStatuses"
+            :key="status"
+            variant="outline"
+            class="capitalize"
+            @click="showToast(status)"
+          >
+            {{ status }}
+          </Button>
+        </div>
       </section>
 
       <section>
