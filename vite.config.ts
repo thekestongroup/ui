@@ -1,8 +1,8 @@
-import tailwindcss from '@tailwindcss/vite'
-import vue from '@vitejs/plugin-vue'
-import { defineConfig } from 'vite'
-import cssInjectedByJs from 'vite-plugin-css-injected-by-js'
-import dts from 'vite-plugin-dts'
+import tailwindcss from "@tailwindcss/vite";
+import vue from "@vitejs/plugin-vue";
+import { defineConfig } from "vite";
+import cssInjectedByJs from "vite-plugin-css-injected-by-js";
+import dts from "vite-plugin-dts";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -11,26 +11,26 @@ export default defineConfig({
     tailwindcss(),
     cssInjectedByJs(),
     dts({
-      tsconfigPath: './tsconfig.app.json',
+      tsconfigPath: "./tsconfig.app.json",
       insertTypesEntry: true,
-      include: ['src'],
+      include: ["src"],
     }),
   ],
   build: {
     lib: {
-      entry: 'src/index.ts',
-      name: 'KestonUI',
-      fileName: 'keston-ui',
-      cssFileName: 'keston-ui',
-      formats: ['es', 'cjs'],
+      entry: "src/index.ts",
+      name: "KestonUI",
+      fileName: "keston-ui",
+      cssFileName: "keston-ui",
+      formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ['vue'],
+      external: ["vue"],
       output: {
         globals: {
-          vue: 'Vue',
+          vue: "Vue",
         },
       },
     },
   },
-})
+});

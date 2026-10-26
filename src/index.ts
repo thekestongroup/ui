@@ -1,4 +1,5 @@
 export { default as Avatar } from './components/Avatar.vue'
+export { default as AppHeader } from './components/AppHeader.vue'
 export { default as AppLauncher } from './components/AppLauncher.vue'
 export { default as Button } from './components/Button.vue'
 export { default as Checkbox } from './components/Checkbox.vue'
