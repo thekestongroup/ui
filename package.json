@@ -50,6 +50,7 @@
     "@changesets/cli": "^3.0.3",
     "@storybook/addon-a11y": "^10.6.5",
     "@storybook/addon-docs": "^10.6.5",
+    "@storybook/builder-vite": "^10.6.5",
     "@storybook/vue3-vite": "^10.6.5",
     "@tailwindcss/vite": "^4.3.4",
     "@types/node": "^26.6.6",

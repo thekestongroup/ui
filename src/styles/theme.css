@@ -1,0 +1,25 @@
+/*
+ * Keston UI theme
+ * ----------------
+ * Design tokens for Tailwind v4. Apps import this after Tailwind:
+ *
+ *   @import "tailwindcss";
+ *   @import "@thekestongroup/ui/theme.css";
+ *
+ * Only add values that differ from Tailwind's defaults (mainly colours).
+ * Every token added here must also be recorded in tokens/ so native
+ * platforms (SwiftUI, Android) can use the same values.
+ */
+
+/* Let Tailwind find the classes used inside the library's components. */
+@source "../components";
+
+@theme {
+  /* Colours        e.g. --color-primary: …; */
+
+  /* Radius         e.g. --radius-control: …; */
+
+  /* Typography     e.g. --font-sans: …; */
+
+  /* Motion         e.g. --default-transition-duration: …; */
+}
