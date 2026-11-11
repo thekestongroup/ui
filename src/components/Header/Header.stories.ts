@@ -11,7 +11,7 @@ const user: HeaderUser = {
 };
 
 const meta = {
-  title: "Components/Header",
+  title: "Components/Layout/Header",
   component: Header,
   tags: ["autodocs"],
   parameters: { layout: "fullscreen" },

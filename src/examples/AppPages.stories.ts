@@ -4,8 +4,6 @@ import {
   Building2,
   CalendarCog,
   CalendarDays,
-  Circle,
-  CircleCheck,
   Copy,
   GraduationCap,
   House,
@@ -29,9 +27,11 @@ import AvatarGroup from "../components/AvatarGroup/AvatarGroup.vue";
 import Breadcrumb from "../components/Breadcrumb/Breadcrumb.vue";
 import Button, { type ButtonStatus } from "../components/Button/Button.vue";
 import Card from "../components/Card/Card.vue";
+import Checklist from "../components/Checklist/Checklist.vue";
 import Divider from "../components/Divider/Divider.vue";
 import Input from "../components/Input/Input.vue";
 import PageHeader from "../components/PageHeader/PageHeader.vue";
+import RadioGroup from "../components/RadioGroup/RadioGroup.vue";
 import NotificationPane from "../components/Notification/NotificationPane.vue";
 import Toaster from "../components/Notification/Toaster.vue";
 import { createNotifications } from "../components/Notification/notifications";
@@ -270,7 +270,7 @@ type TermKey = (typeof terms)[number]["key"];
  */
 export const NewSchoolYearSetup: Story = {
   render: () => ({
-    components: { AppShell, AvatarGroup, Badge, Breadcrumb, Button, Card, NotificationPane, Toaster, Divider, Input, PageHeader, InputDate, InputNumber, Select, SummaryList, Circle, CircleCheck, Copy },
+    components: { AppShell, AvatarGroup, Badge, Breadcrumb, Button, Card, NotificationPane, Toaster, Divider, Input, PageHeader, InputDate, InputNumber, Select, SummaryList, Checklist, RadioGroup, Copy },
     setup() {
       const current = ref("New School Year Setup");
       const page = (label: string, icon?: Component): SidebarItem => ({
@@ -454,7 +454,7 @@ export const NewSchoolYearSetup: Story = {
                   multiple
                 />
                 <div class="grid grid-cols-1 gap-4 @lg:grid-cols-2">
-                  <Select
+                  <RadioGroup
                     v-model="form.year13"
                     label="Year 13 students"
                     :options="[
@@ -481,14 +481,7 @@ export const NewSchoolYearSetup: Story = {
 
             <!-- Summary -->
             <Card as="aside" title="Summary" padding="sm" class="@4xl:sticky @4xl:top-18">
-              <ul class="flex flex-col gap-2 text-sm">
-                <li v-for="step in checklist" :key="step.label" class="flex items-center gap-2">
-                  <CircleCheck v-if="step.done" class="size-4 shrink-0 text-green" aria-hidden="true" />
-                  <Circle v-else class="size-4 shrink-0 text-black/40" aria-hidden="true" />
-                  <span :class="step.done ? 'text-black' : 'text-black/65'">{{ step.label }}</span>
-                  <span class="sr-only">{{ step.done ? '(done)' : '(to do)' }}</span>
-                </li>
-              </ul>
+              <Checklist :items="checklist" />
               <Divider />
               <SummaryList layout="compact" :items="figures" />
               <Divider />

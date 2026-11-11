@@ -2,7 +2,7 @@
 
 > Choose one or more options from a list that opens below the field.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Select
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Form/Select
 
 ## When to use
 

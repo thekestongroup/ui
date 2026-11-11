@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { computed, ref, useId, watch, type HTMLAttributes } from 'vue'
-import { CircleAlert, CircleCheck, CircleHelp } from '@lucide/vue'
+import { computed, useId, type HTMLAttributes } from 'vue'
 import { cn } from '../../lib/cn'
-import Popover from '../Popover/Popover.vue'
-import Spinner from '../Spinner/Spinner.vue'
+import InfoTip from '../InfoTip/InfoTip.vue'
+import FieldMessage, { type FieldStatus } from './FieldMessage.vue'
 
 /**
  * Shared shell for form controls: label, helper text (below or behind a `?`),
  * the bordered box styled like a medium basic Button, and the status message
- * that slides out underneath. Input, InputNumber and InputDate use it; the
- * control itself goes in the default slot, which receives the ids and ARIA
- * values to put on it.
+ * that slides out underneath. Input, InputNumber, InputDate and Select use
+ * it; use it too for a text control the library doesn't have, so it looks and
+ * behaves like the rest. The control goes in the default slot, which receives
+ * the id and ARIA values to put on it.
  */
 
-export type FormFieldStatus = 'error' | 'success' | 'loading'
+export type FormFieldStatus = FieldStatus
 
 export interface FormFieldProps {
   /** Visible label. Always set it: it is also the control's accessible name. */
@@ -48,6 +48,11 @@ defineSlots<{
   default(props: { id: string; labelId: string; describedBy?: string; invalid?: true }): unknown
   leading?(): unknown
   trailing?(): unknown
+  /**
+   * At the end of the label row, e.g. a "Forgot password?" link. It comes
+   * after the control in the page, so Tab reaches it after the field.
+   */
+  'label-trailing'?(): unknown
 }>()
 
 const id = useId()
@@ -67,22 +72,11 @@ const describedBy = computed(() =>
   [props.helper && helperId, currentStatusText.value && statusId].filter(Boolean).join(' ') || undefined
 )
 
-// The message slides open when there is text and closed when it clears. While
-// closing, keep showing the last message so it doesn't vanish mid-slide.
-const statusOpen = computed(() => !!currentStatusText.value)
-const shownText = ref(currentStatusText.value)
-const shownStatus = ref(currentStatus.value)
-watch([currentStatusText, currentStatus], ([text, status]) => {
-  if (!text) return
-  shownText.value = text
-  shownStatus.value = status
-})
-
 
 // ── Box ─────────────────────────────────────────────────────────────────────
 // Clicking the box's padding or decorative icons focuses the control. Clicks
 // on the control itself or on buttons inside (e.g. − / +) are left alone.
-const focusable = 'input, textarea, [role="spinbutton"]'
+const focusable = 'input, textarea, [role="spinbutton"], [contenteditable="true"]'
 function focusControl(event: PointerEvent) {
   const target = event.target as Element
   if (props.disabled || target.closest(`${focusable}, button`)) return
@@ -90,12 +84,22 @@ function focusControl(event: PointerEvent) {
   ;(event.currentTarget as Element).querySelector<HTMLElement>(focusable)?.focus()
 }
 
+// A <label> only focuses form elements. Others, like InputRichText's
+// contenteditable <div>, are focused by hand (they have no `labels` list).
+function focusUnlabelable() {
+  const control = document.getElementById(controlId)
+  if (control && !('labels' in control) && !props.disabled) control.focus()
+}
+
 // Same look as a medium basic Button. The focus ring follows :focus-visible,
 // so it shows for keyboard use only: text boxes always count (you're typing),
 // but buttons inside don't after a click, or when a closing list (Select)
 // hands focus back after the mouse was used.
+//
+// Text is 16px on touch screens: iPhone zooms the page into any field with
+// smaller text when it's tapped. 16px stops that without blocking pinch-zoom.
 const box = [
-  'flex items-center gap-2 px-3 py-2 text-sm [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:opacity-70',
+  'flex items-center gap-2 px-3 py-2 text-sm pointer-coarse:text-base [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:opacity-70',
   'bg-white text-black border border-black/15 rounded cursor-text transition',
   'outline-2 outline-offset-1 outline-transparent forced-colors:not-has-focus-visible:outline-0',
   'has-focus-visible:outline-focus',
@@ -110,101 +114,47 @@ const statusBorder: Record<FormFieldStatus, string> = {
   loading: ''
 }
 
-const statusColour: Record<FormFieldStatus, string> = {
-  error: 'text-red',
-  success: 'text-green',
-  loading: 'text-black/65'
-}
-
-const statusIcon = { error: CircleAlert, success: CircleCheck } as const
 </script>
 
 <template>
   <div :class="cn('flex flex-col gap-1.5 text-black', props.class)">
-    <div class="flex flex-col gap-0.5">
-      <div class="flex items-center gap-1">
-        <label :id="labelId" :for="controlId" class="text-sm">{{ label }}</label>
+    <!-- Label row and box in a grid, so label-trailing can come after the
+         box in the page (and the Tab order) but show at the end of the label row. -->
+    <div :class="cn('grid grid-cols-[minmax(0,1fr)_auto] gap-y-1.5', $slots['label-trailing'] && 'gap-x-3')">
+      <div class="col-start-1 row-start-1 flex flex-col gap-0.5">
+        <div class="flex items-center gap-1">
+          <label :id="labelId" :for="controlId" class="text-sm" @click="focusUnlabelable">{{ label }}</label>
 
-        <!--
-          Hover mode: opens on hover, click / tap keeps it open, and focus is
-          never moved, so typing in the control isn't interrupted. Screen
-          readers already get the text via the control's aria-describedby.
-        -->
-        <Popover
-          v-if="helper && helperPlacement === 'icon'"
-          mode="hover"
-          :content="{ side: 'top', sideOffset: 6 }"
-        >
-          <button
-            type="button"
-            :aria-label="`About ${label}`"
-            class="inline-flex rounded-full p-0.5 text-black transition hover:bg-black/10 data-[state=open]:bg-black/10 outline-2 outline-offset-1 outline-transparent focus-visible:outline-focus [&_svg]:size-4"
-          >
-            <CircleHelp />
-          </button>
-          <template #content>
-            <p class="max-w-64 px-3 py-2 text-xs">{{ helper }}</p>
-          </template>
-        </Popover>
-      </div>
+          <!-- Screen readers get the helper from the control's aria-describedby
+               (the hidden copy below), so the ? is for sighted users. -->
+          <InfoTip v-if="helper && helperPlacement === 'icon'" :text="helper" :label="`About ${label}`" />
+        </div>
 
-      <p
-        v-if="helper"
-        :id="helperId"
-        :class="helperPlacement === 'below' ? 'text-xs text-black/65' : 'sr-only'"
-      >
-        {{ helper }}
-      </p>
-    </div>
-
-    <div
-      :class="cn(box, currentStatus && statusBorder[currentStatus], disabled && 'opacity-40 cursor-not-allowed')"
-      @pointerdown="focusControl"
-    >
-      <slot name="leading" />
-      <slot
-        :id="controlId"
-        :label-id="labelId"
-        :described-by="describedBy"
-        :invalid="currentStatus === 'error' || undefined"
-      />
-      <slot name="trailing" />
-    </div>
-
-    <!--
-      Visual message. Its row animates from 0 to full height (grid rows
-      0fr → 1fr), so content below moves smoothly instead of jumping.
-      -mt-1.5 cancels the parent's gap while closed; pt-1.5 puts it back when open.
-
-      The two steps run in sequence so the text is never seen clipped:
-        opening: the row grows (150ms), then the text fades in and slides
-                 down 4px (150ms, starting at 100ms)
-        closing: the text fades out (100ms), then the row closes (150ms,
-                 starting at 100ms)
-    -->
-    <div
-      aria-hidden="true"
-      :class="cn(
-        '-mt-1.5 grid transition-[grid-template-rows,visibility] duration-150 ease-out motion-reduce:transition-none',
-        statusOpen ? 'grid-rows-[1fr]' : 'invisible grid-rows-[0fr] delay-100'
-      )"
-    >
-      <div class="overflow-hidden">
-        <p
-          :class="cn(
-            'flex items-center gap-1 pt-1.5 text-xs transition-[translate,opacity,color] ease-out motion-reduce:transition-none [&_svg]:size-3.5 [&_svg]:shrink-0',
-            shownStatus && statusColour[shownStatus],
-            statusOpen ? 'duration-150 delay-100' : '-translate-y-1 opacity-0 duration-100'
-          )"
-        >
-          <Spinner v-if="shownStatus === 'loading'" size="sm" class="size-3.5" />
-          <component :is="statusIcon[shownStatus]" v-else-if="shownStatus" />
-          {{ shownText }}
+        <!-- Behind the ?: hidden, but still the control's description. -->
+        <p v-if="helper" :id="helperId" :hidden="helperPlacement === 'icon'" class="text-xs text-black/65">
+          {{ helper }}
         </p>
       </div>
+
+      <div
+        :class="cn(box, 'col-span-2 row-start-2', currentStatus && statusBorder[currentStatus], disabled && 'opacity-40 cursor-not-allowed')"
+        @pointerdown="focusControl"
+      >
+        <slot name="leading" />
+        <slot
+          :id="controlId"
+          :label-id="labelId"
+          :described-by="describedBy"
+          :invalid="currentStatus === 'error' || undefined"
+        />
+        <slot name="trailing" />
+      </div>
+
+      <div v-if="$slots['label-trailing']" class="col-start-2 row-start-1 flex h-5 items-center text-xs">
+        <slot name="label-trailing" />
+      </div>
     </div>
 
-    <!-- What screen readers hear: linked to the control and announced when it changes. -->
-    <p :id="statusId" aria-live="polite" class="sr-only">{{ currentStatusText }}</p>
+    <FieldMessage :id="statusId" :status="currentStatus" :text="currentStatusText" />
   </div>
 </template>

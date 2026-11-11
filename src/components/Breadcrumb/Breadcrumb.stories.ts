@@ -3,7 +3,7 @@ import { House, School } from "@lucide/vue";
 import Breadcrumb from "./Breadcrumb.vue";
 
 const meta = {
-  title: "Components/Breadcrumb",
+  title: "Components/Navigation/Breadcrumb",
   component: Breadcrumb,
   tags: ["autodocs"],
   args: {

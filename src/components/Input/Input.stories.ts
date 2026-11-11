@@ -40,7 +40,7 @@ const inputTemplate = `
   </Input>`;
 
 const meta = {
-  title: "Components/Input",
+  title: "Components/Form/Input",
   component: Input,
   tags: ["autodocs"],
   argTypes: {

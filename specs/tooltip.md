@@ -2,7 +2,7 @@
 
 > A short label on hover or keyboard focus: the exact date behind "3 hours ago", a birthday behind an age, what an icon button does.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Tooltip, Components/RelativeTime, Components/Age
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Overlay/Tooltip, Components/Data/RelativeTime, Components/Data/Age
 
 ## When to use
 

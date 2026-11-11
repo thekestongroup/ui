@@ -2,7 +2,7 @@
 
 > Several people as overlapping avatars, each with a profile on hover, with the rest as "+N".
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/AvatarGroup
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Element/AvatarGroup
 
 ## When to use
 

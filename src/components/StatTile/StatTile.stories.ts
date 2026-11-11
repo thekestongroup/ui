@@ -3,7 +3,7 @@ import { CalendarCheck, FileText, Users, UserX } from "@lucide/vue";
 import StatTile from "./StatTile.vue";
 
 const meta = {
-  title: "Components/StatTile",
+  title: "Components/Data/StatTile",
   component: StatTile,
   tags: ["autodocs"],
   parameters: { backgrounds: { disable: true } },

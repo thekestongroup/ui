@@ -5,7 +5,7 @@ import Badge from "./Badge.vue";
 const colors = ["basic", "primary", "green", "blue", "yellow", "red"] as const;
 
 const meta = {
-  title: "Components/Badge",
+  title: "Components/Element/Badge",
   component: Badge,
   tags: ["autodocs"],
   argTypes: {

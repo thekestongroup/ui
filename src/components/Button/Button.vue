@@ -154,7 +154,7 @@ const announcement = computed(() => {
 const base = [
   // overflow-hidden: content briefly wider than the button while its width animates is clipped
   'relative inline-flex shrink-0 items-center justify-center whitespace-nowrap select-none overflow-hidden',
-  'border border-black/15 rounded cursor-pointer transition',
+  'border border-black/15 cursor-pointer transition',
   'disabled:cursor-not-allowed disabled:opacity-40',
   'aria-busy:cursor-progress',
   'outline-2 outline-offset-1 outline-transparent forced-colors:not-focus-visible:outline-0',
@@ -187,10 +187,11 @@ const statuses: Record<ButtonStatus, string> = {
   error: 'bg-[oklch(from_var(--color-red)_l_c_h)] text-white cursor-default'
 }
 
+// Corners: 4px for small and medium (matching form fields), 6px for large.
 const sizes: Record<NonNullable<ButtonProps['size']>, string> = {
-  sm: 'px-2 py-1 text-xs [&_svg]:size-3.5 gap-1',
-  md: 'px-4 py-2 text-sm [&_svg]:size-4 gap-2',
-  lg: 'px-6 py-3 text-base [&_svg]:size-5 gap-3'
+  sm: 'px-2 py-1 text-xs [&_svg]:size-3.5 gap-1 rounded',
+  md: 'px-4 py-2 text-sm [&_svg]:size-4 gap-2 rounded',
+  lg: 'px-6 py-3 text-base [&_svg]:size-5 gap-3 rounded-md'
 }
 
 // Icon-only: the same height as a normal button of that size (padding + one

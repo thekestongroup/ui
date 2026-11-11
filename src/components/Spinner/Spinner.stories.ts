@@ -3,7 +3,7 @@ import { onBeforeUnmount, ref } from "vue";
 import Spinner from "./Spinner.vue";
 
 const meta = {
-  title: "Components/Spinner",
+  title: "Components/Element/Spinner",
   component: Spinner,
   tags: ["autodocs"],
   argTypes: {

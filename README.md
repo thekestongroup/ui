@@ -17,8 +17,24 @@ playground with controls for its props, plus a docs page.
 ## Creating a component
 
 ```sh
-pnpm new Button
+pnpm new Button Element
 ```
+
+The second argument is the component's group. Components are grouped as in
+[Nuxt UI](https://ui.nuxt.com/components), in Storybook's sidebar and in
+`src/index.ts`:
+
+| Group | For |
+|---|---|
+| Layout | The frame of an app: AppShell, Header, PageHeader |
+| Element | Small building blocks: Button, Badge, Avatar, Card, Chip, Divider, Spinner |
+| Form | Anything people fill in or choose with: Input, Select, Checkbox, RadioGroup, Switch, Calendar, FormField |
+| Data | Showing information: Table, StatTile, SummaryList, Checklist, RelativeTime, Age |
+| Navigation | Moving around: Breadcrumb, Sidebar |
+| Overlay | Things that float over the page: Popover, Slideover, Tooltip, InfoTip, Notification |
+
+Component folders stay flat (`src/components/<Name>/`); the group only sets
+where the component appears.
 
 This creates:
 
@@ -28,7 +44,7 @@ This creates:
 | `src/components/Button/Button.stories.ts` | Storybook playground |
 | `specs/button.md` | Platform-neutral spec: anatomy, sizes, states, rules |
 
-and exports it from `src/index.ts`. Props you add to the component appear in
+and exports it from `src/index.ts`, at the end of its group. Props you add to the component appear in
 Storybook's Controls panel automatically.
 
 Each component is done when:
@@ -60,7 +76,7 @@ scripts/        pnpm new
 | Command | Description |
 |---|---|
 | `pnpm dev` | Storybook with hot reload |
-| `pnpm new <Name>` | Scaffold a component, story and spec |
+| `pnpm new <Name> <Group>` | Scaffold a component, story and spec |
 | `pnpm build` | Type-check and build the library to `dist/` |
 | `pnpm typecheck` | Type-check only |
 | `pnpm build-storybook` | Build Storybook as a static site |

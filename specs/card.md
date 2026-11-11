@@ -2,7 +2,7 @@
 
 > A white panel that groups related content on a page: a form section, a summary, a stat, a table.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Card, Examples/App pages
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Element/Card, Examples/App pages
 
 ## When to use
 

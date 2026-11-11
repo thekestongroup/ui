@@ -39,7 +39,7 @@ const columns: TableColumn<Applicant>[] = [
 const date = (d: Date) => d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 
 const meta = {
-  title: "Components/Table",
+  title: "Components/Data/Table",
   // A generic component, which Meta<typeof Table> can't describe, so the args are typed by its props.
   component: Table as any,
   tags: ["autodocs"],

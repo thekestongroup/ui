@@ -2,7 +2,7 @@
 
 > The top of a page: breadcrumb, title, status, description and the page's main actions.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/PageHeader, Examples/App pages
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Layout/PageHeader, Examples/App pages
 
 ## When to use
 

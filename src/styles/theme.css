@@ -76,6 +76,14 @@
   @keyframes slide-in-bottom { from { translate: 0 100%; } }
   @keyframes slide-out-bottom { to { translate: 0 100%; } }
 
+  /* Progress with no value: a short bar sweeping across, again and again. */
+  --animate-progress-indeterminate: progress-indeterminate 1.5s var(--ease-in-out) infinite;
+
+  @keyframes progress-indeterminate {
+    from { translate: -100% 0; }
+    to { translate: 250% 0; }
+  }
+
   /* The NotificationPane's empty state arriving after the last one goes: it
      rises into place, then the bell gives a little wobble. */
   --animate-empty-in: empty-in 300ms var(--ease-out);

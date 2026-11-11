@@ -6,7 +6,7 @@ import RelativeTime from "./RelativeTime.vue";
 const minutesAgo = (minutes: number) => new Date(Date.now() - minutes * 60_000);
 
 const meta = {
-  title: "Components/RelativeTime",
+  title: "Components/Data/RelativeTime",
   component: RelativeTime,
   tags: ["autodocs"],
   args: { date: minutesAgo(3 * 60) },

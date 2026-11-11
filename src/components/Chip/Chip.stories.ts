@@ -4,7 +4,7 @@ import { ref } from "vue";
 import Chip from "./Chip.vue";
 
 const meta = {
-  title: "Components/Chip",
+  title: "Components/Element/Chip",
   component: Chip,
   tags: ["autodocs"],
   argTypes: {

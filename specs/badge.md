@@ -2,7 +2,7 @@
 
 > A small label for a status, count or category.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Badge
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Element/Badge
 
 ## When to use
 

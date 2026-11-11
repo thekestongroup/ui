@@ -15,7 +15,7 @@ const details = [
 ];
 
 const meta = {
-  title: "Components/SummaryList",
+  title: "Components/Data/SummaryList",
   // A generic component, which Meta<typeof SummaryList> can't describe, so the args are typed by its props.
   component: SummaryList as any,
   tags: ["autodocs"],

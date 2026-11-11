@@ -4,7 +4,7 @@ import Button from "../Button/Button.vue";
 import Divider from "./Divider.vue";
 
 const meta = {
-  title: "Components/Divider",
+  title: "Components/Element/Divider",
   component: Divider,
   tags: ["autodocs"],
   argTypes: {

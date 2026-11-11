@@ -73,7 +73,7 @@ const buttonContent = `
   <template v-if="trailing" #trailing><component :is="trailing" /></template>`;
 
 const meta = {
-  title: "Components/Button",
+  title: "Components/Element/Button",
   component: Button,
   // The docs page is Button.mdx (sizes, typography, states), not autodocs.
   argTypes: {

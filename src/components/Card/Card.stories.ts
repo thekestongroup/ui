@@ -6,7 +6,7 @@ import Input from "../Input/Input.vue";
 import Card from "./Card.vue";
 
 const meta = {
-  title: "Components/Card",
+  title: "Components/Element/Card",
   component: Card,
   tags: ["autodocs"],
   parameters: { backgrounds: { disable: true } },

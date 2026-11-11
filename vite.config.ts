@@ -25,7 +25,7 @@ export default defineConfig({
       // Never bundle these — the consuming app provides them.
       // @internationalized/date must be shared with reka-ui: two copies of its
       // date classes would not recognise each other's dates.
-      external: ['vue', 'reka-ui', '@internationalized/date', '@lucide/vue', 'clsx', 'tailwind-merge', /^@lucide\/vue\//],
+      external: ['vue', 'reka-ui', '@internationalized/date', '@lucide/vue', 'clsx', 'tailwind-merge', /^@lucide\/vue\//, /^@tiptap\//],
     },
   },
 })

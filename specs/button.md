@@ -2,7 +2,7 @@
 
 > Starts an action: saving, cancelling, opening a panel, deleting.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Button
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Element/Button
 
 ## When to use
 
@@ -51,13 +51,13 @@
 
 ## Sizes
 
-All sizes: 1px border, 4px radius (`rounded`), icons from Lucide at 2px stroke. Heights are padding + one line of text + border, measured in the browser.
+All sizes: 1px border, icons from Lucide at 2px stroke. Corners: 4px for small and medium (matching form fields), 6px for large. Heights are padding + one line of text + border, measured in the browser.
 
-| Size | Height | Padding (y / x) | Gap | Icon size | Square (w × h) |
-|---|---|---|---|---|---|
-| sm | 26px | 4px / 8px (spacing 1 / 2) | 4px (spacing 1) | 14px | 26 × 26px (spacing 6.5) |
-| md | 38px | 8px / 16px (spacing 2 / 4) | 8px (spacing 2) | 16px | 38 × 38px (spacing 9.5) |
-| lg | 50px | 12px / 24px (spacing 3 / 6) | 12px (spacing 3) | 20px | 50 × 50px (spacing 12.5) |
+| Size | Height | Padding (y / x) | Gap | Icon size | Square (w × h) | Radius |
+|---|---|---|---|---|---|---|
+| sm | 26px | 4px / 8px (spacing 1 / 2) | 4px (spacing 1) | 14px | 26 × 26px (spacing 6.5) | 4px (`rounded`) |
+| md | 38px | 8px / 16px (spacing 2 / 4) | 8px (spacing 2) | 16px | 38 × 38px (spacing 9.5) | 4px (`rounded`) |
+| lg | 50px | 12px / 24px (spacing 3 / 6) | 12px (spacing 3) | 20px | 50 × 50px (spacing 12.5) | 6px (`rounded-md`) |
 
 In a square button the icon is centred, so the space around it is equal on all four sides (5 / 10 / 14px inside the border).
 
@@ -131,7 +131,7 @@ Status text (loadingText, etc.) uses the same style as the label, with an 8px ga
 | color red `#D2042D` | danger background, error status |
 | color green `#007A16` | success status (white text 5.3:1) |
 | color focus `#007FC9` | focus ring |
-| radius (Tailwind `rounded`, 4px) | corners |
+| radius (Tailwind `rounded` / `rounded-md`: 4 / 6px) | corners: small and medium / large |
 
 ## Do / Don't
 

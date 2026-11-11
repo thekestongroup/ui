@@ -2,7 +2,7 @@
 
 > Labelled values: a record's details, figures in a summary, or answers to check before submitting.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/SummaryList, Examples/App pages
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Data/SummaryList, Examples/App pages
 
 ## When to use
 

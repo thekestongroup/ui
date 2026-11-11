@@ -13,7 +13,7 @@ const staff = [
 ];
 
 const meta = {
-  title: "Components/AvatarGroup",
+  title: "Components/Element/AvatarGroup",
   component: AvatarGroup,
   tags: ["autodocs"],
   argTypes: {

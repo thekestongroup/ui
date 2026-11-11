@@ -2,7 +2,7 @@
 
 > A small item someone has chosen or entered, e.g. a recipient or a filter, optionally with × to remove it.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Chip
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Element/Chip
 
 ## When to use
 

@@ -46,7 +46,7 @@ const Logo = `
   <span class="truncate text-base font-bold transition-opacity duration-150" :class="collapsed && 'opacity-0'">Keston</span>`;
 
 const meta = {
-  title: "Components/Sidebar",
+  title: "Components/Navigation/Sidebar",
   component: Sidebar,
   tags: ["autodocs"],
   parameters: { layout: "fullscreen" },

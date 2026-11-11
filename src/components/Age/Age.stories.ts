@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import Age from "./Age.vue";
 
 const meta = {
-  title: "Components/Age",
+  title: "Components/Data/Age",
   component: Age,
   tags: ["autodocs"],
   args: { birthDate: "2013-03-14", suffix: "years" },

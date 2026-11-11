@@ -2,7 +2,7 @@
 
 > Something people should know about: a toast when it happens, and a list of past ones behind the bell in the Header.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Notification
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Overlay/Notification
 
 Three parts share one list of notifications:
 

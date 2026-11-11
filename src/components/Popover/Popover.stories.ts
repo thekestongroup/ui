@@ -6,7 +6,7 @@ import Input from "../Input/Input.vue";
 import Popover from "./Popover.vue";
 
 const meta = {
-  title: "Components/Popover",
+  title: "Components/Overlay/Popover",
   component: Popover,
   tags: ["autodocs"],
   argTypes: {

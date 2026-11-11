@@ -2,7 +2,7 @@
 
 > Where the current page is: its parents, then the page itself, e.g. School › School Structure › New School Year Setup.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Breadcrumb, Components/AppShell (With Breadcrumb)
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Navigation/Breadcrumb, Components/Layout/AppShell (With Breadcrumb)
 
 ## When to use
 

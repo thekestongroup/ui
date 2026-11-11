@@ -2,7 +2,7 @@
 
 > The layout of every Keston app page: the shared Header on top, the app's Sidebar on the left, the page in the middle.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/AppShell, Examples/App pages
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Layout/AppShell, Examples/App pages
 
 ## When to use
 

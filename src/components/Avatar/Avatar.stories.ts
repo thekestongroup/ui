@@ -9,7 +9,7 @@ const ben = {
 };
 
 const meta = {
-  title: "Components/Avatar",
+  title: "Components/Element/Avatar",
   component: Avatar,
   tags: ["autodocs"],
   argTypes: {

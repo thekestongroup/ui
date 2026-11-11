@@ -2,7 +2,7 @@
 
 > A thin line between groups of content, optionally with a short label in the middle.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Divider
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Element/Divider
 
 ## When to use
 

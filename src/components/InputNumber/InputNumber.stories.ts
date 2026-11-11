@@ -3,7 +3,7 @@ import { ref } from "vue";
 import InputNumber from "./InputNumber.vue";
 
 const meta = {
-  title: "Components/InputNumber",
+  title: "Components/Form/InputNumber",
   component: InputNumber,
   tags: ["autodocs"],
   argTypes: {

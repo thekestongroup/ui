@@ -4,7 +4,7 @@ import Button from "../Button/Button.vue";
 import Tooltip from "./Tooltip.vue";
 
 const meta = {
-  title: "Components/Tooltip",
+  title: "Components/Overlay/Tooltip",
   component: Tooltip,
   tags: ["autodocs"],
   argTypes: {

@@ -2,7 +2,7 @@
 
 > The bar across the top of every Keston app: menu button, app name, an optional middle area, actions and the account menu. The same in every app; each part can be overridden.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Header
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Layout/Header
 
 ## When to use
 

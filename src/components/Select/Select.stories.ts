@@ -6,7 +6,7 @@ import Select, { type SelectValueType } from "./Select.vue";
 const yearGroups = ["Year 7", "Year 8", "Year 9", "Year 10", "Year 11", "Year 12", "Year 13"];
 
 const meta = {
-  title: "Components/Select",
+  title: "Components/Form/Select",
   component: Select,
   // The docs page is Select.mdx (sizes, typography, behaviour), not autodocs.
   argTypes: {

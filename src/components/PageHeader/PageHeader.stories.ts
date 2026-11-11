@@ -6,7 +6,7 @@ import Button from "../Button/Button.vue";
 import PageHeader from "./PageHeader.vue";
 
 const meta = {
-  title: "Components/PageHeader",
+  title: "Components/Layout/PageHeader",
   component: PageHeader,
   tags: ["autodocs"],
   parameters: { layout: "padded" },

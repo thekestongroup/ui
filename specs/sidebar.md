@@ -2,7 +2,7 @@
 
 > The app's main navigation, down the left of the page, optionally collapsing to icons.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Sidebar, Examples/App shell
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Navigation/Sidebar, Examples/App shell
 
 ## When to use
 

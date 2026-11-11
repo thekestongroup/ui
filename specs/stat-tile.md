@@ -2,7 +2,7 @@
 
 > One number that matters, in a small Card, with how it's changed.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/StatTile, Examples/App pages
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Data/StatTile, Examples/App pages
 
 ## When to use
 

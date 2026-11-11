@@ -13,7 +13,7 @@ import { passwordExpiry, sampleNotifications } from "./notification.samples";
 const narrow = () => ({ template: '<div class="bg-background p-6"><div class="max-w-sm"><story /></div></div>' });
 
 const meta = {
-  title: "Components/Notification",
+  title: "Components/Overlay/Notification",
   component: Notification,
   tags: ["autodocs"],
   parameters: { backgrounds: { disable: true } },

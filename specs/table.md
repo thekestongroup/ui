@@ -2,7 +2,7 @@
 
 > Rows of data with column headings, which people can sort: applicants, classes, invoices.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Table, Examples/App pages
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Data/Table, Examples/App pages
 
 ## When to use
 

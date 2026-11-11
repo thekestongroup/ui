@@ -16,7 +16,7 @@ const pages: SidebarItem[] = [
 ];
 
 const meta = {
-  title: "Components/AppShell",
+  title: "Components/Layout/AppShell",
   component: AppShell,
   tags: ["autodocs"],
   parameters: { layout: "fullscreen" },

@@ -2,7 +2,7 @@
 
 > A person's picture, or their initials on a primary circle, optionally with a profile card on hover.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Avatar
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Element/Avatar
 
 ## When to use
 
