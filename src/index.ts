@@ -43,3 +43,35 @@ export { default as AvatarGroup } from './components/AvatarGroup/AvatarGroup.vue
 export type { AvatarGroupProps } from './components/AvatarGroup/AvatarGroup.vue'
 export { default as PageHeader } from './components/PageHeader/PageHeader.vue'
 export type { PageHeaderProps } from './components/PageHeader/PageHeader.vue'
+export { default as Table } from './components/Table/Table.vue'
+export type { TableProps } from './components/Table/Table.vue'
+export type { TableColumn, TableSort, SortDirection } from './components/Table/table'
+export { sortRows } from './components/Table/table'
+export { default as StatTile } from './components/StatTile/StatTile.vue'
+export type { StatTileProps } from './components/StatTile/StatTile.vue'
+export { default as SummaryList } from './components/SummaryList/SummaryList.vue'
+export type { SummaryListProps, SummaryListItem } from './components/SummaryList/SummaryList.vue'
+export { default as Notification } from './components/Notification/Notification.vue'
+export type { NotificationProps } from './components/Notification/Notification.vue'
+export { default as NotificationPane } from './components/Notification/NotificationPane.vue'
+export type { NotificationPaneProps } from './components/Notification/NotificationPane.vue'
+export { default as Toaster } from './components/Notification/Toaster.vue'
+export type { ToasterProps } from './components/Notification/Toaster.vue'
+export { createNotifications, useNotifications, relativeTime } from './components/Notification/notifications'
+export type {
+  Notifications,
+  NotificationItem,
+  NotificationInput,
+  NotificationAction,
+  NotificationType,
+  ToastOptions
+} from './components/Notification/notifications'
+export { default as Tooltip } from './components/Tooltip/Tooltip.vue'
+export type { TooltipProps } from './components/Tooltip/Tooltip.vue'
+export { default as RelativeTime } from './components/RelativeTime/RelativeTime.vue'
+export type { RelativeTimeProps } from './components/RelativeTime/RelativeTime.vue'
+export { default as Age } from './components/Age/Age.vue'
+export type { AgeProps } from './components/Age/Age.vue'
+export { age, daysToBirthday, formatDate, formatDateTime, toDate } from './lib/dates'
+export type { DateInput } from './lib/dates'
+export { useNow } from './lib/useNow'

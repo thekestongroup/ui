@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import {
-  Bell,
   BookOpen,
   Building2,
   CalendarCog,
@@ -33,9 +32,17 @@ import Card from "../components/Card/Card.vue";
 import Divider from "../components/Divider/Divider.vue";
 import Input from "../components/Input/Input.vue";
 import PageHeader from "../components/PageHeader/PageHeader.vue";
+import NotificationPane from "../components/Notification/NotificationPane.vue";
+import Toaster from "../components/Notification/Toaster.vue";
+import { createNotifications } from "../components/Notification/notifications";
+import { sampleNotifications } from "../components/Notification/notification.samples";
 import InputDate from "../components/InputDate/InputDate.vue";
 import InputNumber from "../components/InputNumber/InputNumber.vue";
 import Select from "../components/Select/Select.vue";
+import StatTile, { type StatTileProps } from "../components/StatTile/StatTile.vue";
+import SummaryList from "../components/SummaryList/SummaryList.vue";
+import Table from "../components/Table/Table.vue";
+import type { TableColumn } from "../components/Table/table";
 import type { SidebarItem, SidebarSection } from "../components/Sidebar/Sidebar.vue";
 import { sidebarTrail } from "../components/Sidebar/sidebar";
 
@@ -59,10 +66,13 @@ type Story = StoryObj<typeof meta>;
 // way; only the title, sidebar and pages differ.
 const user = { name: "Ben Smith", email: "ben.smith@keston.school", organisation: "The Keston School" };
 
+// The bell opens past notifications; new ones pop up as toasts. Each page
+// story makes its own list (so stories don't share notifications).
 const sharedHeader = `
   <template #header-trailing>
-    <Button variant="ghost" square aria-label="Notifications"><Bell /></Button>
+    <NotificationPane :notifications="notifications" />
   </template>`;
+const sharedToaster = `<Toaster :notifications="notifications" />`;
 
 /** Marks one item as the current page, and makes choosing an item go to it. */
 function useNav(sections: SidebarSection[], first: string) {
@@ -91,28 +101,14 @@ const pageTemplate = `
     </PageHeader>
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <Card v-for="stat in stats" :key="stat.label" padding="sm" :ui="{ body: 'gap-1' }">
-        <span class="text-sm text-black/65">{{ stat.label }}</span>
-        <span class="text-2xl font-bold">{{ stat.value }}</span>
-      </Card>
+      <StatTile v-for="stat in stats" :key="stat.label" v-bind="stat" />
     </div>
 
-    <Card padding="none" :ui="{ body: 'overflow-x-auto' }">
-      <table class="w-full text-left text-sm">
-        <thead class="border-b border-black/15 text-black/65">
-          <tr>
-            <th v-for="h in headings" :key="h" class="px-4 py-3 font-bold whitespace-nowrap">{{ h }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="row in rows" :key="row.name" class="border-b border-black/15 last:border-b-0">
-            <td class="px-4 py-3 font-bold whitespace-nowrap">{{ row.name }}</td>
-            <td class="px-4 py-3 whitespace-nowrap">{{ row.detail }}</td>
-            <td class="px-4 py-3 whitespace-nowrap text-black/65">{{ row.date }}</td>
-            <td class="px-4 py-3"><Badge :color="row.color" size="sm">{{ row.status }}</Badge></td>
-          </tr>
-        </tbody>
-      </table>
+    <Card padding="none">
+      <Table :columns="columns" :rows="rows" row-key="name" :caption="current">
+        <template #cell-date="{ value }"><span class="text-black/65">{{ value }}</span></template>
+        <template #cell-status="{ row }"><Badge :color="row.color" size="sm">{{ row.status }}</Badge></template>
+      </Table>
     </Card>
   </div>`;
 
@@ -122,22 +118,32 @@ function pageStory(options: {
   first: string;
   action: string;
   actionIcon: Component;
-  stats: { label: string; value: string }[];
+  stats: StatTileProps[];
   headings: string[];
   rows: Row[];
 }): Story {
   return {
     render: () => ({
-      components: { AppShell, Badge, Button, Bell, Card, PageHeader },
+      components: { AppShell, Badge, Button, Card, NotificationPane, PageHeader, StatTile, Table, Toaster },
       setup() {
         const { current, nav } = useNav(options.sections, options.first);
-        return { ...options, current, nav, user };
+        const keys = ["name", "detail", "date", "status"] as const;
+        const columns: TableColumn<Row>[] = options.headings.map((label, i) => ({
+          key: keys[i],
+          label,
+          rowHeader: i === 0,
+          sortable: keys[i] !== "date",
+          align: label === "Amount" ? "end" : undefined,
+        }));
+        const notifications = createNotifications(sampleNotifications());
+        return { ...options, columns, current, nav, user, notifications };
       },
       template: `
         <AppShell :title="title" :sections="nav" :user="user">
           ${sharedHeader}
           ${pageTemplate}
-        </AppShell>`,
+        </AppShell>
+        ${sharedToaster}`,
     }),
   };
 }
@@ -185,9 +191,9 @@ export const Admissions = pageStory({
     { label: "Admin", items: [{ label: "Settings", icon: Settings }] },
   ],
   stats: [
-    { label: "Open applications", value: "48" },
+    { label: "Open applications", value: "48", change: "+12%", changeLabel: "on last year", trend: "up" },
     { label: "Interviews this week", value: "9" },
-    { label: "Offers accepted", value: "31" },
+    { label: "Offers accepted", value: "31", change: "+4", changeLabel: "this week", trend: "up" },
   ],
   headings: ["Applicant", "Year group", "Applied", "Status"],
   rows: [
@@ -264,7 +270,7 @@ type TermKey = (typeof terms)[number]["key"];
  */
 export const NewSchoolYearSetup: Story = {
   render: () => ({
-    components: { AppShell, AvatarGroup, Badge, Breadcrumb, Button, Bell, Card, Divider, Input, PageHeader, InputDate, InputNumber, Select, Circle, CircleCheck, Copy },
+    components: { AppShell, AvatarGroup, Badge, Breadcrumb, Button, Card, NotificationPane, Toaster, Divider, Input, PageHeader, InputDate, InputNumber, Select, SummaryList, Circle, CircleCheck, Copy },
     setup() {
       const current = ref("New School Year Setup");
       const page = (label: string, icon?: Component): SidebarItem => ({
@@ -342,6 +348,11 @@ export const NewSchoolYearSetup: Story = {
 
       // The summary down the side.
       const movingUp = computed(() => form.moveUp.reduce((sum, year) => sum + (studentsPerYear[year] ?? 0), 0));
+      const figures = computed(() => [
+        { label: "Moving up a year", value: movingUp.value.toLocaleString("en-GB") },
+        { label: form.year13 === "leavers" ? "Leaving (Year 13)" : "Staying on (Year 13)", value: "162" },
+        { label: "Joining Year 7", value: form.intake ?? null },
+      ]);
       const checklist = computed(() => [
         { label: "Academic year", done: !!(form.name.trim() && form.start && form.end && form.end > form.start) },
         { label: "Term dates", done: terms.every((t) => form.terms[t.key].start && form.terms[t.key].end) },
@@ -351,6 +362,7 @@ export const NewSchoolYearSetup: Story = {
 
       const status = ref<ButtonStatus>("idle");
       const saved = ref(false);
+      const notifications = createNotifications(sampleNotifications());
       function start() {
         checked.value = true;
         if (errorCount.value) {
@@ -359,7 +371,14 @@ export const NewSchoolYearSetup: Story = {
           return;
         }
         status.value = "loading";
-        setTimeout(() => (status.value = "success"), 1200);
+        setTimeout(() => {
+          status.value = "success";
+          notifications.notify({
+            type: "success",
+            title: `${form.name.trim() || "The new year"} is set up`,
+            description: "Students have moved up a year. Timetables can now be built.",
+          });
+        }, 1200);
       }
 
       const signOff = [
@@ -371,7 +390,7 @@ export const NewSchoolYearSetup: Story = {
         { name: "Freya Lewis", role: "Assistant Head", email: "f.lewis@keston.school", organisation: "The Keston School" },
       ];
 
-      return { signOff, current, items, trail, form, terms, errors, errorCount, checked, movingUp, checklist, status, saved, start, user, yearGroups, copyOptions, studentsPerYear };
+      return { signOff, current, items, trail, form, terms, errors, errorCount, checked, movingUp, figures, checklist, status, saved, start, user, yearGroups, copyOptions, studentsPerYear, notifications };
     },
     template: `
       <AppShell title="Keston School Admin" :items="items" :user="user">
@@ -471,14 +490,7 @@ export const NewSchoolYearSetup: Story = {
                 </li>
               </ul>
               <Divider />
-              <dl class="grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 text-sm">
-                <dt class="text-black/65">Moving up a year</dt>
-                <dd class="text-right font-bold tabular-nums">{{ movingUp.toLocaleString('en-GB') }}</dd>
-                <dt class="text-black/65">{{ form.year13 === 'leavers' ? 'Leaving (Year 13)' : 'Staying on (Year 13)' }}</dt>
-                <dd class="text-right font-bold tabular-nums">162</dd>
-                <dt class="text-black/65">Joining Year 7</dt>
-                <dd class="text-right font-bold tabular-nums">{{ form.intake ?? '—' }}</dd>
-              </dl>
+              <SummaryList layout="compact" :items="figures" />
               <Divider />
               <div class="flex flex-col gap-2">
                 <h3 class="text-sm font-bold">Sign-off</h3>
@@ -489,6 +501,7 @@ export const NewSchoolYearSetup: Story = {
           </div>
           </div>
         </div>
-      </AppShell>`,
+      </AppShell>
+      ${sharedToaster}`,
   }),
 };

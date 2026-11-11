@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, useId, type HTMLAttributes } from 'vue'
 import { Menu } from '@lucide/vue'
+import { TooltipProvider } from 'reka-ui'
 import { cn } from '../../lib/cn'
 import Button from '../Button/Button.vue'
 import Header, { type HeaderProps, type HeaderUser, type HeaderUserAction } from '../Header/Header.vue'
@@ -110,6 +111,9 @@ const sidebarId = `${uid}-sidebar`
 </script>
 
 <template>
+  <!-- One provider for every Tooltip in the app, so moving from one to the
+       next shows it without waiting again. -->
+  <TooltipProvider :delay-duration="400" :skip-delay-duration="300">
   <div :class="cn('flex min-h-dvh flex-col bg-background text-black', props.class)">
     <!-- First thing keyboard users reach: jumps past the header and sidebar. -->
     <a
@@ -204,4 +208,5 @@ const sidebarId = `${uid}-sidebar`
       </main>
     </div>
   </div>
+  </TooltipProvider>
 </template>

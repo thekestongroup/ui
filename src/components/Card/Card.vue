@@ -73,7 +73,16 @@ const footerPaddings: Record<NonNullable<CardProps['padding']>, string> = {
   <component
     :is="tag"
     :aria-labelledby="title ? headingId : undefined"
-    :class="cn('@container flex flex-col rounded-lg border border-black/15 bg-white text-black', props.class)"
+    :class="
+      cn(
+        '@container flex flex-col rounded-lg border border-black/15 bg-white text-black',
+        // Content that runs to the edges (a table's header, a list's rows) is
+        // clipped to the rounded corners. clip, not hidden: it doesn't make a
+        // scroll container, so sticky content inside still sticks to the page.
+        padding === 'none' && 'overflow-clip',
+        props.class
+      )
+    "
   >
     <div :class="cn('flex min-w-0 flex-1 flex-col gap-4', paddings[padding], ui?.body)">
       <div

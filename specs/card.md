@@ -40,7 +40,7 @@
 |---|---|---|---|
 | md | 16px; 24px from the sm breakpoint (640px) | 12px / 16px; 16px / 24px from sm | Sections, forms |
 | sm | 16px | 12px / 16px | Stats, summaries |
-| none | 0 | 12px / 16px | Tables, lists that run to the edges |
+| none | 0 | 12px / 16px | Tables, lists that run to the edges (clipped to the corners) |
 
 | Part | Value |
 |---|---|
