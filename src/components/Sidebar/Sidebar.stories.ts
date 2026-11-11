@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import {
   BookOpen,
+  Building2,
+  CalendarCog,
+  GraduationCap,
+  Layers,
   CalendarDays,
   ClipboardList,
   House,
@@ -120,6 +124,61 @@ export const WithFooter: Story = {
             </div>
           </template>
         </Sidebar>
+      </div>`,
+  }),
+};
+
+// School › School Structure › New School Year Setup, plus siblings at each level.
+const schoolTree = (current: string, go: (label: string) => void): SidebarItem[] => {
+  const page = (label: string, icon?: SidebarItem["icon"]): SidebarItem => ({
+    label,
+    icon,
+    active: label === current,
+    onSelect: () => go(label),
+  });
+  return [
+    page("Home", House),
+    page("Students", Users),
+    {
+      label: "School",
+      icon: Building2,
+      children: [
+        page("Overview", House),
+        {
+          label: "School Structure",
+          icon: Layers,
+          children: [
+            page("New School Year Setup", CalendarCog),
+            page("Year Groups", GraduationCap),
+            page("Houses", Users),
+          ],
+        },
+        page("Term Dates", CalendarDays),
+        page("Settings", Settings),
+      ],
+    },
+    page("Messages", MessageSquare),
+  ];
+};
+
+/**
+ * Items with `children` open a level instead of navigating, with a back row
+ * (‹ School) at the top. It opens at the current page's level, and the
+ * parents above the current page are shown in bold.
+ */
+export const Nested: Story = {
+  args: { sections: [] },
+  render: (args) => ({
+    components: { Sidebar },
+    setup() {
+      const current = ref("New School Year Setup");
+      const navItems = computed(() => schoolTree(current.value, (label) => (current.value = label)));
+      return { args, navItems, current };
+    },
+    template: `
+      <div class="flex h-screen bg-background">
+        <Sidebar v-bind="args" :items="navItems" />
+        <main class="flex-1 p-6 text-sm">Current page: <strong>{{ current }}</strong></main>
       </div>`,
   }),
 };

@@ -19,7 +19,8 @@
 | header | No | Top, same height as Header (e.g. logo). |
 | body | Yes | Scrolling list of sections. |
 | section label | No | Small bold uppercase heading. A divider when collapsed. |
-| item | Yes | Icon, label, optional badge. |
+| item | Yes | Icon, label, optional badge. Items with children show › at the right. |
+| back row | Nested only | First row inside a nested item: ‹ and its label (bold), then a divider. Goes up one level. |
 | footer | No | Bottom, e.g. profile or help. Holds the collapse button. |
 
 ## Properties
@@ -34,7 +35,9 @@
 | linkComponent | string \| Component | "a" | Used for items with `to`, e.g. RouterLink. |
 | ui | { header, body, footer, item } | — | Extra classes per part. |
 
-SidebarItem: `label`, `icon`, `href` or `to`, `active`, `badge`, `disabled`, `onSelect`.
+SidebarItem: `label`, `icon`, `href` or `to`, `active`, `badge`, `disabled`, `onSelect`, `children` (sub-pages).
+
+Helper: `sidebarTrail(items, sections)` returns the path to the active item (top first), e.g. for a Breadcrumb.
 
 ## Sizes
 
@@ -51,12 +54,26 @@ SidebarItem: `label`, `icon`, `href` or `to`, `active`, `badge`, `disabled`, `on
 | Hovered | black 10% | Web / desktop only |
 | Pressed | black 15% | |
 | Active (current page) | primary 10%, primary bold text | aria-current="page" |
+| Parent of current page | primary bold text, no fill | Nested: "you are in here" |
 | Focused | inset focus ring | Inset so the scrolling body doesn't clip it |
 | Disabled | 40% opacity, not-allowed cursor | Links lose their href |
 
 ## Behaviour
 
 - Collapse: width animates over 300ms ease-out; none with reduced motion.
+- Scrollbar: thin when expanded; hidden when collapsed (the 40px strip can't spare the width), the list still scrolls.
+
+### Nested items
+
+| Action | Result |
+|---|---|
+| Choose an item with children (›) | Shows its children in place of the list, with a back row at the top. Doesn't navigate or emit `select` |
+| Choose the back row | Goes up one level |
+| After opening a level | Focus on its first item |
+| After going back | Focus on the item just left |
+| Current page changes | The list opens at that page's level |
+| Collapsed | Back row shows only ‹ (tooltip "Back from {label}"); give sub-pages icons too |
+| In the mobile Slideover | Opening and going back keep it open; choosing a page closes it |
 - Small screens: the app hides it and shows it inside a Slideover (left) opened from the Header's menu button. Choosing an item should close the Slideover.
 
 ## Accessibility
@@ -64,6 +81,7 @@ SidebarItem: `label`, `icon`, `href` or `to`, `active`, `badge`, `disabled`, `on
 - `<aside>` containing a `<nav>` named by `label`.
 - Each labelled section is a list named by its heading.
 - Collapsed: labels and badges stay in the DOM for screen readers; the label is also a native tooltip (`title`).
+- Nested: items with children are buttons announced as "{label}, more options"; the back row as "Back from {label}".
 - Icons are hidden from assistive tech.
 
 ## Platform adaptation
@@ -87,4 +105,5 @@ SidebarItem: `label`, `icon`, `href` or `to`, `active`, `badge`, `disabled`, `on
 
 | Do | Don't |
 |---|---|
-| Give every item an icon if it can collapse. | Nest items more than one level (use sections). |
+| Give every item an icon if it can collapse, sub-pages included. | Nest so deep people lose their place: pair nesting with a Breadcrumb. |
+| Use labels that are unique within each level. | Repeat a label at the same level (levels are tracked by label). |

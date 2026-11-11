@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, useId, type Component, type HTMLAttributes } from 'vue'
-import { PanelLeftClose, PanelLeftOpen } from '@lucide/vue'
+import { computed, nextTick, ref, useId, watch, type Component, type HTMLAttributes } from 'vue'
+import { ChevronLeft, ChevronRight, PanelLeftClose, PanelLeftOpen } from '@lucide/vue'
 import { cn } from '../../lib/cn'
 import Badge, { type BadgeProps } from '../Badge/Badge.vue'
 import Button from '../Button/Button.vue'
+import { sidebarTrail } from './sidebar'
 
 export interface SidebarItem {
   label: string
@@ -22,6 +23,12 @@ export interface SidebarItem {
   disabled?: boolean
   /** Called when the item is chosen (for items that aren't links, or as well as navigating). */
   onSelect?: (event: MouseEvent) => void
+  /**
+   * Sub-pages. Choosing this item shows them in place of the list, with a
+   * back row (‹ and this item's label) at the top, instead of navigating.
+   * e.g. School › School Structure › New School Year Setup.
+   */
+  children?: SidebarItem[]
 }
 
 export interface SidebarSection {
@@ -33,8 +40,11 @@ export interface SidebarSection {
 /**
  * The app's main navigation, down the left of the page. Items can be links
  * (`href`, or `to` with a router link component) or buttons (`onSelect`), and
- * can be grouped into labelled sections. Can collapse to a narrow strip of
- * icons.
+ * can be grouped into labelled sections, and nested (`children`): choosing
+ * an item with children shows them, with a back row to return. Opens at the
+ * level of the current page. Can collapse to a narrow strip of icons.
+ *
+ * For a Breadcrumb that follows it, use `sidebarTrail(items, sections)`.
  *
  * On small screens, put it inside a Slideover (`side="left"`) opened from the
  * Header's menu button. See Examples/App shell.
@@ -88,14 +98,78 @@ const collapsed = defineModel<boolean>('collapsed', { default: false })
 // Unique per sidebar, so two on one page (e.g. inline and in a Slideover) don't clash.
 const uid = useId()
 
-const allSections = computed<SidebarSection[]>(() => [
+const topSections = computed<SidebarSection[]>(() => [
   ...(props.items.length ? [{ items: props.items }] : []),
   ...props.sections
 ])
 
+// ── Nesting ─────────────────────────────────────────────────────────────────
+// `trail` is the labels of the parents opened, top first; empty at the top.
+// Labels (not objects) so it survives the app rebuilding its items.
+const trail = ref<string[]>([])
+
+// The parent items along the trail. Stops early if one has gone away.
+const opened = computed(() => {
+  const found: SidebarItem[] = []
+  let level = topSections.value.flatMap((section) => section.items)
+  for (const label of trail.value) {
+    const item = level.find((i) => i.label === label && i.children?.length)
+    if (!item) break
+    found.push(item)
+    level = item.children!
+  }
+  return found
+})
+const current = computed(() => opened.value[opened.value.length - 1])
+
+// What the list shows: the top-level sections, or the open item's children.
+const allSections = computed<SidebarSection[]>(() =>
+  current.value ? [{ items: current.value.children! }] : topSections.value
+)
+
+// Parents of the current page, so the list opens where it is, and so those
+// parents can be marked (they contain the current page).
+const activeTrail = computed(() => sidebarTrail(props.items, props.sections))
+const activeParents = computed(() => new Set(activeTrail.value.slice(0, -1).map((item) => item.label)))
+
+// Follow the current page: when it changes (or on first show), open its level.
+watch(
+  () => activeTrail.value.map((item) => item.label).join('\u0000'),
+  () => {
+    trail.value = activeTrail.value.slice(0, -1).map((item) => item.label)
+  },
+  { immediate: true }
+)
+
+const navRef = ref<HTMLElement>()
+
+// After moving between levels, focus the first item (or, going back, the
+// item just left), so keyboard users carry on in the new list.
+async function focusAfterMove(label?: string) {
+  await nextTick()
+  const nav = navRef.value
+  if (!nav) return
+  const target =
+    (label && nav.querySelector<HTMLElement>(`[data-parent="${CSS.escape(label)}"]`)) ||
+    nav.querySelector<HTMLElement>('li [data-sidebar-item]:not([disabled]):not([aria-disabled="true"])')
+  target?.focus()
+}
+
+function openItem(item: SidebarItem) {
+  trail.value = [...opened.value.map((i) => i.label), item.label]
+  focusAfterMove()
+}
+
+function goBack() {
+  const from = current.value?.label
+  trail.value = opened.value.slice(0, -1).map((i) => i.label)
+  focusAfterMove(from)
+}
+
 // Links render as <a> (href) or the link component (to); everything else is
 // a button. Disabled links lose their href, so they can't be followed.
 function tagFor(item: SidebarItem) {
+  if (item.children?.length) return 'button'
   if (item.disabled) return item.href || item.to !== undefined ? 'a' : 'button'
   if (item.to !== undefined) return props.linkComponent
   if (item.href) return 'a'
@@ -113,6 +187,10 @@ function attrsFor(item: SidebarItem) {
 function select(item: SidebarItem, event: MouseEvent) {
   if (item.disabled) {
     event.preventDefault()
+    return
+  }
+  if (item.children?.length) {
+    openItem(item)
     return
   }
   item.onSelect?.(event)
@@ -142,6 +220,10 @@ const itemBase = [
 ]
 
 const itemActive = 'bg-primary/10 font-bold text-primary not-aria-disabled:not-disabled:hover:bg-primary/15'
+
+// A parent of the current page: bold primary text, no fill, so it reads as
+// "you are in here" without looking like the page itself.
+const itemActiveParent = 'font-bold text-primary'
 </script>
 
 <template>
@@ -162,9 +244,33 @@ const itemActive = 'bg-primary/10 font-bold text-primary not-aria-disabled:not-d
     </div>
 
     <nav
+      ref="navRef"
       :aria-label="label"
-      :class="cn('flex flex-1 flex-col gap-4 overflow-x-hidden overflow-y-auto p-2', ui?.body)"
+      :class="cn(
+        'flex flex-1 flex-col gap-4 overflow-x-hidden overflow-y-auto p-2 [scrollbar-width:thin]',
+        // Collapsed, a scrollbar would take a third of the 40px strip and cut
+        // the icons off, so it's hidden (the list still scrolls).
+        collapsed && '[scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+        ui?.body
+      )"
     >
+      <!-- Inside a nested item: ‹ and its label, back to the level above.
+           The divider under it keeps the list's gap-4 rhythm with sections. -->
+      <div v-if="current" class="-mb-2 flex flex-col gap-1 border-b border-black/15 pb-2">
+        <button
+          type="button"
+          data-back
+          :title="collapsed ? `Back from ${current.label}` : undefined"
+          :class="cn(itemBase, 'font-bold', ui?.item)"
+          @click="goBack"
+        >
+          <ChevronLeft aria-hidden="true" />
+          <span :class="cn('min-w-0 flex-1 truncate', fade, collapsed && 'opacity-0')">
+            <span class="sr-only">Back from </span>{{ current.label }}
+          </span>
+        </button>
+      </div>
+
       <div v-for="(section, s) in allSections" :key="s" class="flex flex-col gap-1">
         <!-- Section headings fade into a divider when collapsed, so the groups
              stay visible without the text. Same height either way. -->
@@ -186,14 +292,18 @@ const itemActive = 'bg-primary/10 font-bold text-primary not-aria-disabled:not-d
             <component
               :is="tagFor(item)"
               v-bind="attrsFor(item)"
+              data-sidebar-item
+              :data-parent="item.children?.length ? item.label : undefined"
               :aria-current="item.active ? 'page' : undefined"
               :title="collapsed ? item.label : undefined"
-              :class="cn(itemBase, item.active && itemActive, ui?.item)"
+              :class="cn(itemBase, item.active && itemActive, activeParents.has(item.label) && itemActiveParent, ui?.item)"
               @click="select(item, $event)"
             >
               <slot name="item" :item="item" :active="!!item.active" :collapsed="collapsed">
                 <component :is="item.icon" v-if="item.icon" aria-hidden="true" />
-                <span :class="cn('min-w-0 flex-1 truncate', fade, collapsed && 'opacity-0')">{{ item.label }}</span>
+                <span :class="cn('min-w-0 flex-1 truncate', fade, collapsed && 'opacity-0')">
+                  {{ item.label }}<span v-if="item.children?.length" class="sr-only">, more options</span>
+                </span>
                 <Badge
                   v-if="item.badge !== undefined && item.badge !== ''"
                   size="sm"
@@ -202,6 +312,12 @@ const itemActive = 'bg-primary/10 font-bold text-primary not-aria-disabled:not-d
                 >
                   {{ item.badge }}
                 </Badge>
+                <!-- Parents: an arrow into their sub-pages. -->
+                <ChevronRight
+                  v-if="item.children?.length"
+                  aria-hidden="true"
+                  :class="cn('opacity-70', fade, collapsed && 'opacity-0')"
+                />
               </slot>
             </component>
           </li>

@@ -1,7 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import {
   Bell,
+  BookOpen,
+  Building2,
+  CalendarCog,
   CalendarDays,
+  Circle,
+  CircleCheck,
+  Copy,
+  GraduationCap,
+  House,
+  Layers,
+  Shield,
   ClipboardCheck,
   FileText,
   Inbox,
@@ -13,11 +23,17 @@ import {
   Users,
   Wallet,
 } from "@lucide/vue";
-import { computed, ref, type Component } from "vue";
+import { computed, reactive, ref, type Component } from "vue";
 import AppShell from "../components/AppShell/AppShell.vue";
 import Badge, { type BadgeProps } from "../components/Badge/Badge.vue";
-import Button from "../components/Button/Button.vue";
-import type { SidebarSection } from "../components/Sidebar/Sidebar.vue";
+import Breadcrumb from "../components/Breadcrumb/Breadcrumb.vue";
+import Button, { type ButtonStatus } from "../components/Button/Button.vue";
+import Input from "../components/Input/Input.vue";
+import InputDate from "../components/InputDate/InputDate.vue";
+import InputNumber from "../components/InputNumber/InputNumber.vue";
+import Select from "../components/Select/Select.vue";
+import type { SidebarItem, SidebarSection } from "../components/Sidebar/Sidebar.vue";
+import { sidebarTrail } from "../components/Sidebar/sidebar";
 
 /**
  * Whole pages from two different apps, to show the intended layout: every
@@ -211,3 +227,271 @@ export const Finance = pageStory({
     row("Hughes family", "£4,950.00", "1 Oct 2026", "Paid"),
   ],
 });
+
+// ── New School Year Setup ───────────────────────────────────────────────────
+
+const yearGroups = [7, 8, 9, 10, 11, 12].map((n) => ({ label: `Year ${n}`, value: n, description: `Becomes Year ${n + 1}` }));
+const studentsPerYear: Record<number, number> = { 7: 182, 8: 179, 9: 184, 10: 176, 11: 181, 12: 158 };
+
+const copyOptions = [
+  { label: "Classes and sets", value: "classes", icon: BookOpen, description: "Each class moves up a year; teachers stay with them" },
+  { label: "Tutor groups", value: "tutors", icon: Users, description: "Same tutors, renamed for the new year group" },
+  { label: "Houses", value: "houses", icon: Shield, description: "Students stay in their house" },
+  { label: "Timetable", value: "timetable", icon: CalendarDays, description: "Last year's periods and rooms, as a starting point" },
+  { label: "Fee structures", value: "fees", icon: PoundSterling, description: "Fees and discounts, before any rise is applied" },
+];
+
+const terms = [
+  { key: "autumn", label: "Autumn term" },
+  { key: "spring", label: "Spring term" },
+  { key: "summer", label: "Summer term" },
+] as const;
+type TermKey = (typeof terms)[number]["key"];
+
+/**
+ * A settings page three levels deep: School › School Structure › New School
+ * Year Setup. The sidebar opens at that level, the breadcrumb follows it, and
+ * the page uses the form components together: dates that must be in order,
+ * a multi-select with descriptions, and a summary that updates as you go.
+ *
+ * "Start new year" checks everything (try clearing a date, or setting a term
+ * outside the year), then loads and succeeds.
+ */
+export const NewSchoolYearSetup: Story = {
+  render: () => ({
+    components: { AppShell, Badge, Breadcrumb, Button, Bell, Input, InputDate, InputNumber, Select, Circle, CircleCheck, Copy },
+    setup() {
+      const current = ref("New School Year Setup");
+      const page = (label: string, icon?: Component): SidebarItem => ({
+        label,
+        icon,
+        active: label === current.value,
+        onSelect: () => (current.value = label),
+      });
+      const items = computed<SidebarItem[]>(() => [
+        page("Home", House),
+        page("Students", Users),
+        page("Staff", GraduationCap),
+        {
+          label: "School",
+          icon: Building2,
+          children: [
+            page("Overview", LayoutDashboard),
+            {
+              label: "School Structure",
+              icon: Layers,
+              children: [
+                page("New School Year Setup", CalendarCog),
+                page("Year Groups", GraduationCap),
+                page("Houses", Shield),
+                page("Classes", BookOpen),
+              ],
+            },
+            page("Term Dates", CalendarDays),
+            page("Settings", Settings),
+          ],
+        },
+        page("Reports", FileText),
+      ]);
+      const trail = computed(() => sidebarTrail(items.value));
+
+      const form = reactive({
+        name: "2027–28",
+        start: "2027-09-01" as string | undefined,
+        end: "2028-07-21" as string | undefined,
+        terms: {
+          autumn: { start: "2027-09-01", end: "2027-12-17" },
+          spring: { start: "2028-01-04", end: "2028-03-31" },
+          summer: { start: "2028-04-18", end: "2028-07-21" },
+        } as Record<TermKey, { start?: string; end?: string }>,
+        moveUp: [7, 8, 9, 10, 11, 12] as number[],
+        year13: "leavers",
+        intake: 180 as number | undefined,
+        copy: ["classes", "tutors", "houses"] as string[],
+      });
+
+      // Errors appear after "Start new year", then update as fields change.
+      const checked = ref(false);
+      const errors = computed(() => {
+        const e: Record<string, string | undefined> = {};
+        if (!checked.value) return e;
+        if (!form.name.trim()) e.name = "Enter a name, e.g. 2027–28";
+        if (!form.start) e.start = "Enter the first day of the year";
+        if (!form.end) e.end = "Enter the last day of the year";
+        else if (form.start && form.end <= form.start) e.end = "Must be after the start date";
+        let previousEnd: string | undefined;
+        for (const term of terms) {
+          const t = form.terms[term.key];
+          if (!t.start) e[`${term.key}.start`] = "Enter a start date";
+          else if (form.start && t.start < form.start) e[`${term.key}.start`] = "Must be in the academic year";
+          else if (previousEnd && t.start <= previousEnd) e[`${term.key}.start`] = "Must be after the previous term ends";
+          if (!t.end) e[`${term.key}.end`] = "Enter an end date";
+          else if (t.start && t.end <= t.start) e[`${term.key}.end`] = "Must be after the term starts";
+          else if (form.end && t.end > form.end) e[`${term.key}.end`] = "Must be in the academic year";
+          previousEnd = t.end;
+        }
+        if (form.intake === undefined) e.intake = "Enter the expected intake (0 if none)";
+        return e;
+      });
+      const errorCount = computed(() => Object.values(errors.value).filter(Boolean).length);
+
+      // The summary down the side.
+      const movingUp = computed(() => form.moveUp.reduce((sum, year) => sum + (studentsPerYear[year] ?? 0), 0));
+      const checklist = computed(() => [
+        { label: "Academic year", done: !!(form.name.trim() && form.start && form.end && form.end > form.start) },
+        { label: "Term dates", done: terms.every((t) => form.terms[t.key].start && form.terms[t.key].end) },
+        { label: "Year groups", done: form.moveUp.length > 0 && form.intake !== undefined },
+        { label: "Copied from 2026–27", done: form.copy.length > 0 },
+      ]);
+
+      const status = ref<ButtonStatus>("idle");
+      const saved = ref(false);
+      function start() {
+        checked.value = true;
+        if (errorCount.value) {
+          // Take keyboard and screen reader users to the first problem.
+          requestAnimationFrame(() => document.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus());
+          return;
+        }
+        status.value = "loading";
+        setTimeout(() => (status.value = "success"), 1200);
+      }
+
+      return { current, items, trail, form, terms, errors, errorCount, checked, movingUp, checklist, status, saved, start, user, yearGroups, copyOptions, studentsPerYear };
+    },
+    template: `
+      <AppShell title="Keston School Admin" :items="items" :user="user">
+        ${sharedHeader}
+
+        <div v-if="current !== 'New School Year Setup'" class="flex flex-col gap-2 p-4 sm:p-6">
+          <Breadcrumb :items="trail" />
+          <h1 class="text-2xl font-bold">{{ current }}</h1>
+          <p class="text-sm text-black/65">Choose New School Year Setup (School › School Structure) to see the example page.</p>
+        </div>
+
+        <div v-else class="flex flex-col gap-6 p-4 sm:p-6">
+          <!-- Title, status and actions -->
+          <div class="flex flex-col gap-2">
+            <Breadcrumb :items="trail" />
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div class="flex flex-col gap-1">
+                <div class="flex items-center gap-2">
+                  <h1 class="text-2xl font-bold">New School Year Setup</h1>
+                  <Badge :color="status === 'success' ? 'green' : 'basic'">{{ status === 'success' ? 'Started' : saved ? 'Draft saved' : 'Draft' }}</Badge>
+                </div>
+                <p class="max-w-prose text-sm text-black/65">
+                  Set up 2027–28 before the summer. Nothing changes for staff or students until you start the new year.
+                </p>
+              </div>
+              <div class="flex gap-2">
+                <Button @click="saved = true">Save draft</Button>
+                <Button variant="primary" v-model:status="status" loading-text="Starting…" success-text="Started" @click="start">
+                  Start new year
+                </Button>
+              </div>
+            </div>
+            <p v-if="checked && errorCount" role="alert" class="text-sm text-red">
+              {{ errorCount === 1 ? 'There is 1 thing' : 'There are ' + errorCount + ' things' }} to fix before the new year can start.
+            </p>
+          </div>
+
+          <!-- Laid out by the space it has (container queries), not the
+               window: the sidebar takes 256px, and the form needs room. -->
+          <div class="@container">
+          <div class="grid grid-cols-1 items-start gap-6 @4xl:grid-cols-[minmax(0,1fr)_18rem]">
+            <div class="flex flex-col gap-6">
+              <!-- Academic year -->
+              <section class="@container flex flex-col gap-4 rounded border border-black/15 bg-white p-4 sm:p-6" aria-labelledby="year-heading">
+                <div class="flex flex-col gap-1">
+                  <h2 id="year-heading" class="text-base font-bold">Academic year</h2>
+                  <p class="text-sm text-black/65">The first and last day students are on roll.</p>
+                </div>
+                <div class="grid grid-cols-1 gap-4 @lg:grid-cols-3">
+                  <Input v-model="form.name" label="Name" :error-text="errors.name" />
+                  <InputDate v-model="form.start" label="Starts" :error-text="errors.start" />
+                  <InputDate v-model="form.end" label="Ends" :min="form.start" :error-text="errors.end" />
+                </div>
+              </section>
+
+              <!-- Term dates -->
+              <section class="@container flex flex-col gap-4 rounded border border-black/15 bg-white p-4 sm:p-6" aria-labelledby="terms-heading">
+                <div class="flex flex-col gap-1">
+                  <h2 id="terms-heading" class="text-base font-bold">Term dates</h2>
+                  <p class="text-sm text-black/65">Half terms and INSET days can be added later in Term Dates.</p>
+                </div>
+                <div v-for="term in terms" :key="term.key" class="grid grid-cols-1 gap-x-4 gap-y-2 @xl:grid-cols-[7rem_1fr_1fr] @xl:items-start">
+                  <h3 class="text-sm font-bold @xl:pt-8">{{ term.label }}</h3>
+                  <InputDate v-model="form.terms[term.key].start" :label="term.label + ' starts'" :min="form.start" :max="form.end" :error-text="errors[term.key + '.start']" />
+                  <InputDate v-model="form.terms[term.key].end" :label="term.label + ' ends'" :min="form.terms[term.key].start || form.start" :max="form.end" :error-text="errors[term.key + '.end']" />
+                </div>
+              </section>
+
+              <!-- Year groups -->
+              <section class="@container flex flex-col gap-4 rounded border border-black/15 bg-white p-4 sm:p-6" aria-labelledby="groups-heading">
+                <div class="flex flex-col gap-1">
+                  <h2 id="groups-heading" class="text-base font-bold">Year groups</h2>
+                  <p class="text-sm text-black/65">Who moves up, who leaves, and who joins.</p>
+                </div>
+                <Select
+                  v-model="form.moveUp"
+                  label="Year groups moving up"
+                  helper="Untick a year group to keep it where it is, e.g. if it's being restructured."
+                  :options="yearGroups"
+                  multiple
+                />
+                <div class="grid grid-cols-1 gap-4 @lg:grid-cols-2">
+                  <Select
+                    v-model="form.year13"
+                    label="Year 13 students"
+                    :options="[
+                      { label: 'Mark as leavers', value: 'leavers', description: 'Off roll on 31 August' },
+                      { label: 'Keep on roll', value: 'keep', description: 'Until results day, then mark as leavers' },
+                    ]"
+                  />
+                  <InputNumber
+                    v-model="form.intake"
+                    label="Expected Year 7 intake"
+                    helper="From admissions. Places can be added later."
+                    :min="0"
+                    :max="400"
+                    :error-text="errors.intake"
+                  />
+                </div>
+              </section>
+
+              <!-- Copy from last year -->
+              <section class="@container flex flex-col gap-4 rounded border border-black/15 bg-white p-4 sm:p-6" aria-labelledby="copy-heading">
+                <div class="flex flex-col gap-1">
+                  <h2 id="copy-heading" class="text-base font-bold">Copy from 2026–27</h2>
+                  <p class="text-sm text-black/65">Anything not copied starts empty.</p>
+                </div>
+                <Select v-model="form.copy" label="What to copy" :options="copyOptions" multiple searchable placeholder="Search what to copy…" />
+              </section>
+            </div>
+
+            <!-- Summary -->
+            <aside class="flex flex-col gap-4 rounded border border-black/15 bg-white p-4 @4xl:sticky @4xl:top-18" aria-labelledby="summary-heading">
+              <h2 id="summary-heading" class="text-base font-bold">Summary</h2>
+              <ul class="flex flex-col gap-2 text-sm">
+                <li v-for="step in checklist" :key="step.label" class="flex items-center gap-2">
+                  <CircleCheck v-if="step.done" class="size-4 shrink-0 text-green" aria-hidden="true" />
+                  <Circle v-else class="size-4 shrink-0 text-black/40" aria-hidden="true" />
+                  <span :class="step.done ? 'text-black' : 'text-black/65'">{{ step.label }}</span>
+                  <span class="sr-only">{{ step.done ? '(done)' : '(to do)' }}</span>
+                </li>
+              </ul>
+              <dl class="grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 border-t border-black/15 pt-4 text-sm">
+                <dt class="text-black/65">Moving up a year</dt>
+                <dd class="text-right font-bold tabular-nums">{{ movingUp.toLocaleString('en-GB') }}</dd>
+                <dt class="text-black/65">{{ form.year13 === 'leavers' ? 'Leaving (Year 13)' : 'Staying on (Year 13)' }}</dt>
+                <dd class="text-right font-bold tabular-nums">162</dd>
+                <dt class="text-black/65">Joining Year 7</dt>
+                <dd class="text-right font-bold tabular-nums">{{ form.intake ?? '—' }}</dd>
+              </dl>
+            </aside>
+          </div>
+          </div>
+        </div>
+      </AppShell>`,
+  }),
+};
