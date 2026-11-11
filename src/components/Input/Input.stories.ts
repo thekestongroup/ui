@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { AtSign, Lock, Mail, Search, User, X } from "@lucide/vue";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import Button from "../Button/Button.vue";
 import Input, { type InputProps } from "./Input.vue";
 
@@ -48,7 +48,7 @@ const meta = {
     leadingIcon: iconControl,
     trailingIcon: iconControl,
     helperPlacement: { options: ["below", "icon"], control: { type: "inline-radio" } },
-    status: { options: [undefined, "error", "success"], control: { type: "inline-radio" } },
+    status: { options: [undefined, "error", "success", "loading"], control: { type: "inline-radio" } },
   },
   args: {
     label: "First name",
@@ -137,6 +137,55 @@ export const ErrorStatus: Story = {
 
 export const SuccessStatus: Story = {
   args: { label: "Username", status: "success", statusText: "Username is available", leadingIcon: "AtSign" },
+};
+
+/**
+ * Checking a username as you type: a small spinner shows "Checking
+ * availability…" until typing pauses and the check comes back, then the result. Here the check is faked with a
+ * short delay; try "admin", "ben" or "keston" for one that's taken.
+ */
+export const UsernameAvailability: Story = {
+  args: { label: "Username", placeholder: "e.g. jsmith", leadingIcon: "AtSign", minLength: 3 },
+  render: (args) => ({
+    components: { Input },
+    setup() {
+      const story = useStoryInput(args);
+      const taken = ["admin", "ben", "keston", "jsmith"];
+      const status = ref<InputProps["status"]>();
+      const statusText = ref<string>();
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      let check = 0;
+
+      watch(story.value, (value) => {
+        clearTimeout(timer);
+        // Only the latest check counts, in case an older one comes back late.
+        const id = ++check;
+        const name = value.trim().toLowerCase();
+        // Too short: nothing to check yet (the length check says why on blur).
+        if (name.length < 3) {
+          status.value = statusText.value = undefined;
+          return;
+        }
+        // Show it's checking straight away, so an earlier result is never
+        // shown for a different name, then "ask the server" once typing pauses.
+        status.value = "loading";
+        statusText.value = "Checking availability…";
+        timer = setTimeout(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 1200));
+          if (id !== check) return;
+          const free = !taken.includes(name);
+          status.value = free ? "success" : "error";
+          statusText.value = free ? "Username available" : "Username unavailable";
+        }, 400);
+      });
+
+      return { ...story, status, statusText };
+    },
+    template: `
+      <Input v-bind="inputProps" v-model="value" :status="status" :status-text="statusText" autocomplete="username">
+        <template v-if="leading" #leading><component :is="leading" /></template>
+      </Input>`,
+  }),
 };
 
 export const Disabled: Story = { args: { disabled: true, placeholder: "Not editable" } };

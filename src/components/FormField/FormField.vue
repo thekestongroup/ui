@@ -3,6 +3,7 @@ import { computed, ref, useId, watch, type HTMLAttributes } from 'vue'
 import { CircleAlert, CircleCheck, CircleHelp } from '@lucide/vue'
 import { cn } from '../../lib/cn'
 import Popover from '../Popover/Popover.vue'
+import Spinner from '../Spinner/Spinner.vue'
 
 /**
  * Shared shell for form controls: label, helper text (below or behind a `?`),
@@ -12,7 +13,7 @@ import Popover from '../Popover/Popover.vue'
  * values to put on it.
  */
 
-export type FormFieldStatus = 'error' | 'success'
+export type FormFieldStatus = 'error' | 'success' | 'loading'
 
 export interface FormFieldProps {
   /** Visible label. Always set it: it is also the control's accessible name. */
@@ -27,7 +28,11 @@ export interface FormFieldProps {
    * when the value is valid. Overrides `status` and `statusText`.
    */
   errorText?: string
-  /** Colours the field and the status text. */
+  /**
+   * Colours the field and the status text. `loading` shows a small spinner
+   * by the status text while something is checked, e.g. "Checking
+   * availability…", and leaves the border as it is.
+   */
   status?: FormFieldStatus
   /** Message under the field, e.g. why the value is invalid. */
   statusText?: string
@@ -101,12 +106,14 @@ const box = [
 
 const statusBorder: Record<FormFieldStatus, string> = {
   error: 'border-red',
-  success: 'border-green'
+  success: 'border-green',
+  loading: ''
 }
 
 const statusColour: Record<FormFieldStatus, string> = {
   error: 'text-red',
-  success: 'text-green'
+  success: 'text-green',
+  loading: 'text-black/65'
 }
 
 const statusIcon = { error: CircleAlert, success: CircleCheck } as const
@@ -190,7 +197,8 @@ const statusIcon = { error: CircleAlert, success: CircleCheck } as const
             statusOpen ? 'duration-150 delay-100' : '-translate-y-1 opacity-0 duration-100'
           )"
         >
-          <component :is="statusIcon[shownStatus]" v-if="shownStatus" />
+          <Spinner v-if="shownStatus === 'loading'" size="sm" class="size-3.5" />
+          <component :is="statusIcon[shownStatus]" v-else-if="shownStatus" />
           {{ shownText }}
         </p>
       </div>
