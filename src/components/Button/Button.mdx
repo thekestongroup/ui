@@ -21,7 +21,6 @@ Starts an action: saving, cancelling, opening a panel, deleting. For going to an
 | basic (default) | white `#FAFAFA` | black `#050505` | black 15% | Most actions: Cancel, Export |
 | ghost | none | black `#050505` | transparent | Low emphasis: toolbars, icon buttons, × on panels |
 | danger | red `#D2042D` | white `#FAFAFA` | black 15% | Destructive actions: Delete |
-| success | green `#007A16` | white `#FAFAFA` | black 15% | Positive / confirming actions: Approve |
 
 ## Sizes
 
@@ -77,4 +76,4 @@ Click the button below to see loading, then success or error:
 - A native `<button>` (`type="button"` by default): focus, Enter and Space work without extra code.
 - Icon-only buttons need an `aria-label`. If the button shows text, the label must include it.
 - While busy the button is `aria-disabled` (and `aria-busy` while loading) but stays focusable. The status is announced through a live region.
-- Contrast: basic 19.5:1, primary 12.1:1, danger 5.3:1, success 5.3:1, ghost 19.5:1 on white and 15.6:1 on the page background. All meet WCAG AA. The focus ring is 4.1:1 against white (the minimum is 3:1).
+- Contrast: basic 19.5:1, primary 12.1:1, danger 5.3:1, success status 5.3:1, ghost 19.5:1 on white and 15.6:1 on the page background. All meet WCAG AA. The focus ring is 4.1:1 against white (the minimum is 3:1).

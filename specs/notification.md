@@ -48,7 +48,7 @@ notify({
 |---|---|---|---|---|
 | info | Info (i) | blue `#035483` | 6 seconds | When the screen reader is idle |
 | success | Circle check | green `#007A16` | 6 seconds | When the screen reader is idle |
-| warning | Triangle | orange `#B84A00` | 6 seconds | Straight away |
+| warning | Triangle | yellow `#F1C70B`, black outline | 6 seconds | Straight away |
 | error | Circle × | red `#D2042D` | Until closed | Straight away |
 
 With an action, every type stays until closed, so people have time to use it, except compact ones (e.g. Undo), which stay 10 seconds. Errors always stay.
@@ -163,7 +163,7 @@ Colour is never the only signal: each type has its own icon and is said in words
 
 | Token | Used for |
 |---|---|
-| color blue / green / orange / red | type icons |
+| color blue / green / yellow / red | type icons (yellow fills the warning triangle; black outlines it) |
 | color red | unread count |
 | color primary | unread dot |
 | color blue (5%) | unread row background |

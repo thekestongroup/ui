@@ -62,7 +62,7 @@ const titleId = `${useId()}-title`
 const types = {
   info: { icon: Info, colour: 'text-blue', word: 'Information' },
   success: { icon: CircleCheck, colour: 'text-green', word: 'Success' },
-  warning: { icon: TriangleAlert, colour: 'text-orange', word: 'Warning' },
+  warning: { icon: TriangleAlert, colour: 'text-yellow', word: 'Warning' },
   error: { icon: CircleX, colour: 'text-red', word: 'Error' }
 } as const
 

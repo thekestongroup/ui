@@ -141,14 +141,45 @@ watch(
   { immediate: true }
 )
 
+// ── Sliding between levels ──────────────────────────────────────────────────
+// Each level is keyed by its trail, so moving between levels swaps the list
+// with a slide: deeper comes in from the right, back from the left. The
+// level leaving is taken out of the layout (absolute) and made inert, so it
+// can't be clicked or focused while it slides away.
+const levelKey = computed(() => opened.value.map((item) => item.label).join('\u0000'))
+const direction = ref<'forward' | 'back'>('forward')
+watch(
+  () => opened.value.length,
+  (now, before) => {
+    direction.value = now < before ? 'back' : 'forward'
+  },
+  { flush: 'sync' }
+)
+
+const slide = computed(() => {
+  const forward = direction.value === 'forward'
+  return {
+    enterActiveClass: 'transition duration-300 ease-out motion-reduce:transition-none',
+    leaveActiveClass: 'absolute inset-x-2 top-2 transition duration-300 ease-out motion-reduce:transition-none',
+    enterFromClass: cn('opacity-0', forward ? 'translate-x-full' : '-translate-x-full'),
+    leaveToClass: cn('opacity-0', forward ? '-translate-x-1/3' : 'translate-x-1/3')
+  }
+})
+
+function onLeave(el: Element) {
+  ;(el as HTMLElement).inert = true
+}
+
 const navRef = ref<HTMLElement>()
 
 // After moving between levels, focus the first item (or, going back, the
 // item just left), so keyboard users carry on in the new list.
 async function focusAfterMove(label?: string) {
   await nextTick()
-  const nav = navRef.value
+  // The level coming in, not the one sliding out.
+  const nav = navRef.value?.querySelector<HTMLElement>(`[data-level="${CSS.escape(levelKey.value)}"]`)
   if (!nav) return
+  navRef.value!.scrollTop = 0
   const target =
     (label && nav.querySelector<HTMLElement>(`[data-parent="${CSS.escape(label)}"]`)) ||
     nav.querySelector<HTMLElement>('li [data-sidebar-item]:not([disabled]):not([aria-disabled="true"])')
@@ -247,82 +278,86 @@ const itemActiveParent = 'font-bold text-primary'
       ref="navRef"
       :aria-label="label"
       :class="cn(
-        'flex flex-1 flex-col gap-4 overflow-x-hidden overflow-y-auto p-2 [scrollbar-width:thin]',
+        'relative flex-1 overflow-x-hidden overflow-y-auto p-2 [scrollbar-width:thin]',
         // Collapsed, a scrollbar would take a third of the 40px strip and cut
         // the icons off, so it's hidden (the list still scrolls).
         collapsed && '[scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
         ui?.body
       )"
     >
-      <!-- Inside a nested item: ‹ and its label, back to the level above.
-           The divider under it keeps the list's gap-4 rhythm with sections. -->
-      <div v-if="current" class="-mb-2 flex flex-col gap-1 border-b border-black/15 pb-2">
-        <button
-          type="button"
-          data-back
-          :title="collapsed ? `Back from ${current.label}` : undefined"
-          :class="cn(itemBase, 'font-bold', ui?.item)"
-          @click="goBack"
-        >
-          <ChevronLeft aria-hidden="true" />
-          <span :class="cn('min-w-0 flex-1 truncate', fade, collapsed && 'opacity-0')">
-            <span class="sr-only">Back from </span>{{ current.label }}
-          </span>
-        </button>
-      </div>
-
-      <div v-for="(section, s) in allSections" :key="s" class="flex flex-col gap-1">
-        <!-- Section headings fade into a divider when collapsed, so the groups
-             stay visible without the text. Same height either way. -->
-        <div v-if="section.label" class="relative flex h-6 items-center px-3">
-          <div
-            :id="`${uid}-section-${s}`"
-            :class="cn('truncate text-xs font-bold text-black/65 uppercase', fade, collapsed && 'opacity-0')"
-          >
-            {{ section.label }}
-          </div>
-          <div
-            aria-hidden="true"
-            :class="cn('absolute inset-x-2 top-1/2 border-t border-black/15', fade, !collapsed && 'opacity-0')"
-          />
-        </div>
-
-        <ul class="flex flex-col gap-1" :aria-labelledby="section.label ? `${uid}-section-${s}` : undefined">
-          <li v-for="(item, i) in section.items" :key="`${item.label}-${i}`">
-            <component
-              :is="tagFor(item)"
-              v-bind="attrsFor(item)"
-              data-sidebar-item
-              :data-parent="item.children?.length ? item.label : undefined"
-              :aria-current="item.active ? 'page' : undefined"
-              :title="collapsed ? item.label : undefined"
-              :class="cn(itemBase, item.active && itemActive, activeParents.has(item.label) && itemActiveParent, ui?.item)"
-              @click="select(item, $event)"
+      <Transition v-bind="slide" @leave="onLeave">
+        <div :key="levelKey" :data-level="levelKey" class="flex flex-col gap-4">
+          <!-- Inside a nested item: ‹ and its label, back to the level above.
+               The divider under it keeps the list's gap-4 rhythm with sections. -->
+          <div v-if="current" class="-mb-2 flex flex-col gap-1 border-b border-black/15 pb-2">
+            <button
+              type="button"
+              data-back
+              :title="collapsed ? `Back from ${current.label}` : undefined"
+              :class="cn(itemBase, 'font-bold', ui?.item)"
+              @click="goBack"
             >
-              <slot name="item" :item="item" :active="!!item.active" :collapsed="collapsed">
-                <component :is="item.icon" v-if="item.icon" aria-hidden="true" />
-                <span :class="cn('min-w-0 flex-1 truncate', fade, collapsed && 'opacity-0')">
-                  {{ item.label }}<span v-if="item.children?.length" class="sr-only">, more options</span>
-                </span>
-                <Badge
-                  v-if="item.badge !== undefined && item.badge !== ''"
-                  size="sm"
-                  :color="item.badgeColor"
-                  :class="cn(fade, collapsed && 'opacity-0')"
+              <ChevronLeft aria-hidden="true" />
+              <span :class="cn('min-w-0 flex-1 truncate', fade, collapsed && 'opacity-0')">
+                <span class="sr-only">Back from </span>{{ current.label }}
+              </span>
+            </button>
+          </div>
+
+          <div v-for="(section, s) in allSections" :key="s" class="flex flex-col gap-1">
+            <!-- Section headings fade into a divider when collapsed, so the groups
+                 stay visible without the text. Same height either way. -->
+            <div v-if="section.label" class="relative flex h-6 items-center px-3">
+              <div
+                :id="`${uid}-section-${s}`"
+                :class="cn('truncate text-xs font-bold text-black/65 uppercase', fade, collapsed && 'opacity-0')"
+              >
+                {{ section.label }}
+              </div>
+              <div
+                aria-hidden="true"
+                :class="cn('absolute inset-x-2 top-1/2 border-t border-black/15', fade, !collapsed && 'opacity-0')"
+              />
+            </div>
+
+            <ul class="flex flex-col gap-1" :aria-labelledby="section.label ? `${uid}-section-${s}` : undefined">
+              <li v-for="(item, i) in section.items" :key="`${item.label}-${i}`">
+                <component
+                  :is="tagFor(item)"
+                  v-bind="attrsFor(item)"
+                  data-sidebar-item
+                  :data-parent="item.children?.length ? item.label : undefined"
+                  :aria-current="item.active ? 'page' : undefined"
+                  :title="collapsed ? item.label : undefined"
+                  :class="cn(itemBase, item.active && itemActive, activeParents.has(item.label) && itemActiveParent, ui?.item)"
+                  @click="select(item, $event)"
                 >
-                  {{ item.badge }}
-                </Badge>
-                <!-- Parents: an arrow into their sub-pages. -->
-                <ChevronRight
-                  v-if="item.children?.length"
-                  aria-hidden="true"
-                  :class="cn('opacity-70', fade, collapsed && 'opacity-0')"
-                />
-              </slot>
-            </component>
-          </li>
-        </ul>
-      </div>
+                  <slot name="item" :item="item" :active="!!item.active" :collapsed="collapsed">
+                    <component :is="item.icon" v-if="item.icon" aria-hidden="true" />
+                    <span :class="cn('min-w-0 flex-1 truncate', fade, collapsed && 'opacity-0')">
+                      {{ item.label }}<span v-if="item.children?.length" class="sr-only">, more options</span>
+                    </span>
+                    <Badge
+                      v-if="item.badge !== undefined && item.badge !== ''"
+                      size="sm"
+                      :color="item.badgeColor"
+                      :class="cn(fade, collapsed && 'opacity-0')"
+                    >
+                      {{ item.badge }}
+                    </Badge>
+                    <!-- Parents: an arrow into their sub-pages. -->
+                    <ChevronRight
+                      v-if="item.children?.length"
+                      aria-hidden="true"
+                      :class="cn('opacity-70', fade, collapsed && 'opacity-0')"
+                    />
+                  </slot>
+                </component>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </Transition>
     </nav>
 
     <div

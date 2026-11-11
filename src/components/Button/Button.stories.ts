@@ -123,7 +123,6 @@ export const AllVariants: Story = {
         <Button variant="basic">Basic</Button>
         <Button variant="ghost">Ghost</Button>
         <Button variant="danger">Danger</Button>
-        <Button variant="success">Success</Button>
       </div>`,
   }),
 };

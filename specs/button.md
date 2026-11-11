@@ -30,7 +30,7 @@
 
 | Property | Type | Default | Description |
 |---|---|---|---|
-| variant | basic \| primary \| ghost \| danger \| success | basic | What the button is for (see Variants). |
+| variant | basic \| primary \| ghost \| danger | basic | What the button is for (see Variants). |
 | size | sm \| md \| lg | md | See Sizes. |
 | square | boolean | false | Icon only: as wide as it is tall. Needs `aria-label`. |
 | disabled | boolean | false | Can't be pressed or focused. |
@@ -48,7 +48,6 @@
 | primary | primary `#023750` | white `#FAFAFA` | black 15% | The main action, one per area | Save, Continue |
 | ghost | none | black `#050505` | transparent | Low emphasis, toolbars, icon buttons | ×, ☰, avatar |
 | danger | red `#D2042D` | white `#FAFAFA` | black 15% | Destructive actions | Delete |
-| success | green `#007A16` | white `#FAFAFA` | black 15% | Positive / confirming actions | Approve |
 
 ## Sizes
 
@@ -111,7 +110,7 @@ Status text (loadingText, etc.) uses the same style as the label, with an 8px ga
 - Native `<button>` (`type="button"` unless set), so role, focus and keyboard come for free.
 - Icon-only buttons need an `aria-label` (e.g. "Close"). If visible text is shown, the label must contain it.
 - While busy the button is `aria-disabled` and `aria-busy` (loading) but stays focusable; the status is announced through a live region ("Loading", "Done", "Failed" if no text is set).
-- Contrast (text on background): basic 19.5:1, primary 12.1:1, danger 5.3:1, success 5.3:1, ghost on white 19.5:1 and on background `#E1E1E1` 15.6:1, so all meet WCAG AA. Focus ring vs white: 4.1:1 (non-text minimum is 3:1).
+- Contrast (text on background): basic 19.5:1, primary 12.1:1, danger 5.3:1, success status 5.3:1, ghost on white 19.5:1 and on background `#E1E1E1` 15.6:1, so all meet WCAG AA. Focus ring vs white: 4.1:1 (non-text minimum is 3:1).
 
 ## Platform adaptation
 
@@ -130,7 +129,7 @@ Status text (loadingText, etc.) uses the same style as the label, with an 8px ga
 | color black (15%) | border |
 | color primary `#023750` | primary background |
 | color red `#D2042D` | danger background, error status |
-| color green `#007A16` | success background, success status |
+| color green `#007A16` | success status (white text 5.3:1) |
 | color focus `#007FC9` | focus ring |
 | radius (Tailwind `rounded`, 4px) | corners |
 

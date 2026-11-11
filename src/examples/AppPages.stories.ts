@@ -151,10 +151,10 @@ function pageStory(options: {
 const statuses: Record<string, BadgeProps["color"]> = {
   Offered: "green",
   Interview: "blue",
-  "Awaiting documents": "orange",
+  "Awaiting documents": "yellow",
   Withdrawn: "basic",
   Paid: "green",
-  "Due soon": "orange",
+  "Due soon": "yellow",
   Overdue: "red",
   Draft: "basic",
 };
@@ -185,7 +185,7 @@ export const Admissions = pageStory({
       label: "Records",
       items: [
         { label: "Students", icon: Users },
-        { label: "Documents", icon: FileText, badge: 4, badgeColor: "orange" },
+        { label: "Documents", icon: FileText, badge: 4, badgeColor: "yellow" },
       ],
     },
     { label: "Admin", items: [{ label: "Settings", icon: Settings }] },

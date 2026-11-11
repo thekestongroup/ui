@@ -23,4 +23,4 @@ nothing is lost.
 | `--animate-fade-out` | fade from 100% to 0 opacity, 150ms, `cubic-bezier(0.4, 0, 0.2, 1)` | same | Popovers / tooltips disappearing. |
 | `--animate-slide-in-{right,left,top,bottom}` | slide in from that edge (100% of own size), 300ms, ease-out `cubic-bezier(0, 0, 0.2, 1)` | same | Slideover opening. |
 | `--animate-slide-out-{right,left,top,bottom}` | slide out to that edge, 200ms, ease-in `cubic-bezier(0.4, 0, 1, 1)` | same | Slideover closing. |
-| `--color-orange` | `#b84a00` | — | Warnings, e.g. Badge. White text on it is 5.0:1 (AA). |
+| `--color-yellow` | `#f1c70b` | — | Warnings, e.g. Badge, the warning notification icon. Use black text on it (12:1, AAA); white fails. |

@@ -14,9 +14,8 @@ export interface ButtonProps extends PrimitiveProps {
    * - basic: other actions, e.g. Cancel, Export
    * - ghost: low-emphasis actions, e.g. toolbar and icon buttons, × on panels
    * - danger: destructive actions, e.g. Delete
-   * - success: confirming / positive actions
    */
-  variant?: 'basic' | 'primary' | 'ghost' | 'danger' | 'success'
+  variant?: 'basic' | 'primary' | 'ghost' | 'danger'
   size?: 'sm' | 'md' | 'lg'
   /**
    * Icon-only button: as tall as a normal button of the same size and just as
@@ -174,8 +173,7 @@ const variants: Record<NonNullable<ButtonProps['variant']>, string> = {
   basic: `bg-white text-black ${interactive}`,
   primary: `bg-primary text-white ${interactive}`,
   ghost: `bg-transparent text-black border-transparent ${ghostInteractive}`,
-  danger: `bg-red text-white ${interactive}`,
-  success: `bg-green text-white ${interactive}`
+  danger: `bg-red text-white ${interactive}`
 }
 
 // Applied on top of the variant, so success / error recolour any variant.

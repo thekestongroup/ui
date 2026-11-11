@@ -26,7 +26,7 @@
 
 | Property | Type | Default | Description |
 |---|---|---|---|
-| color | basic \| primary \| red \| green \| blue \| orange | basic | Colour, by meaning (see Variants). |
+| color | basic \| primary \| red \| green \| blue \| yellow | basic | Colour, by meaning (see Variants). |
 | size | sm \| md \| lg | md | |
 
 ## Variants
@@ -37,7 +37,7 @@
 | primary | Emphasis | New |
 | green | Positive, done | Paid, Enrolled |
 | blue | Informational, ongoing | In progress |
-| orange | Needs attention soon | Due soon |
+| yellow | Needs attention soon | Due soon |
 | red | A problem | Overdue |
 
 ## Sizes
@@ -61,7 +61,7 @@ Not interactive: one state only.
 
 - Plain text (`<span>`), read in place with the surrounding content.
 - Colour must not be the only signal: the text says what the colour means.
-- White text on every solid colour meets WCAG AA (4.5:1 or more).
+- White text on every solid colour meets WCAG AA (4.5:1 or more), except yellow, which uses black text (12:1).
 
 ## Platform adaptation
 
@@ -77,7 +77,7 @@ Not interactive: one state only.
 |---|---|
 | color white, black | basic background, text |
 | color black (15%) | border |
-| color primary, green, blue, orange, red | solid backgrounds |
+| color primary, green, blue, yellow, red | solid backgrounds (black text on yellow) |
 
 ## Do / Don't
 

@@ -128,11 +128,11 @@ async function finishClear() {
     :content="{ align: 'end', collisionPadding: 8 }"
     :ui="{ content: cn('flex max-h-(--reka-popover-content-available-height) w-96 overflow-clip max-w-[calc(100vw-1rem)] flex-col', ui?.content) }"
   >
-    <Button variant="ghost" square :aria-label="triggerLabel" :class="cn('relative', ui?.trigger)">
+    <Button variant="ghost" square :aria-label="triggerLabel" :class="cn('relative overflow-visible', ui?.trigger)">
       <Bell />
       <span
         v-if="unread"
-        class="absolute top-1 right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-red px-1 text-xs leading-none font-bold text-white ring-2 ring-white"
+        class="absolute top-1 left-1/2 ml-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-red px-1 text-xs leading-none font-bold text-white ring-2 ring-white"
         aria-hidden="true"
       >
         {{ countText }}

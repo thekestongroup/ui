@@ -16,7 +16,7 @@ type Applicant = {
   status: "Offered" | "Interview" | "Waiting list" | "Declined";
 };
 
-const statusColors = { Offered: "green", Interview: "blue", "Waiting list": "orange", Declined: "basic" } as const;
+const statusColors = { Offered: "green", Interview: "blue", "Waiting list": "yellow", Declined: "basic" } as const;
 
 const applicants: Applicant[] = [
   { id: 1, name: "Amelia Clarke", year: "Year 7", applied: new Date(2026, 9, 3), score: 87, status: "Offered" },

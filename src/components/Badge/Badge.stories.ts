@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { CircleAlert, CircleCheck, Clock, Info, Sparkles, Users } from "@lucide/vue";
 import Badge from "./Badge.vue";
 
-const colors = ["basic", "primary", "green", "blue", "orange", "red"] as const;
+const colors = ["basic", "primary", "green", "blue", "yellow", "red"] as const;
 
 const meta = {
   title: "Components/Badge",
@@ -37,7 +37,7 @@ export const Colors: Story = {
         { color: "primary", text: "New" },
         { color: "green", text: "Paid" },
         { color: "blue", text: "In progress" },
-        { color: "orange", text: "Due soon" },
+        { color: "yellow", text: "Due soon" },
         { color: "red", text: "Overdue" },
       ],
     }),
@@ -72,7 +72,7 @@ export const WithIcon: Story = {
         <Badge v-bind="args" color="primary"><template #leading><Sparkles /></template>New</Badge>
         <Badge v-bind="args" color="green"><template #leading><CircleCheck /></template>Paid</Badge>
         <Badge v-bind="args" color="blue"><template #leading><Info /></template>In progress</Badge>
-        <Badge v-bind="args" color="orange"><template #leading><Clock /></template>Due soon</Badge>
+        <Badge v-bind="args" color="yellow"><template #leading><Clock /></template>Due soon</Badge>
         <Badge v-bind="args" color="red"><template #leading><CircleAlert /></template>Overdue</Badge>
       </div>`,
   }),

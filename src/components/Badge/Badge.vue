@@ -15,13 +15,13 @@ export interface BadgeProps {
    * - primary: emphasis, e.g. "New"
    * - green: positive / done, e.g. "Paid"
    * - blue: informational, e.g. "In progress"
-   * - orange: needs attention, e.g. "Due soon"
+   * - yellow: needs attention, e.g. "Due soon"
    * - red: a problem, e.g. "Overdue"
    *
    * Colour alone doesn't carry meaning for everyone, so the text should say
    * it too.
    */
-  color?: 'basic' | 'primary' | 'red' | 'green' | 'blue' | 'orange'
+  color?: 'basic' | 'primary' | 'red' | 'green' | 'blue' | 'yellow'
   size?: 'sm' | 'md' | 'lg'
   class?: HTMLAttributes['class']
 }
@@ -38,7 +38,7 @@ defineSlots<{
 }>()
 
 // The same border and colours as Button's variants (basic white, the rest
-// solid with white text).
+// solid with white text, except yellow, which needs black text to be readable).
 const base = 'inline-flex shrink-0 items-center whitespace-nowrap rounded-full border border-black/15 font-bold'
 
 const colors: Record<NonNullable<BadgeProps['color']>, string> = {
@@ -47,7 +47,7 @@ const colors: Record<NonNullable<BadgeProps['color']>, string> = {
   red: 'bg-red text-white',
   green: 'bg-green text-white',
   blue: 'bg-blue text-white',
-  orange: 'bg-orange text-white'
+  yellow: 'bg-yellow text-black'
 }
 
 // Heights 20 / 24 / 28px, including the border.
