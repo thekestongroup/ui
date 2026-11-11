@@ -2,7 +2,9 @@
 import { computed, type HTMLAttributes } from 'vue'
 import { ArrowLeftRight, LogOut, Menu, Settings } from '@lucide/vue'
 import { cn } from '../../lib/cn'
+import Avatar from '../Avatar/Avatar.vue'
 import Button from '../Button/Button.vue'
+import { initials as toInitials } from '../../lib/initials'
 import Popover from '../Popover/Popover.vue'
 
 export interface HeaderUser {
@@ -100,13 +102,7 @@ defineSlots<{
 }>()
 
 // "Ben Smith" → "BS", "Ben" → "B".
-const initials = computed(() => {
-  const words = (props.user?.name ?? '').trim().split(/\s+/).filter(Boolean)
-  if (!words.length) return ''
-  const first = words[0]!
-  const last = words.length > 1 ? words[words.length - 1]! : ''
-  return (first[0]! + (last[0] ?? '')).toUpperCase()
-})
+const initials = computed(() => toInitials(props.user?.name ?? ''))
 
 // The avatar button's name. When it shows initials (no picture), they are
 // its visible text, so the name starts with them, for voice control ("click
@@ -125,8 +121,6 @@ function runAction(action: HeaderUserAction, close: () => void) {
   else emit('log-out')
 }
 
-// The avatar circle: picture, or initials on primary.
-const avatar = 'flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary font-bold text-white'
 </script>
 
 <template>
@@ -176,10 +170,7 @@ const avatar = 'flex shrink-0 items-center justify-center overflow-hidden rounde
              in and the account actions. -->
         <Popover v-if="user" :content="{ align: 'end' }" :ui="{ content: cn('w-72', ui?.userMenu) }">
           <Button variant="ghost" square :aria-label="accountLabel" class="-mr-1.5 rounded-full">
-            <span :class="cn(avatar, 'size-7 text-xs')" aria-hidden="true">
-              <img v-if="user.avatar" :src="user.avatar" alt="" class="size-full object-cover">
-              <template v-else>{{ initials }}</template>
-            </span>
+            <Avatar :user="user" size="sm" decorative />
           </Button>
 
           <template #content="{ close }">
@@ -194,10 +185,7 @@ const avatar = 'flex shrink-0 items-center justify-center overflow-hidden rounde
                    email; Account settings sits under them in the text column,
                    without moving the avatar. -->
               <div class="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3 gap-y-2 px-4 py-3">
-                <span :class="cn(avatar, 'size-12 text-base')" aria-hidden="true">
-                  <img v-if="user.avatar" :src="user.avatar" alt="" class="size-full object-cover">
-                  <template v-else>{{ initials }}</template>
-                </span>
+                <Avatar :user="user" size="lg" decorative />
                 <div class="flex min-w-0 flex-col">
                   <span class="truncate font-bold">{{ user.name }}</span>
                   <span v-if="user.email" class="truncate text-sm text-black/65">{{ user.email }}</span>

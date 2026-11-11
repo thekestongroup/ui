@@ -26,9 +26,13 @@ import {
 import { computed, reactive, ref, type Component } from "vue";
 import AppShell from "../components/AppShell/AppShell.vue";
 import Badge, { type BadgeProps } from "../components/Badge/Badge.vue";
+import AvatarGroup from "../components/AvatarGroup/AvatarGroup.vue";
 import Breadcrumb from "../components/Breadcrumb/Breadcrumb.vue";
 import Button, { type ButtonStatus } from "../components/Button/Button.vue";
+import Card from "../components/Card/Card.vue";
+import Divider from "../components/Divider/Divider.vue";
 import Input from "../components/Input/Input.vue";
+import PageHeader from "../components/PageHeader/PageHeader.vue";
 import InputDate from "../components/InputDate/InputDate.vue";
 import InputNumber from "../components/InputNumber/InputNumber.vue";
 import Select from "../components/Select/Select.vue";
@@ -80,19 +84,20 @@ type Row = { name: string; detail: string; date: string; status: string; color: 
 
 const pageTemplate = `
   <div class="flex flex-col gap-6 p-4 sm:p-6">
-    <div class="flex flex-wrap items-center justify-between gap-3">
-      <h1 class="text-2xl font-bold">{{ current }}</h1>
-      <Button variant="primary"><template #leading><component :is="actionIcon" /></template>{{ action }}</Button>
-    </div>
+    <PageHeader :title="current">
+      <template #actions>
+        <Button variant="primary"><template #leading><component :is="actionIcon" /></template>{{ action }}</Button>
+      </template>
+    </PageHeader>
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <div v-for="stat in stats" :key="stat.label" class="flex flex-col gap-1 rounded border border-black/15 bg-white p-4">
+      <Card v-for="stat in stats" :key="stat.label" padding="sm" :ui="{ body: 'gap-1' }">
         <span class="text-sm text-black/65">{{ stat.label }}</span>
         <span class="text-2xl font-bold">{{ stat.value }}</span>
-      </div>
+      </Card>
     </div>
 
-    <div class="overflow-x-auto rounded border border-black/15 bg-white">
+    <Card padding="none" :ui="{ body: 'overflow-x-auto' }">
       <table class="w-full text-left text-sm">
         <thead class="border-b border-black/15 text-black/65">
           <tr>
@@ -108,7 +113,7 @@ const pageTemplate = `
           </tr>
         </tbody>
       </table>
-    </div>
+    </Card>
   </div>`;
 
 function pageStory(options: {
@@ -123,7 +128,7 @@ function pageStory(options: {
 }): Story {
   return {
     render: () => ({
-      components: { AppShell, Badge, Button, Bell },
+      components: { AppShell, Badge, Button, Bell, Card, PageHeader },
       setup() {
         const { current, nav } = useNav(options.sections, options.first);
         return { ...options, current, nav, user };
@@ -259,7 +264,7 @@ type TermKey = (typeof terms)[number]["key"];
  */
 export const NewSchoolYearSetup: Story = {
   render: () => ({
-    components: { AppShell, Badge, Breadcrumb, Button, Bell, Input, InputDate, InputNumber, Select, Circle, CircleCheck, Copy },
+    components: { AppShell, AvatarGroup, Badge, Breadcrumb, Button, Bell, Card, Divider, Input, PageHeader, InputDate, InputNumber, Select, Circle, CircleCheck, Copy },
     setup() {
       const current = ref("New School Year Setup");
       const page = (label: string, icon?: Component): SidebarItem => ({
@@ -357,43 +362,45 @@ export const NewSchoolYearSetup: Story = {
         setTimeout(() => (status.value = "success"), 1200);
       }
 
-      return { current, items, trail, form, terms, errors, errorCount, checked, movingUp, checklist, status, saved, start, user, yearGroups, copyOptions, studentsPerYear };
+      const signOff = [
+        { name: "Margaret Osei", role: "Headteacher", email: "m.osei@keston.school", organisation: "The Keston School" },
+        { name: "Zara Khan", role: "Deputy Head", email: "z.khan@keston.school", organisation: "The Keston School" },
+        { name: "Oscar Hughes", role: "Data Manager", email: "o.hughes@keston.school", organisation: "The Keston School" },
+        { name: "Isla Ahmed", role: "Business Manager", email: "i.ahmed@keston.school", organisation: "The Keston School" },
+        { name: "Leo Wright", role: "Assistant Head", email: "l.wright@keston.school", organisation: "The Keston School" },
+        { name: "Freya Lewis", role: "Assistant Head", email: "f.lewis@keston.school", organisation: "The Keston School" },
+      ];
+
+      return { signOff, current, items, trail, form, terms, errors, errorCount, checked, movingUp, checklist, status, saved, start, user, yearGroups, copyOptions, studentsPerYear };
     },
     template: `
       <AppShell title="Keston School Admin" :items="items" :user="user">
         ${sharedHeader}
 
         <div v-if="current !== 'New School Year Setup'" class="flex flex-col gap-2 p-4 sm:p-6">
-          <Breadcrumb :items="trail" />
-          <h1 class="text-2xl font-bold">{{ current }}</h1>
-          <p class="text-sm text-black/65">Choose New School Year Setup (School › School Structure) to see the example page.</p>
+          <PageHeader :title="current" :breadcrumb="trail" description="Choose New School Year Setup (School › School Structure) to see the example page." />
         </div>
 
         <div v-else class="flex flex-col gap-6 p-4 sm:p-6">
           <!-- Title, status and actions -->
-          <div class="flex flex-col gap-2">
-            <Breadcrumb :items="trail" />
-            <div class="flex flex-wrap items-start justify-between gap-3">
-              <div class="flex flex-col gap-1">
-                <div class="flex items-center gap-2">
-                  <h1 class="text-2xl font-bold">New School Year Setup</h1>
-                  <Badge :color="status === 'success' ? 'green' : 'basic'">{{ status === 'success' ? 'Started' : saved ? 'Draft saved' : 'Draft' }}</Badge>
-                </div>
-                <p class="max-w-prose text-sm text-black/65">
-                  Set up 2027–28 before the summer. Nothing changes for staff or students until you start the new year.
-                </p>
-              </div>
-              <div class="flex gap-2">
-                <Button @click="saved = true">Save draft</Button>
-                <Button variant="primary" v-model:status="status" loading-text="Starting…" success-text="Started" @click="start">
-                  Start new year
-                </Button>
-              </div>
-            </div>
+          <PageHeader
+            title="New School Year Setup"
+            description="Set up 2027–28 before the summer. Nothing changes for staff or students until you start the new year."
+            :breadcrumb="trail"
+          >
+            <template #badge>
+              <Badge :color="status === 'success' ? 'green' : 'basic'">{{ status === 'success' ? 'Started' : saved ? 'Draft saved' : 'Draft' }}</Badge>
+            </template>
+            <template #actions>
+              <Button @click="saved = true">Save draft</Button>
+              <Button variant="primary" v-model:status="status" loading-text="Starting…" success-text="Started" @click="start">
+                Start new year
+              </Button>
+            </template>
             <p v-if="checked && errorCount" role="alert" class="text-sm text-red">
               {{ errorCount === 1 ? 'There is 1 thing' : 'There are ' + errorCount + ' things' }} to fix before the new year can start.
             </p>
-          </div>
+          </PageHeader>
 
           <!-- Laid out by the space it has (container queries), not the
                window: the sidebar takes 256px, and the form needs room. -->
@@ -401,37 +408,25 @@ export const NewSchoolYearSetup: Story = {
           <div class="grid grid-cols-1 items-start gap-6 @4xl:grid-cols-[minmax(0,1fr)_18rem]">
             <div class="flex flex-col gap-6">
               <!-- Academic year -->
-              <section class="@container flex flex-col gap-4 rounded border border-black/15 bg-white p-4 sm:p-6" aria-labelledby="year-heading">
-                <div class="flex flex-col gap-1">
-                  <h2 id="year-heading" class="text-base font-bold">Academic year</h2>
-                  <p class="text-sm text-black/65">The first and last day students are on roll.</p>
-                </div>
+              <Card title="Academic year" description="The first and last day students are on roll.">
                 <div class="grid grid-cols-1 gap-4 @lg:grid-cols-3">
                   <Input v-model="form.name" label="Name" :error-text="errors.name" />
                   <InputDate v-model="form.start" label="Starts" :error-text="errors.start" />
                   <InputDate v-model="form.end" label="Ends" :min="form.start" :error-text="errors.end" />
                 </div>
-              </section>
+              </Card>
 
               <!-- Term dates -->
-              <section class="@container flex flex-col gap-4 rounded border border-black/15 bg-white p-4 sm:p-6" aria-labelledby="terms-heading">
-                <div class="flex flex-col gap-1">
-                  <h2 id="terms-heading" class="text-base font-bold">Term dates</h2>
-                  <p class="text-sm text-black/65">Half terms and INSET days can be added later in Term Dates.</p>
-                </div>
+              <Card title="Term dates" description="Half terms and INSET days can be added later in Term Dates.">
                 <div v-for="term in terms" :key="term.key" class="grid grid-cols-1 gap-x-4 gap-y-2 @xl:grid-cols-[7rem_1fr_1fr] @xl:items-start">
                   <h3 class="text-sm font-bold @xl:pt-8">{{ term.label }}</h3>
                   <InputDate v-model="form.terms[term.key].start" :label="term.label + ' starts'" :min="form.start" :max="form.end" :error-text="errors[term.key + '.start']" />
                   <InputDate v-model="form.terms[term.key].end" :label="term.label + ' ends'" :min="form.terms[term.key].start || form.start" :max="form.end" :error-text="errors[term.key + '.end']" />
                 </div>
-              </section>
+              </Card>
 
               <!-- Year groups -->
-              <section class="@container flex flex-col gap-4 rounded border border-black/15 bg-white p-4 sm:p-6" aria-labelledby="groups-heading">
-                <div class="flex flex-col gap-1">
-                  <h2 id="groups-heading" class="text-base font-bold">Year groups</h2>
-                  <p class="text-sm text-black/65">Who moves up, who leaves, and who joins.</p>
-                </div>
+              <Card title="Year groups" description="Who moves up, who leaves, and who joins.">
                 <Select
                   v-model="form.moveUp"
                   label="Year groups moving up"
@@ -457,21 +452,16 @@ export const NewSchoolYearSetup: Story = {
                     :error-text="errors.intake"
                   />
                 </div>
-              </section>
+              </Card>
 
               <!-- Copy from last year -->
-              <section class="@container flex flex-col gap-4 rounded border border-black/15 bg-white p-4 sm:p-6" aria-labelledby="copy-heading">
-                <div class="flex flex-col gap-1">
-                  <h2 id="copy-heading" class="text-base font-bold">Copy from 2026–27</h2>
-                  <p class="text-sm text-black/65">Anything not copied starts empty.</p>
-                </div>
+              <Card title="Copy from 2026–27" description="Anything not copied starts empty.">
                 <Select v-model="form.copy" label="What to copy" :options="copyOptions" multiple searchable placeholder="Search what to copy…" />
-              </section>
+              </Card>
             </div>
 
             <!-- Summary -->
-            <aside class="flex flex-col gap-4 rounded border border-black/15 bg-white p-4 @4xl:sticky @4xl:top-18" aria-labelledby="summary-heading">
-              <h2 id="summary-heading" class="text-base font-bold">Summary</h2>
+            <Card as="aside" title="Summary" padding="sm" class="@4xl:sticky @4xl:top-18">
               <ul class="flex flex-col gap-2 text-sm">
                 <li v-for="step in checklist" :key="step.label" class="flex items-center gap-2">
                   <CircleCheck v-if="step.done" class="size-4 shrink-0 text-green" aria-hidden="true" />
@@ -480,7 +470,8 @@ export const NewSchoolYearSetup: Story = {
                   <span class="sr-only">{{ step.done ? '(done)' : '(to do)' }}</span>
                 </li>
               </ul>
-              <dl class="grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 border-t border-black/15 pt-4 text-sm">
+              <Divider />
+              <dl class="grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 text-sm">
                 <dt class="text-black/65">Moving up a year</dt>
                 <dd class="text-right font-bold tabular-nums">{{ movingUp.toLocaleString('en-GB') }}</dd>
                 <dt class="text-black/65">{{ form.year13 === 'leavers' ? 'Leaving (Year 13)' : 'Staying on (Year 13)' }}</dt>
@@ -488,7 +479,13 @@ export const NewSchoolYearSetup: Story = {
                 <dt class="text-black/65">Joining Year 7</dt>
                 <dd class="text-right font-bold tabular-nums">{{ form.intake ?? '—' }}</dd>
               </dl>
-            </aside>
+              <Divider />
+              <div class="flex flex-col gap-2">
+                <h3 class="text-sm font-bold">Sign-off</h3>
+                <p class="text-sm text-black/65">Starting the year needs one of these people.</p>
+                <AvatarGroup :users="signOff" size="sm" label="People who can sign off" />
+              </div>
+            </Card>
           </div>
           </div>
         </div>
