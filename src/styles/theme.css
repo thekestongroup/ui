@@ -1,0 +1,101 @@
+/*
+ * Keston UI theme
+ * ----------------
+ * Design tokens for Tailwind v4. Apps import this after Tailwind:
+ *
+ *   @import "tailwindcss";
+ *   @import "@thekestongroup/ui/theme.css";
+ *
+ * Only add values that differ from Tailwind's defaults (mainly colours).
+ * Every token added here must also be recorded in tokens/ so native
+ * platforms (SwiftUI, Android) can use the same values.
+ */
+
+/*
+ * Lato, bundled with the library (self-hosted, no requests to Google).
+ * Without this the font only works on machines that have Lato installed, and
+ * never in Safari, which ignores user-installed fonts.
+ */
+@import "@fontsource/lato/400.css";
+@import "@fontsource/lato/400-italic.css";
+@import "@fontsource/lato/700.css";
+@import "@fontsource/lato/700-italic.css";
+
+/* Let Tailwind find the classes used inside the library's components. */
+@source "../components";
+
+@theme {
+  --font-sans: "Lato", sans-serif;
+  --color-white: #fafafa;
+  --color-black: #050505;
+  --color-primary: var(--color-kblue);
+  --color-kblue: #023750;
+  --color-background: #e1e1e1;
+  --color-surface: #ebebeb;
+  --color-surface-elevated: #f2f2f2;
+  --color-green: #007a16;
+  --color-yellow: #f1c70b;
+  --color-red: #d2042d;
+  --color-blue: #035483;
+  --color-focus: #007fc9;
+  /* Colours        e.g. --color-primary: …; */
+
+  /* Radius         e.g. --radius-control: …; */
+
+  /* Typography     e.g. --font-sans: …; */
+
+  /* Motion         e.g. --default-transition-duration: …; */
+  /* Fades use Tailwind's default transition timing (150ms, ease-in-out). */
+  --animate-fade-in: fade-in var(--default-transition-duration) var(--default-transition-timing-function);
+  --animate-fade-out: fade-out var(--default-transition-duration) var(--default-transition-timing-function) forwards;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+  }
+  @keyframes fade-out {
+    to { opacity: 0; }
+  }
+
+  /* Panels sliding in from / out to an edge (Slideover). In 300ms decelerating,
+     out 200ms accelerating, with Tailwind's ease curves. */
+  --animate-slide-in-right: slide-in-right 300ms var(--ease-out);
+  --animate-slide-out-right: slide-out-right 200ms var(--ease-in) forwards;
+  --animate-slide-in-left: slide-in-left 300ms var(--ease-out);
+  --animate-slide-out-left: slide-out-left 200ms var(--ease-in) forwards;
+  --animate-slide-in-top: slide-in-top 300ms var(--ease-out);
+  --animate-slide-out-top: slide-out-top 200ms var(--ease-in) forwards;
+  --animate-slide-in-bottom: slide-in-bottom 300ms var(--ease-out);
+  --animate-slide-out-bottom: slide-out-bottom 200ms var(--ease-in) forwards;
+
+  @keyframes slide-in-right { from { translate: 100% 0; } }
+  @keyframes slide-out-right { to { translate: 100% 0; } }
+  @keyframes slide-in-left { from { translate: -100% 0; } }
+  @keyframes slide-out-left { to { translate: -100% 0; } }
+  @keyframes slide-in-top { from { translate: 0 -100%; } }
+  @keyframes slide-out-top { to { translate: 0 -100%; } }
+  @keyframes slide-in-bottom { from { translate: 0 100%; } }
+  @keyframes slide-out-bottom { to { translate: 0 100%; } }
+
+  /* Progress with no value: a short bar sweeping across, again and again. */
+  --animate-progress-indeterminate: progress-indeterminate 1.5s var(--ease-in-out) infinite;
+
+  @keyframes progress-indeterminate {
+    from { translate: -100% 0; }
+    to { translate: 250% 0; }
+  }
+
+  /* The NotificationPane's empty state arriving after the last one goes: it
+     rises into place, then the bell gives a little wobble. */
+  --animate-empty-in: empty-in 300ms var(--ease-out);
+  --animate-bell-wobble: bell-wobble 700ms 150ms var(--ease-in-out);
+
+  @keyframes empty-in {
+    from { opacity: 0; translate: 0 0.5rem; scale: 0.95; }
+  }
+  @keyframes bell-wobble {
+    20% { rotate: -14deg; }
+    40% { rotate: 12deg; }
+    60% { rotate: -8deg; }
+    80% { rotate: 4deg; }
+  }
+}

@@ -1,36 +1,31 @@
-import tailwindcss from "@tailwindcss/vite";
-import vue from "@vitejs/plugin-vue";
-import { defineConfig } from "vite";
-import cssInjectedByJs from "vite-plugin-css-injected-by-js";
-import dts from "vite-plugin-dts";
+import tailwindcss from '@tailwindcss/vite'
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
+import dts from 'vite-plugin-dts'
 
-// https://vite.dev/config/
+// Library build. Storybook uses its own config in .storybook/vite.config.ts.
 export default defineConfig({
   plugins: [
     vue(),
     tailwindcss(),
-    cssInjectedByJs(),
     dts({
-      tsconfigPath: "./tsconfig.app.json",
-      insertTypesEntry: true,
-      include: ["src"],
+      tsconfigPath: './tsconfig.app.json',
+      include: ['src'],
+      exclude: ['src/**/*.stories.ts', 'src/**/*.test.ts'],
     }),
   ],
+  publicDir: false,
   build: {
     lib: {
-      entry: "src/index.ts",
-      name: "KestonUI",
-      fileName: "keston-ui",
-      cssFileName: "keston-ui",
-      formats: ["es", "cjs"],
+      entry: 'src/index.ts',
+      fileName: 'keston-ui',
+      formats: ['es'],
     },
     rollupOptions: {
-      external: ["vue"],
-      output: {
-        globals: {
-          vue: "Vue",
-        },
-      },
+      // Never bundle these — the consuming app provides them.
+      // @internationalized/date must be shared with reka-ui: two copies of its
+      // date classes would not recognise each other's dates.
+      external: ['vue', 'reka-ui', '@internationalized/date', '@lucide/vue', 'clsx', 'tailwind-merge', /^@lucide\/vue\//, /^@tiptap\//],
     },
   },
-});
+})

@@ -1,0 +1,202 @@
+import { Canvas, Controls, Meta, Primary } from '@storybook/addon-docs/blocks'
+import * as SelectStories from './Select.stories'
+
+<Meta of={SelectStories} />
+
+# Select
+
+Choose one or more options from a list that opens below the field. It looks like Input: same label, helper, status message and 38px field. The full platform-neutral spec is in `specs/select.md`; the values here are measured from the rendered component.
+
+<Primary />
+
+<Controls />
+
+## Modes
+
+Combine these freely: e.g. `searchable` + `multiple` + nested `children`.
+
+| Mode | Prop | The field is | Built on | Use for |
+|---|---|---|---|---|
+| Single | — | A button showing the chosen option | Reka UI Select | 4–30 known options |
+| Searchable | `searchable` | A text box that filters the list | Reka UI Combobox | About 10 or more options |
+| Multiple | `multiple` | Chips for the chosen options | Either of the above | Choosing several |
+| Nested | `children` on options | (as above) | Either of the above | Trees, e.g. Classes › Year 8 › 11Y/En2 › student |
+
+## When to use
+
+| Use Select for | Use instead |
+|---|---|
+| One of about 4–30 known options | 2–3 options that should all be visible: radio buttons |
+| Longer lists (`searchable`) | Lists too long to load, or searched on the server: a server-backed search |
+| Several options from a list (`multiple`) | Several from 2–6 visible options: checkboxes |
+| Trees of options (`children`) | Navigating or running actions: a menu |
+
+## Options
+
+Every option needs a `label`. Everything else is optional, in any combination. Plain strings are also accepted: `'Year 7'` is the same as `{ label: 'Year 7', value: 'Year 7' }`.
+
+| Field | Type | Default | Description |
+|---|---|---|---|
+| `label` | string | — | **Required.** Shown in the list and, once chosen, in the field. |
+| `value` | string \| number | the label | What v-model is set to. The same option in several places must share a value (see Shared options). |
+| `description` | string | — | Smaller grey text under the label, in the list only. Searched too. |
+| `icon` | Component | — | Before the label, in the list and the field. Give every option in a list an icon, or none. |
+| `disabled` | boolean | false | Shown at 40% opacity; can't be chosen. |
+| `children` | options[] | — | Makes it a parent: choosing it opens these, with a back row. Parents don't need a value. |
+
+Groups (`groups` prop) take `{ label?, icon?, options }`.
+
+<Canvas of={SelectStories.WithDescriptions} />
+
+<Canvas of={SelectStories.GroupsWithIcons} />
+
+## Sizes
+
+One size, matching Input and a `md` Button. Measured in the browser.
+
+| Part | Height | Padding (y / x) | Gap | Icon | Corner radius |
+|---|---|---|---|---|---|
+| Field | **38px** (+24px per extra line of chips) | 8px / 12px | 8px | 16px, 70% opacity | 4px |
+| Label to field | — | — | 6px | — | — |
+| List panel | Up to the space available, then scrolls | 4px | 2px between rows | — | 4px |
+| Option (label only) | **32px** | 6px / 8px | 8px | 16px, level with the label | 4px |
+| Option (with description) | Grows: 48px with one line of description, +16px per line | 6px / 8px | 8px | 16px, level with the label | 4px |
+| Group heading | 24px | 0 / 8px | 6px | 14px | — |
+| Group divider | 1px | 2px above and below | — | — | — |
+| Chip (multiple) | 20px | 0 / 6px | 4px between chips | 12px; × 16px | 4px |
+
+| Panel width | Value |
+|---|---|
+| Minimum | The field's width |
+| Maximum | 320px, or the field's width if wider; longer text wraps |
+| Position | 5px below the field (above it if there's no room below) |
+
+## Typography
+
+**Lato**, sentence case, no letter spacing.
+
+| Text | Size / line height | Weight | Colour | Tailwind |
+|---|---|---|---|---|
+| Label | **14px** / 20px | 400 | black `#050505` | `text-sm` |
+| Chosen option in the field | **14px** / 20px | 400 | black | `text-sm` |
+| Placeholder | **14px** / 20px | 400 | black 55% | `text-sm text-black/55` |
+| Option label | **14px** / 20px | 400 (700 when chosen) | black | `text-sm` |
+| Option description / search path | **12px** / 16px | 400 | black 65% | `text-xs text-black/65` |
+| Group heading | **12px** / 16px | 700, uppercase | black 65% | `text-xs font-bold uppercase` |
+| Back row | **14px** / 20px | 700 | black | `text-sm font-bold` |
+| Chip | **12px** / 16px | 400 | black | `text-xs` |
+| Helper / status message | **12px** / 16px | 400 | black 65% / red / green | `text-xs` |
+
+## Colours and states
+
+| State | Appearance |
+|---|---|
+| Enabled | White `#FAFAFA` field, black 15% border, 4px corners |
+| Focused | 2px outline in focus `#007FC9`, 1px outside the border |
+| Open | Chevron turns over (150ms); list fades in |
+| Option highlighted | Black 10% fill (hover or arrow keys) |
+| Option chosen | Bold label, ✓ at the right |
+| Option disabled | 40% opacity |
+| Parent option | › at the right instead of ✓ |
+| Chip | Black 5% fill, black 15% border; × darkens to black 10% on hover |
+| Error / success | Red `#D2042D` / green `#007A16` border and message |
+| Disabled | 40% opacity, not-allowed cursor |
+
+<Canvas of={SelectStories.Error} />
+
+## Searchable
+
+<Canvas of={SelectStories.Searchable} />
+
+| Action | Result |
+|---|---|
+| Type | Opens the list and keeps options whose label or description contains the text (ignoring case and accents) |
+| Groups with no matches | Hidden, with their divider |
+| Nothing matches | "No matches" (`emptyText`) |
+| Press or focus the field | Selects its text, so typing replaces it |
+| Leave the field | Shows the chosen option's label again, or clears if nothing is chosen |
+
+## Multiple
+
+<Canvas of={SelectStories.MultipleSearchable} />
+
+| Action | Result |
+|---|---|
+| Choose an option | Ticks or unticks it; the list stays open |
+| Escape, Tab or press outside | Closes the list |
+| × on a chip (searchable) | Removes it |
+| Backspace in the empty search box | Removes the last chip |
+| After each tick (searchable) | The search clears, ready for the next |
+| v-model | An array, in the order chosen; `[]` when none |
+
+Without `searchable`, the field is a button, so its chips have no ×: untick in the list instead.
+
+## Nested
+
+<Canvas of={SelectStories.Nested} />
+
+| Action | Result |
+|---|---|
+| Choose a parent (›), or → | Shows its children, with a back row (‹ and the level's name) at the top |
+| Choose the back row, or ← | Goes up one level |
+| After opening a level | Highlight on its first option |
+| After going back | Highlight on the option just left |
+| Reopen (single) | Starts at the chosen option's level |
+| Reopen (multiple) | Starts at the top |
+| Search (searchable) | Searches every level; each match shows its path, e.g. "Classes › Year 8 › 11Y/En2". The path is searched too, so "Year 8" finds everyone in it |
+| Field | Shows only the chosen label, e.g. "Ben Blissett", not its path |
+
+## Shared options
+
+The same option can appear in several places, e.g. a student in two classes. Give it the **same `value`** everywhere.
+
+<Canvas of={SelectStories.MultipleNested} />
+
+| Where | Result |
+|---|---|
+| Chosen in one place | Ticked everywhere it appears |
+| Field (multiple) | One chip |
+| Chosen again anywhere | Unticks it, so it can't be added twice |
+| Search | One row, listing every place: "Classes › Year 8 › 11Y/En2 · Classes › Year 8 › 8X/Ma1" |
+
+If each place has a different value (e.g. a row ID per class membership), they're treated as different options: map them to one ID first.
+
+## Keyboard
+
+| Key | Closed | Open |
+|---|---|---|
+| Enter / Space | Opens | Chooses (Space: not when searchable) |
+| ↓ / ↑ | Opens | Moves |
+| Home / End | — | First / last option |
+| Letters | Chooses the next option starting with them, without opening; searchable: opens and filters | Highlights the next option starting with them; searchable: filters |
+| → | — | Opens the highlighted parent (searchable: only while nothing is typed) |
+| ← | — | Back one level (searchable: only while nothing is typed) |
+| Backspace | — | Searchable multiple, empty box: removes the last chip |
+| Escape / Tab | — | Closes |
+
+## Accessibility
+
+| Part | Announced as |
+|---|---|
+| Field | `combobox` named by its label; a button, or a text input with `aria-autocomplete="list"` when searchable |
+| Helper / status | Linked with `aria-describedby`; errors set `aria-invalid` |
+| List | `listbox` of `option`s; groups named by their heading |
+| Parent option | `"{label}, more options"` |
+| Back row | `"Back from {level}"` |
+| Chip × | `"Remove {label}"` |
+
+| Contrast | Ratio |
+|---|---|
+| Text on white | 19.5:1 |
+| Placeholder (black 55%) on white | about 4.5:1 |
+| Focus ring on white | 4.1:1 (minimum 3:1) |
+
+## Do and don't
+
+| Do | Don't |
+|---|---|
+| Give every option in a list an icon, or none | Mix options with and without icons: labels won't line up |
+| Use the same `value` for the same thing in several places | Give each copy its own value |
+| Say what is being chosen: "Year group" | "Select year group" |
+| Keep lists short, searchable or nested | Use a select for 2 options (use radios) |
+| Use a prompt as the placeholder ("Choose…") | Put actions ("Add new…") among the options |

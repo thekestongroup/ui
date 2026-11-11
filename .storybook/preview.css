@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import "../src/styles/theme.css";
+
+/* Storybook-only examples (forms, layouts) use their own utility classes. */
+@source "../src/examples";

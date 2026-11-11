@@ -1,0 +1,79 @@
+import { Canvas, Controls, Meta, Primary } from '@storybook/addon-docs/blocks'
+import * as ButtonStories from './Button.stories'
+
+<Meta of={ButtonStories} />
+
+# Button
+
+Starts an action: saving, cancelling, opening a panel, deleting. For going to another page, use a link (or `as-child` with a router link). The full platform-neutral spec is in `specs/button.md`; the values here are measured from the rendered component.
+
+<Primary />
+
+<Controls />
+
+## Variants
+
+<Canvas of={ButtonStories.AllVariants} />
+
+| Variant | Background | Text | Border | Use for |
+|---|---|---|---|---|
+| primary | primary `#023750` | white `#FAFAFA` | black 15% | The main action, one per area: Save, Continue |
+| basic (default) | white `#FAFAFA` | black `#050505` | black 15% | Most actions: Cancel, Export |
+| ghost | none | black `#050505` | transparent | Low emphasis: toolbars, icon buttons, × on panels |
+| danger | red `#D2042D` | white `#FAFAFA` | black 15% | Destructive actions: Delete |
+
+## Sizes
+
+<Canvas of={ButtonStories.WithIconButtons} />
+
+Every size has a **1px border** and **4px radius** (`rounded`). Height is padding + one line of text + border. Icons are Lucide at a 2px stroke.
+
+| Size | Height | Padding (y / x) | Gap | Icon | Icon-only (`square`) |
+|---|---|---|---|---|---|
+| `sm` | **26px** | 4px / 8px | 4px | 14px | 26 × 26px |
+| `md` (default) | **38px** | 8px / 16px | 8px | 16px | 38 × 38px |
+| `lg` | **50px** | 12px / 24px | 12px | 20px | 50 × 50px |
+
+In an icon-only button the icon is centred, with 5 / 10 / 14px of space on every side inside the border.
+
+## Typography
+
+**Lato**, regular weight, sentence case, no letter spacing. Labels never wrap.
+
+| Size | Font size | Line height | Weight | Tailwind |
+|---|---|---|---|---|
+| `sm` | **12px** | 16px | 400 (regular) | `text-xs` |
+| `md` | **14px** | 20px | 400 (regular) | `text-sm` |
+| `lg` | **16px** | 24px | 400 (regular) | `text-base` |
+
+Status text (`loadingText`, `successText`, `errorText`) uses the same style, with an 8px gap to its icon at every size.
+
+## States
+
+<Canvas of={ButtonStories.Disabled} />
+
+| State | Appearance |
+|---|---|
+| Hovered | Filled variants: 90% brightness (white becomes about `#E1E1E1`). Ghost: black 10% fill. 150ms ease-in-out. |
+| Pressed | Filled variants: 80% brightness. Ghost: black 15% fill. |
+| Focused | 2px outline in focus `#007FC9`, 1px outside the border. Keyboard focus only. |
+| Disabled | 40% opacity, not-allowed cursor, no hover or press. |
+| Loading | Spinner (icon-sized) and optional text in place of the content. Stays focusable; clicks are blocked. |
+| Success / error | Green / red background with ✓ / × and optional text, for `statusDuration` (2s), then back to idle. |
+
+Click the button below to see loading, then success or error:
+
+<Canvas of={ButtonStories.StatusDemo} />
+
+## Layout
+
+- Buttons in a row sit 8px apart (`gap-2`), with the main action last (right): Cancel, then Save.
+- `md` is 38px tall. On touch-first screens use `lg` (50px), or leave space around smaller buttons so the tap area reaches 44px.
+- Ghost icon buttons at the edge of a bar use a negative margin, so their icon lines up with the bar's padding (see Header and Slideover).
+
+## Accessibility
+
+- A native `<button>` (`type="button"` by default): focus, Enter and Space work without extra code.
+- Icon-only buttons need an `aria-label`. If the button shows text, the label must include it.
+- While busy the button is `aria-disabled` (and `aria-busy` while loading) but stays focusable. The status is announced through a live region.
+- Contrast: basic 19.5:1, primary 12.1:1, danger 5.3:1, success status 5.3:1, ghost 19.5:1 on white and 15.6:1 on the page background. All meet WCAG AA. The focus ring is 4.1:1 against white (the minimum is 3:1).

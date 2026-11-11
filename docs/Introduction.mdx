@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Introduction" />
+
+# Keston UI
+
+The component library for every Keston product: web, desktop, iOS and Android.
+
+- **Components** are built in Vue 3 with Reka UI (behaviour and accessibility) and Tailwind CSS (styling).
+- **Specs** in `specs/` describe each component in platform-neutral terms, so it can be rebuilt in SwiftUI or Jetpack Compose with the same rules.
+- **Tokens** in `src/styles/theme.css` (and `tokens/` for native platforms) hold every colour, radius and motion value.
+
+Use the sidebar to browse components. Each one has a playground with controls for every prop.
+
+## Groups
+
+Components are grouped as in [Nuxt UI](https://ui.nuxt.com/components):
+
+| Group | For |
+|---|---|
+| **Layout** | The frame of an app: AppShell, Header, PageHeader |
+| **Element** | Small building blocks: Button, Badge, Avatar, Card, Chip, Divider, Spinner |
+| **Form** | Anything people fill in or choose with: Input, Select, Checkbox, RadioGroup, Switch, Calendar, and FormField for building your own |
+| **Data** | Showing information: Table, StatTile, SummaryList, Checklist, RelativeTime, Age |
+| **Navigation** | Moving around an app: Breadcrumb, Sidebar |
+| **Overlay** | Things that float over the page: Popover, Slideover, Tooltip, InfoTip, Notification |
+
+**Examples** shows whole pages built from them.
