@@ -64,9 +64,9 @@ notify({ type: 'success', title: 'Student disabled', compact: true, action: { la
 | Rule | Value |
 |---|---|
 | Width | The same as other toasts (384px), only shorter |
-| Padding | 12px left, 6px top and bottom, 6px right beside the × (12px without one) |
+| Padding | 20px left (icons line up with full toasts), 6px top and bottom, 6px right beside the × (16px without one) |
 | Content | Title only: the description isn't shown in the toast. In the pane it's a normal row. |
-| Gaps | 8px icon to title, 12px title to action |
+| Gaps | 12px icon to title (as in the full toast), 12px title to action |
 
 ## Properties
 
@@ -102,7 +102,7 @@ notify({ type: 'success', title: 'Student disabled', compact: true, action: { la
 
 | Part | Value |
 |---|---|
-| Toast | 384px wide (full width minus 16px each side on phones), 16px padding, shadow, 4px corners, 8px between toasts, 16px from the edges |
+| Toast | 384px wide (full width minus 16px each side on phones), 16px padding (20px on the left), shadow, 4px corners, 8px between toasts, 16px from the edges |
 | Pane | 384px wide, as tall as fits under the Header then scrolls; heading row 44px; rows clipped to its 4px corners |
 | Pane row | 16px sides, 12px top and bottom, a line between |
 | Icon to text | 12px |

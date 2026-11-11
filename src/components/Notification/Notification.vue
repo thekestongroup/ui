@@ -85,9 +85,9 @@ function runAction() {
     :class="
       cn(
         'relative flex text-sm text-black',
-        oneLine ? 'items-center gap-2' : 'gap-3',
+        oneLine ? 'items-center gap-3' : 'gap-3',
         appearance === 'row' ? 'px-4 py-3' : 'rounded border border-black/15 bg-white',
-        appearance === 'card' && (oneLine ? cn('py-1.5 pl-3', dismissible ? 'pr-1.5' : 'pr-3') : 'p-4'),
+        appearance === 'card' && (oneLine ? cn('py-1.5 pl-5', dismissible ? 'pr-1.5' : 'pr-4') : 'py-4 pr-4 pl-5'),
         appearance === 'row' && unread && 'bg-blue/5',
         props.class
       )
