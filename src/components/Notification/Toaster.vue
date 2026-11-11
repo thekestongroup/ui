@@ -411,10 +411,12 @@ const positions = {
           cn(
             'absolute inset-x-0 z-0 flex list-none justify-center',
             fromTop ? 'top-0' : 'bottom-0',
-            'translate-y-(--toast-pill) in-data-expanded:translate-y-(--toast-more)',
-            'transition-[translate,opacity,visibility] duration-300 ease-out motion-reduce:transition-none',
-            // Spread out with nothing waiting: nothing to count.
-            !hidden && 'in-data-expanded:invisible in-data-expanded:opacity-0'
+            'translate-y-(--toast-pill) transition-[translate,opacity,visibility] duration-300 ease-out motion-reduce:transition-none',
+            // Spread out with nothing waiting: nothing to count, so the pill
+            // just fades where it is rather than morphing into the row.
+            hidden
+              ? 'in-data-expanded:translate-y-(--toast-more)'
+              : 'in-data-expanded:invisible in-data-expanded:opacity-0 in-data-expanded:duration-150'
           )
         "
       >
@@ -424,15 +426,18 @@ const positions = {
             cn(
               'flex cursor-pointer items-center justify-center overflow-hidden border border-black/15 bg-white font-bold whitespace-nowrap text-black shadow-md hover:bg-surface-elevated',
               'h-7 w-24 rounded-2xl text-xs',
-              'in-data-expanded:h-9 in-data-expanded:w-full in-data-expanded:rounded in-data-expanded:text-sm',
+              hidden && 'in-data-expanded:h-9 in-data-expanded:w-full in-data-expanded:rounded in-data-expanded:text-sm',
               'transition-[width,height,border-radius,font-size,background-color] duration-300 ease-out motion-reduce:transition-none',
               'outline-2 outline-offset-1 outline-transparent focus-visible:outline-focus forced-colors:not-focus-visible:outline-0'
             )
           "
           @click="onMore"
         >
-          <span class="in-data-expanded:hidden">+{{ layout.notInView }} more</span>
-          <span class="hidden in-data-expanded:inline">+{{ hidden }} more</span>
+          <template v-if="hidden">
+            <span class="in-data-expanded:hidden">+{{ layout.notInView }} more</span>
+            <span class="hidden in-data-expanded:inline">+{{ hidden }} more</span>
+          </template>
+          <template v-else>+{{ layout.notInView }} more</template>
           <span class="sr-only">&nbsp;notifications</span>
         </button>
       </li>
