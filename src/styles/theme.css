@@ -11,10 +11,34 @@
  * platforms (SwiftUI, Android) can use the same values.
  */
 
+/*
+ * Lato, bundled with the library (self-hosted, no requests to Google).
+ * Without this the font only works on machines that have Lato installed, and
+ * never in Safari, which ignores user-installed fonts.
+ */
+@import "@fontsource/lato/400.css";
+@import "@fontsource/lato/400-italic.css";
+@import "@fontsource/lato/700.css";
+@import "@fontsource/lato/700-italic.css";
+
 /* Let Tailwind find the classes used inside the library's components. */
 @source "../components";
 
 @theme {
+  --font-sans: "Lato", sans-serif;
+  --color-white: #fafafa;
+  --color-black: #050505;
+  --color-primary: var(--color-kblue);
+  --color-kblue: #023750;
+  --color-background: #e1e1e1;
+  --color-surface: #ebebeb;
+  --color-surface-elevated: #f2f2f2;
+  --color-green: #007a16;
+  --color-yellow: #f1c70b;
+  --color-red: #d2042d;
+  --color-orange: #b84a00;
+  --color-blue: #035483;
+  --color-focus: #007fc9;
   /* Colours        e.g. --color-primary: …; */
 
   /* Radius         e.g. --radius-control: …; */
@@ -22,4 +46,34 @@
   /* Typography     e.g. --font-sans: …; */
 
   /* Motion         e.g. --default-transition-duration: …; */
+  /* Fades use Tailwind's default transition timing (150ms, ease-in-out). */
+  --animate-fade-in: fade-in var(--default-transition-duration) var(--default-transition-timing-function);
+  --animate-fade-out: fade-out var(--default-transition-duration) var(--default-transition-timing-function) forwards;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+  }
+  @keyframes fade-out {
+    to { opacity: 0; }
+  }
+
+  /* Panels sliding in from / out to an edge (Slideover). In 300ms decelerating,
+     out 200ms accelerating, with Tailwind's ease curves. */
+  --animate-slide-in-right: slide-in-right 300ms var(--ease-out);
+  --animate-slide-out-right: slide-out-right 200ms var(--ease-in) forwards;
+  --animate-slide-in-left: slide-in-left 300ms var(--ease-out);
+  --animate-slide-out-left: slide-out-left 200ms var(--ease-in) forwards;
+  --animate-slide-in-top: slide-in-top 300ms var(--ease-out);
+  --animate-slide-out-top: slide-out-top 200ms var(--ease-in) forwards;
+  --animate-slide-in-bottom: slide-in-bottom 300ms var(--ease-out);
+  --animate-slide-out-bottom: slide-out-bottom 200ms var(--ease-in) forwards;
+
+  @keyframes slide-in-right { from { translate: 100% 0; } }
+  @keyframes slide-out-right { to { translate: 100% 0; } }
+  @keyframes slide-in-left { from { translate: -100% 0; } }
+  @keyframes slide-out-left { to { translate: -100% 0; } }
+  @keyframes slide-in-top { from { translate: 0 -100%; } }
+  @keyframes slide-out-top { to { translate: 0 -100%; } }
+  @keyframes slide-in-bottom { from { translate: 0 100%; } }
+  @keyframes slide-out-bottom { to { translate: 0 100%; } }
 }
