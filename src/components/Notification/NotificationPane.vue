@@ -36,12 +36,28 @@ const open = defineModel<boolean>('open', { default: false })
 const store = computed(() => props.notifications ?? useNotifications())
 const items = computed(() => store.value.items)
 const unread = computed(() => store.value.unreadCount.value)
-const countText = computed(() => (unread.value > 9 ? '9+' : String(unread.value)))
-const triggerLabel = computed(() => (unread.value ? `${props.label}, ${unread.value} unread` : props.label))
+// The name uses the same text as the badge ("99+"), so voice control users
+// can say what they see.
+const countText = computed(() => (unread.value > 99 ? '99+' : String(unread.value)))
+const triggerLabel = computed(() => (unread.value ? `${props.label}, ${countText.value} unread` : props.label))
 
 const headingId = `${useId()}-heading`
 const heading = ref<HTMLElement>()
 const list = ref<HTMLElement>()
+
+// Tell the list, so the Toaster puts toasts away while the pane shows them.
+watch(open, (isOpen) => store.value.setPaneOpen(isOpen), { immediate: true })
+
+// Open when something else asks, e.g. the Toaster's "+3 more", and move
+// focus into the pane (the button pressed is gone with the toasts).
+watch(
+  () => store.value.paneRequests,
+  async () => {
+    open.value = true
+    await nextTick()
+    requestAnimationFrame(() => requestAnimationFrame(() => heading.value?.focus()))
+  }
+)
 
 // Mark everything read when the panel closes, so the dots show while open.
 watch(open, (isOpen, wasOpen) => {

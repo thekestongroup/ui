@@ -118,8 +118,11 @@ export const PaneEmpty: Story = {
 };
 
 /**
- * Try notifications: each button calls notify(). They pop up as toasts
- * (bottom right, up to 3 at once, the rest wait) and go into the pane.
+ * Try notifications: each button calls notify(). They slide up from the
+ * bottom right, pushing the others up, and go into the pane. Past 320px tall
+ * the older ones collapse into a stack; hover the toasts (or press F8) to
+ * spread them out. If there are more than fit on the screen, "+N more" at
+ * the end opens the pane (try Error, then Five at once, twice).
  * Info and success close after 6 seconds; ones with an action, and errors,
  * stay until closed. Hover to pause. Swipe right to close. F8 jumps to them.
  */

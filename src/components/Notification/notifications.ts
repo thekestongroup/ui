@@ -79,7 +79,9 @@ export function toastDuration(item: Pick<NotificationItem, 'type' | 'action' | '
 export function createNotifications(initial: NotificationInput[] = []) {
   const state = reactive({
     items: initial.map(toItem).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()) as NotificationItem[],
-    toasts: [] as ShownToast[]
+    toasts: [] as ShownToast[],
+    paneRequests: 0,
+    paneOpen: false
   })
 
   function toItem(input: NotificationInput): NotificationItem {
@@ -90,7 +92,8 @@ export function createNotifications(initial: NotificationInput[] = []) {
   function notify(input: NotificationInput, options: ToastOptions = {}): string {
     const item = toItem(input)
     state.items = [item, ...state.items.filter((existing) => existing.id !== item.id)]
-    if (options.toast !== false) {
+    // While the pane is open it's already showing there, so no toast.
+    if (options.toast !== false && !state.paneOpen) {
       state.toasts = [...state.toasts.filter((toast) => toast.id !== item.id), { id: item.id, duration: toastDuration(item, options.duration), item }]
     }
     return item.id
@@ -118,6 +121,19 @@ export function createNotifications(initial: NotificationInput[] = []) {
 
   const unreadCount = computed(() => state.items.filter((item) => !item.read).length)
 
+  /** Ask NotificationPane to open, e.g. from the Toaster's "+3 more". */
+  function openPane() {
+    state.paneRequests++
+  }
+
+  /**
+   * NotificationPane says when it opens and closes. While it's open, toasts
+   * showing are put away (the Toaster fades them) and new ones don't pop up.
+   */
+  function setPaneOpen(open: boolean) {
+    state.paneOpen = open
+  }
+
   return {
     get items() {
       return state.items
@@ -126,7 +142,16 @@ export function createNotifications(initial: NotificationInput[] = []) {
     get toasts() {
       return state.toasts
     },
+    /** Goes up each time `openPane()` is called; NotificationPane opens when it changes. */
+    get paneRequests() {
+      return state.paneRequests
+    },
+    get paneOpen() {
+      return state.paneOpen
+    },
     unreadCount,
+    openPane,
+    setPaneOpen,
     notify,
     dismiss,
     hideToast,

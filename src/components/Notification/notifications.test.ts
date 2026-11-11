@@ -58,6 +58,25 @@ describe('createNotifications', () => {
     expect(n.toasts).toHaveLength(1)
   })
 
+  it('openPane counts requests, for NotificationPane to watch', () => {
+    const n = createNotifications()
+    expect(n.paneRequests).toBe(0)
+    n.openPane()
+    n.openPane()
+    expect(n.paneRequests).toBe(2)
+  })
+
+  it('no toasts while the pane is open', () => {
+    const n = createNotifications()
+    n.setPaneOpen(true)
+    n.notify({ title: 'A' })
+    expect(n.items).toHaveLength(1)
+    expect(n.toasts).toEqual([])
+    n.setPaneOpen(false)
+    n.notify({ title: 'B' })
+    expect(n.toasts).toHaveLength(1)
+  })
+
   it('markAllRead', () => {
     const n = createNotifications([{ title: 'A' }, { title: 'B' }])
     n.markAllRead()

@@ -90,7 +90,9 @@ notify({ type: 'success', title: 'Student disabled', compact: true, action: { la
 |---|---|---|---|
 | Toaster | notifications | the list | the shared `useNotifications()` |
 | Toaster | position | bottom-right \| top-right \| bottom-center | bottom-right |
-| Toaster | limit | number | 3 (more wait their turn) |
+| Toaster | maxHeight | number (px) | 320: older toasts past this collapse into a stack |
+| Toaster | limit | number | 10: the most kept at once |
+| Toaster | @more | event | "+3 more" was pressed (it also opens the pane) |
 | NotificationPane | notifications | the list | the shared `useNotifications()` |
 | NotificationPane | label | string | "Notifications" |
 | NotificationPane | emptyText | string | "You're all caught up." |
@@ -109,20 +111,31 @@ notify({ type: 'success', title: 'Student disabled', compact: true, action: { la
 | Title / description | 14px / 20px; title bold black, description black 65% (bold parts black) |
 | Time | 12px, black 65% |
 | Action | Small basic Button, 8px above |
-| Unread count | 16px red circle, white bold 12px, "9+" above 9, white ring |
+| Unread count | 16px red circle, white bold 12px, "99+" above 99, white ring |
 
 ## Behaviour
 
 | Action | Result |
 |---|---|
-| `notify()` | Added to the top of the pane; a toast slides in |
+| `notify()` | Added to the top of the pane; a toast slides up from below the screen and the others move up with it (300ms, ease-out; top-right drops in 16px with a fade) |
+| More than `maxHeight` of toasts | The older ones shrink into the "+5 more" pill (to 50%, fading out) as newer ones arrive, and grow back out of it when spread out or when there's room again |
+| Any toasts not in view, collapsed | A "+5 more" pill (96px wide, 28px tall, 16px corners, 12px bold, white) sits 8px above the stack, counting every toast not in view: in the pill or waiting |
+| Spreading out or collapsing | The pill and the "+3 more" row are one button that morphs: its position, width (96px ↔ full), height (28 ↔ 36px), corners (16 ↔ 4px) and text size (12 ↔ 14px) animate together (300ms, ease-out). Spread out, it counts only those waiting, and fades away if none are |
+| Tap or click the pill | The toasts spread out (focus moves to the newest, without a focus ring), for touch screens with no hover |
+| Hover the toasts, or focus in them (Tab, F8) | They spread out, 8px apart; leaving collapses them again |
+| A toast closes | It fades where it is while the others slide to close the gap (300ms, ease-out); one from the pill grows out to fill the space |
+| A toast has to wait (newer ones took its place) | It shrinks into "+N more" (the row when spread out, the pill when collapsed) before it goes |
+| A waiting toast's turn comes | It grows out of "+N more", rather than sliding in from the edge like a new one |
+| More than fit on the screen spread out (its height, less 80px for the Header and edges) | The oldest wait (not shown, timers not started); the ones in view are always the newest, in the order they came in. When spread out, a "+3 more" row (36px, bold, white) after the last toast counts just those waiting |
+| "+3 more" pressed | The pane opens with everything in it; focus moves to its heading |
+| Pane open (however it was opened) | Toasts showing fade away and waiting ones are dropped (they're all in the pane); new notifications go straight to the pane, with no toast |
 | Hover a toast, or leave the window | Its timer pauses |
 | Swipe a toast right | It closes |
 | F8 | Focus jumps to the toasts |
 | Open the pane | Unread ones show a dot |
 | Close the pane | All marked read; the count goes |
 | × in the pane | Removed; focus moves to the next one's × (or the heading) |
-| Clear all | All removed; focus moves to the heading; toasts showing stay until they close |
+| Clear all | All removed; focus moves to the heading |
 
 ## Accessibility
 
