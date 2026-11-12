@@ -2,7 +2,7 @@
 
 The component library for every Keston product. Built with Vue 3, [Reka UI](https://reka-ui.com)
 (behaviour and accessibility) and [Tailwind CSS v4](https://tailwindcss.com) (styling).
-Published as `@thekestongroup/ui`.
+Published as `@thekestongroup/ui`. Docs and Storybook: https://ui.keston.co.
 
 ## Getting started
 
