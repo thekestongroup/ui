@@ -10,6 +10,12 @@ const config: StorybookConfig = {
     },
   },
   stories: ['../docs/**/*.mdx', '../src/**/*.mdx', '../src/**/*.stories.ts'],
+  // Served with the docs site: Lato for the Storybook frame (see
+  // manager-head.html) and the Keston favicon.
+  staticDirs: [
+    { from: '../node_modules/@fontsource/lato/files', to: '/fonts/lato' },
+    './public',
+  ],
   addons: [
     {
       name: '@storybook/addon-docs',

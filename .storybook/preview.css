@@ -3,3 +3,14 @@
 
 /* Storybook-only examples (forms, layouts) use their own utility classes. */
 @source "../src/examples";
+
+/* Docs pages: Storybook sets its own font on headings; use Lato like the rest
+   of the site, and Keston blue, underlined links in the prose. */
+.sbdocs :is(.sbdocs-h1, .sbdocs-h2, .sbdocs-h3, .sbdocs-h4, .sbdocs-h5, .sbdocs-h6, .sbdocs-title, .sbdocs-subtitle) {
+  font-family: var(--font-sans);
+}
+.sbdocs .sbdocs-a {
+  color: var(--color-kblue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

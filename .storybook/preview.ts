@@ -1,8 +1,11 @@
 import type { Preview } from '@storybook/vue3-vite'
 import './preview.css'
+import { kestonTheme } from './theme.ts'
 
 const preview: Preview = {
   parameters: {
+    // Docs pages in Keston's colours and Lato, like the rest of the site.
+    docs: { theme: kestonTheme },
     controls: {
       matchers: {
         color: /(background|color)$/i,

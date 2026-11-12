@@ -1,0 +1,53 @@
+<!--
+  Lato for the docs site's frame (sidebar, toolbar), self-hosted from
+  @fontsource/lato (see staticDirs in main.ts): no requests to Google.
+  Relative URLs, so it also works under a sub-path like /ui/ on GitHub Pages.
+-->
+<style>
+  @font-face {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./fonts/lato/lato-latin-400-normal.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Lato';
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./fonts/lato/lato-latin-400-italic.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('./fonts/lato/lato-latin-700-normal.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Lato';
+    font-style: italic;
+    font-weight: 700;
+    font-display: swap;
+    src: url('./fonts/lato/lato-latin-700-italic.woff2') format('woff2');
+  }
+</style>
+<link rel="icon" type="image/svg+xml" href="./keston-favicon.svg" />
+<script>
+  // Browser tab titles read "Button - Docs ⋅ Keston UI", not "⋅ Storybook".
+  ;(function () {
+    function rename() {
+      var renamed = document.title.replace(/Storybook$/, 'Keston UI').replace(/^storybook - /i, '')
+      if (renamed !== document.title) document.title = renamed
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      rename()
+      new MutationObserver(rename).observe(document.querySelector('title') || document.head, {
+        childList: true,
+        characterData: true,
+        subtree: true
+      })
+    })
+  })()
+</script>

@@ -12,6 +12,33 @@ The component library for every Keston product: web, desktop, iOS and Android.
 
 Use the sidebar to browse components. Each one has a playground with controls for every prop.
 
+## Getting started
+
+```sh
+pnpm add @thekestongroup/ui
+```
+
+In the app's main CSS file:
+
+```css
+@import "tailwindcss";
+@import "@thekestongroup/ui/theme.css";
+```
+
+`theme.css` adds the Keston tokens and tells Tailwind to scan the library's components for classes. Then use any component:
+
+```vue
+<script setup lang="ts">
+import { Button } from '@thekestongroup/ui'
+</script>
+
+<template>
+  <Button variant="primary">Save</Button>
+</template>
+```
+
+What changed in each version is in the [changelog](https://github.com/thekestongroup/ui/blob/main/CHANGELOG.md).
+
 ## Groups
 
 Components are grouped as in [Nuxt UI](https://ui.nuxt.com/components):
@@ -19,10 +46,10 @@ Components are grouped as in [Nuxt UI](https://ui.nuxt.com/components):
 | Group | For |
 |---|---|
 | **Layout** | The frame of an app: AppShell, Header, PageHeader |
-| **Element** | Small building blocks: Button, Badge, Avatar, Card, Chip, Divider, Spinner |
-| **Form** | Anything people fill in or choose with: Input, Select, Checkbox, RadioGroup, Switch, Calendar, and FormField for building your own |
+| **Element** | Small building blocks: Button, Badge, Avatar, Card, Chip, Divider, Spinner, Progress |
+| **Form** | Anything people fill in or choose with: Input, InputPassword, InputCode, InputNumber, InputDate, InputRichText, Select, Checkbox, RadioGroup, Switch, Calendar, and FormField for building your own |
 | **Data** | Showing information: Table, StatTile, SummaryList, Checklist, RelativeTime, Age |
-| **Navigation** | Moving around an app: Breadcrumb, Sidebar |
+| **Navigation** | Moving around an app: Link, Breadcrumb, Sidebar |
 | **Overlay** | Things that float over the page: Popover, Slideover, Tooltip, InfoTip, Notification |
 
 **Examples** shows whole pages built from them.
