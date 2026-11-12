@@ -2,10 +2,11 @@ import { defineConfig } from 'vitepress'
 import { groups, libraryComponents } from './library'
 import { writeMarkdownExports } from './markdown'
 
-// Where the site is served from. GitHub Pages serves it at /ui/; set
-// DOCS_BASE=/ (and DOCS_URL) when it moves to its own domain.
-const base = process.env.DOCS_BASE ?? '/ui/'
-const siteUrl = process.env.DOCS_URL ?? 'https://thekestongroup.github.io/ui'
+// Where the site is served from: its own domain, ui.keston.co, on GitHub
+// Pages (site/public/CNAME). Set DOCS_BASE (e.g. /ui/) and DOCS_URL to serve
+// it from a sub-path instead.
+const base = process.env.DOCS_BASE ?? '/'
+const siteUrl = process.env.DOCS_URL ?? 'https://ui.keston.co'
 
 const components = libraryComponents()
 

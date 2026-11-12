@@ -42,7 +42,7 @@ Every component is typed, so your editor shows its props and what they do.
 ## Find your way around
 
 - **[Components](/components/button)**: one page per component, with a live example, when to use it, its props, and how it behaves for keyboard and screen-reader users.
-- **[Storybook](https://thekestongroup.github.io/ui/storybook/)**: every component with controls for each prop, plus whole example pages built from them.
+- **[Storybook](https://ui.keston.co/storybook/)**: every component with controls for each prop, plus whole example pages built from them.
 - **[Changelog](/changelog)**: what changed in each version.
 
 ## Versions
