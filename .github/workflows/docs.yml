@@ -1,8 +1,9 @@
 name: Docs
 
-# Builds the docs site (Storybook) and publishes it to GitHub Pages on every
-# push to main. Needs Pages turned on with "Source: GitHub Actions" in the
-# repo's Settings → Pages. Can also be run by hand from the Actions tab.
+# Builds the docs site (VitePress, from site/ and specs/) with Storybook
+# under /storybook/, and publishes both to GitHub Pages on every push to main.
+# Needs Pages turned on with "Source: GitHub Actions" in the repo's
+# Settings → Pages. Can also be run by hand from the Actions tab.
 
 on:
   push:
@@ -39,13 +40,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build docs
-        run: pnpm build-storybook --quiet -o storybook-static
+      - name: Build docs and Storybook
+        run: pnpm docs:build
 
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: storybook-static
+          path: site/.vitepress/dist
 
   deploy:
     needs: build

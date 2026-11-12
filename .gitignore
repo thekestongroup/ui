@@ -26,3 +26,7 @@ dist-ssr
 # Storybook
 storybook-static
 *.tsbuildinfo
+
+# Docs site (VitePress)
+site/.vitepress/dist
+site/.vitepress/cache

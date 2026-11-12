@@ -29,6 +29,9 @@
     "build": "vue-tsc -p tsconfig.app.json --noEmit && vite build",
     "typecheck": "vue-tsc -b",
     "build-storybook": "storybook build",
+    "docs:dev": "vitepress dev site",
+    "docs:build": "vitepress build site && storybook build --quiet -o site/.vitepress/dist/storybook",
+    "docs:preview": "vitepress preview site",
     "new": "node scripts/new-component.mjs",
     "changeset": "changeset",
     "test": "vitest run",
@@ -77,6 +80,7 @@
     "typescript": "^6.0.3",
     "vite": "^8.3.5",
     "vite-plugin-dts": "^5.1.2",
+    "vitepress": "1.6.4",
     "vitest": "^5.1.0",
     "vue": "^3.5.44",
     "vue-tsc": "^3.3.14"

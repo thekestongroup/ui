@@ -1,93 +1,56 @@
 # Spinner
 
-> One sentence: what this component is for.
+> A small circular loading indicator: spinning while there's no telling how long, or a ring that fills up.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** _link_
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Element/Spinner
 
 ## When to use
 
-- …
+- Short waits in a small space: inside a Button while saving, next to a field's "Checking…" message, in a card while it loads.
+- `lg` with a value: progress you want people to watch, e.g. an upload in an empty state.
 
 ## When not to use
 
-- … (and what to use instead)
+- Progress across the width of a page or panel, or steps: use Progress.
+- Waits under about a second: show nothing.
 
 ## Anatomy
 
-Name every part. These names are used for Figma layers, code slots and native equivalents.
-
 | Part | Required | Notes |
 |---|---|---|
-| … | Yes / No | … |
+| track | Yes | The full ring, in the current text colour at 20% opacity. |
+| arc | Yes | Spins, or fills to the value. Current text colour. |
+| percentage | No | In the middle, `lg` only, with a value. |
 
 ## Properties
 
-The same names are used in Figma, Vue and native code.
-
 | Property | Type | Default | Description |
 |---|---|---|---|
-| … | … | … | … |
-
-## Variants
-
-| Variant | Use for |
-|---|---|
-| … | … |
-
-## Sizes
-
-| Size | Height | Padding (x / y) | Gap | Icon size | Text style |
-|---|---|---|---|---|---|
-| … | … | … | … | … | … |
-
-## States
-
-| State | Appearance | Notes |
-|---|---|---|
-| Enabled | … | |
-| Hovered | … | Web / desktop only |
-| Pressed | … | |
-| Focused | … | Keyboard focus ring |
-| Disabled | … | |
-
-## Spacing and layout
-
-- Minimum clear space around the component: …
-- Spacing when grouped with others: …
-- Minimum touch target: …
+| value | number \| null | — | Progress from 0 to `max`. Leave out for a continuous spinner. |
+| max | number | 100 | The value that means complete. |
+| size | sm \| md \| lg | md | 16px (a button icon) · 24px · 48px. |
+| label | string | Loading | What's loading, for screen readers, e.g. "Uploading report". |
+| showValue | boolean | false | Show the percentage in the middle (`lg` with a value only). |
 
 ## Behaviour
 
-- Keyboard: …
-- Pointer / touch: …
-- Motion: duration …, easing …
-
-## Content guidelines
-
-- Label wording, capitalisation, length limits, truncation.
+- Takes the surrounding text colour, like an icon: colour it with a text class on it or its parent, e.g. `text-primary`.
+- Continuous: spins once a second; with reduced motion it turns slowly, once every two seconds.
 
 ## Accessibility
 
-- Role / semantics: …
-- Required labels (e.g. `aria-label` when there is no visible text): …
-- Contrast: …
+- `role="progressbar"`, named by `label`, with the value when there is one.
 
 ## Platform adaptation
 
 | Platform | Implementation | Differences |
 |---|---|---|
-| Web / desktop (Vue) | `Spinner.vue` | — |
-| iOS (SwiftUI) | — | … |
-| Android (Compose) | — | … |
+| Web / desktop (Vue) | `Spinner.vue` | SVG. |
+| iOS (SwiftUI) | — | `ProgressView()` (circular), or with a value. |
+| Android (Compose) | — | `CircularProgressIndicator`. |
 
 ## Tokens used
 
 | Token | Used for |
 |---|---|
-| … | … |
-
-## Do / Don't
-
-| Do | Don't |
-|---|---|
-| … | … |
+| currentColor | Track and arc |
