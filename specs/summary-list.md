@@ -56,7 +56,7 @@
 | List | Description list (`<dl>`), each label a term and each value its definition |
 | Pairs | Each pair is wrapped together, so they're read together |
 | Empty value | "Not set" (the dash is hidden) |
-| Change action | Add the row to the button's name, e.g. "Change<span class="sr-only"> email</span>" |
+| Change action | Add the row to the button's name, e.g. `Change<span class="sr-only"> email</span>` |
 
 ## Platform adaptation
 

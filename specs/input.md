@@ -1,93 +1,85 @@
 # Input
 
-> One sentence: what this component is for.
+> A single line of text: a name, an email address, a search.
 
-**Status:** Draft · **Figma:** _link_ · **Storybook:** _link_
+**Status:** Draft · **Figma:** _link_ · **Storybook:** Components/Form/Input
 
 ## When to use
 
-- …
+- Short free text on one line: names, email addresses, IDs, search terms.
 
 ## When not to use
 
-- … (and what to use instead)
+- Several lines of notes: use InputRichText.
+- A number someone steps through (a year group, a quantity): use InputNumber.
+- A date: use InputDate.
+- A password: use InputPassword. A one-time code: use InputCode.
+- Choosing from a list: use Select or RadioGroup.
 
 ## Anatomy
 
-Name every part. These names are used for Figma layers, code slots and native equivalents.
-
 | Part | Required | Notes |
 |---|---|---|
-| … | Yes / No | … |
+| label | Yes | 14px, above the box. Also the input's accessible name. |
+| helper | No | 12px under the label, or behind a `?` (InfoTip) beside it. |
+| box | Yes | FormField's box: like a medium basic Button, 38px tall, 4px corners, 12px / 8px padding. |
+| leading / trailing | No | Slots either side of the text, e.g. a search or mail icon. Icons are 16px, 70% opacity. |
+| input | Yes | 14px text (16px on touch screens). Placeholder black 55%. |
+| message | No | Error, success or loading text that slides open under the box. |
 
 ## Properties
 
-The same names are used in Figma, Vue and native code.
-
 | Property | Type | Default | Description |
 |---|---|---|---|
-| … | … | … | … |
+| modelValue | string | '' | The text. Use `v-model`. |
+| label | string | — | Required. |
+| helper / helperPlacement | string / below \| icon | — / below | Extra guidance, under the label or behind a `?`. |
+| errorText | string | — | Error message, e.g. from a Zod schema. Overrides everything below. |
+| status / statusText | error \| success \| loading / string | — | Colours the box and the message; `loading` shows a spinner, e.g. "Checking availability…". |
+| minLength | number | — | Shows "Must be at least N characters" once the field has been left. |
+| maxLength | number | — | Shows "Must be N characters or fewer" straight away. Typing isn't blocked. |
+| disabled | boolean | false | 40% opacity, not editable. |
 
-## Variants
-
-| Variant | Use for |
-|---|---|
-| … | … |
-
-## Sizes
-
-| Size | Height | Padding (x / y) | Gap | Icon size | Text style |
-|---|---|---|---|---|---|
-| … | … | … | … | … | … |
+Attributes such as `type`, `name`, `placeholder` and `autocomplete` go to the `<input>`.
 
 ## States
 
 | State | Appearance | Notes |
 |---|---|---|
-| Enabled | … | |
-| Hovered | … | Web / desktop only |
-| Pressed | … | |
-| Focused | … | Keyboard focus ring |
-| Disabled | … | |
-
-## Spacing and layout
-
-- Minimum clear space around the component: …
-- Spacing when grouped with others: …
-- Minimum touch target: …
+| Enabled | White box, black 15% border. | |
+| Focused | Focus ring around the box. | |
+| Error | Red border and message. | |
+| Success | Green border and message. | |
+| Loading | Spinner and message; border unchanged. | |
+| Disabled | 40% opacity. | |
 
 ## Behaviour
 
-- Keyboard: …
-- Pointer / touch: …
-- Motion: duration …, easing …
+- Pressing anywhere in the box, including its padding and icons, focuses the input.
+- "Too short" waits until the field has been left once, so it doesn't complain while someone is still typing. "Too long" shows straight away.
+- An error clears as soon as the value becomes valid.
 
 ## Content guidelines
 
-- Label wording, capitalisation, length limits, truncation.
+- Label: a short noun phrase, e.g. "Email address", not a question.
+- Put examples and rules in the helper, not the placeholder: placeholders vanish while typing.
 
 ## Accessibility
 
-- Role / semantics: …
-- Required labels (e.g. `aria-label` when there is no visible text): …
-- Contrast: …
+- The label is a real `<label>` for the input. Helper and message are its description (`aria-describedby`); the message is announced politely.
+- Errors set `aria-invalid`.
 
 ## Platform adaptation
 
 | Platform | Implementation | Differences |
 |---|---|---|
-| Web / desktop (Vue) | `Input.vue` | — |
-| iOS (SwiftUI) | — | … |
-| Android (Compose) | — | … |
+| Web / desktop (Vue) | `Input.vue` | Built on FormField. |
+| iOS (SwiftUI) | — | `TextField` with the label above; the right `textContentType` and keyboard. |
+| Android (Compose) | — | `OutlinedTextField`-like field with the label above, not floating. |
 
 ## Tokens used
 
 | Token | Used for |
 |---|---|
-| … | … |
-
-## Do / Don't
-
-| Do | Don't |
-|---|---|
-| … | … |
+| `color-focus` | Focus ring |
+| `color-red` / `color-green` | Error / success |
