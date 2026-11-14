@@ -1,5 +1,15 @@
 # @thekestongroup/ui
 
+## 0.4.0
+
+### Minor Changes
+
+- 970a2fd: Add EmptyState, for lists, tables and panels with nothing in them yet: an icon, a title, a description and optional actions, in two sizes. NotificationPane's "You're all caught up" and Table's empty row now use it.
+
+### Patch Changes
+
+- 1fc3386: AppShell: on narrow screens, the menu's title is on the left again (lined up with the menu items' icons), with the close button on the right, instead of both being centred.
+
 ## 0.3.0
 
 ### Minor Changes
