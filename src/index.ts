@@ -74,6 +74,8 @@ export { default as RelativeTime } from './components/RelativeTime/RelativeTime.
 export type { RelativeTimeProps } from './components/RelativeTime/RelativeTime.vue'
 export { default as Age } from './components/Age/Age.vue'
 export type { AgeProps } from './components/Age/Age.vue'
+export { default as EmptyState } from './components/EmptyState/EmptyState.vue'
+export type { EmptyStateProps } from './components/EmptyState/EmptyState.vue'
 
 // Navigation
 export { default as Breadcrumb } from './components/Breadcrumb/Breadcrumb.vue'

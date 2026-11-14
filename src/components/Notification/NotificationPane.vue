@@ -3,6 +3,7 @@ import { computed, nextTick, ref, useId, watch, type HTMLAttributes } from 'vue'
 import { Bell, BellOff } from '@lucide/vue'
 import { cn } from '../../lib/cn'
 import Button from '../Button/Button.vue'
+import EmptyState from '../EmptyState/EmptyState.vue'
 import Popover from '../Popover/Popover.vue'
 import Notification from './Notification.vue'
 import { useNotifications, type Notifications } from './notifications'
@@ -171,16 +172,14 @@ async function finishClear() {
           </li>
         </ul>
 
-        <div
+        <EmptyState
           v-else
-          :class="cn('flex flex-col items-center gap-2 px-4 py-10 text-center text-sm text-black/65', emptied && 'motion-safe:animate-empty-in')"
-        >
-          <BellOff
-            :class="cn('size-6 origin-top text-black/40', emptied && 'motion-safe:animate-bell-wobble')"
-            aria-hidden="true"
-          />
-          {{ emptyText }}
-        </div>
+          size="sm"
+          :icon="BellOff"
+          :description="emptyText"
+          :class="cn(emptied && 'motion-safe:animate-empty-in')"
+          :ui="{ icon: cn('origin-top', emptied && 'motion-safe:animate-bell-wobble') }"
+        />
       </section>
     </template>
   </Popover>
