@@ -35,6 +35,8 @@ import Slideover from '../Slideover/Slideover.vue'
 export interface AppShellProps {
   /** Name of the app, shown in the header and as the mobile menu's title. */
   title?: string
+  /** Make the header's title a link, e.g. to the app's dashboard (`to` for `linkComponent`, or an href). */
+  titleTo?: unknown
   /** The signed-in user, for the account menu. Without it, Sign in is shown. */
   user?: HeaderUser
   /** Which actions the account menu offers. Default all three. */
@@ -47,10 +49,10 @@ export interface AppShellProps {
   sections?: SidebarProps['sections']
   /** Wide screens: show the header's menu button, which collapses the sidebar to icons. */
   collapsible?: boolean
-  /** Component used for sidebar items with `to`, e.g. RouterLink. */
+  /** Component used for sidebar items with `to`, and the title link, e.g. RouterLink. */
   linkComponent?: SidebarProps['linkComponent']
   /** Other Header props, e.g. `{ ui: { title: '…' } }`. */
-  header?: Omit<HeaderProps, 'title' | 'menu' | 'menuOpen' | 'sticky' | 'user' | 'userActions' | 'signIn'>
+  header?: Omit<HeaderProps, 'title' | 'titleTo' | 'linkComponent' | 'menu' | 'menuOpen' | 'sticky' | 'user' | 'userActions' | 'signIn'>
   /** Other Sidebar props, e.g. `{ label: 'Admissions' }`. */
   sidebar?: Omit<SidebarProps, 'items' | 'sections' | 'collapsible' | 'linkComponent'>
   class?: HTMLAttributes['class']
@@ -126,6 +128,8 @@ const sidebarId = `${uid}-sidebar`
     <Header
       v-bind="header"
       :title="title"
+      :title-to="titleTo"
+      :link-component="linkComponent"
       menu
       sticky
       :menu-open="menuOpen"

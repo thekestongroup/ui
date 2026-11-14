@@ -106,6 +106,15 @@ export const CustomUser: Story = {
   }),
 };
 
+/**
+ * titleTo: the app's name links to its dashboard. It looks the same, with a
+ * ghost button's hover background and the focus ring. Pass your router's
+ * link as `linkComponent` (it gets `to`); without one it's a plain `<a href>`.
+ */
+export const TitleLink: Story = {
+  args: { titleTo: "#dashboard" },
+};
+
 /** Just the title: no menu button, actions or account menu. */
 export const TitleOnly: Story = {
   args: { menu: false, user: undefined, signIn: false },

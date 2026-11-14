@@ -26,6 +26,7 @@
 | Property | Type | Default | Description |
 |---|---|---|---|
 | title | string | — | App name, in the header and as the mobile menu's title. |
+| titleTo | route \| string | — | Make the header's title a link, e.g. to the app's dashboard. Uses `linkComponent`. |
 | user | HeaderUser | — | Signed-in user, for the account menu. |
 | userActions | HeaderUserAction[] | all | Account menu actions. |
 | signIn | boolean | true | Show Sign in when signed out. |
@@ -33,7 +34,7 @@
 | collapsible | boolean | true | Wide screens: the header's menu button collapses the sidebar. |
 | collapsed | boolean (v-model) | false | Sidebar collapsed to icons. |
 | menuOpen | boolean (v-model) | false | Mobile menu open. |
-| linkComponent | string \| Component | "a" | For sidebar items with `to`. |
+| linkComponent | string \| Component | "a" | For sidebar items with `to`, and the title link. |
 | header / sidebar | object | — | Other Header / Sidebar props. |
 
 Events: `account-settings`, `switch-account`, `log-out`, `sign-in`.

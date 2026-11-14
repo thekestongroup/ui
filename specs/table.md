@@ -19,7 +19,7 @@
 | scroll area | Yes | Scrolls sideways when the columns don't fit; up and down too with a max height. |
 | caption | Recommended | Names the table. Hidden unless `showCaption`. |
 | header row | Yes | Column headings, black 65%, bold. Sortable ones are buttons with a sort icon. |
-| rows | Yes | One per record, with a line between. |
+| rows | Yes | One per record, with a line between. With `rowLink`, the whole row is clickable. |
 | row header | No | One column (usually the first, e.g. a name) can head its row. Bold. |
 | footer | No | Rows in a `<tfoot>`, e.g. totals. Bold, with a line above. |
 | empty / loading | No | One centred row when there are no rows. |
@@ -36,6 +36,8 @@ No border or background of its own: put it in a `Card` with `padding="none"`.
 | caption | string | — | The table's accessible name. |
 | showCaption | boolean | false | Show the caption above the table. |
 | sort | { key, direction } \| null | null | `v-model:sort`. |
+| rowLink | (row, index) => target \| undefined | — | Makes rows clickable. The target is passed as `to` to `linkComponent`, or as `href` without one. Undefined: that row isn't clickable. |
+| linkComponent | string \| Component | "a" | For row links, e.g. RouterLink. |
 | manualSort | boolean | false | Only report the sort (e.g. to sort on the server); don't re-order rows. |
 | size | md \| sm | md | See Sizes. |
 | stickyHeader | boolean | false | Keep the headings in view. Give the table a max height. |
@@ -80,6 +82,19 @@ No border or background of its own: put it in a `Card` with `padding="none"`.
 | Empty values | Last, whichever direction |
 | Ties | Keep their original order |
 
+## Clickable rows
+
+With `rowLink`, the row-header cell (or the first column, if none) holds a real link to the row's page, wrapping the cell's text or slot content. Its click area is stretched over the whole row, so:
+
+| Action | Result |
+|---|---|
+| Hover anywhere on the row | Row background black 5%, pointer cursor, the link text underlined |
+| Click anywhere on the row | Follows the link (Ctrl / ⌘-click and middle-click open it in a new tab, as with any link) |
+| Click a button, link or field in another cell | That control only; the row isn't followed |
+| Tab | Reaches the row's link, then the row's other controls |
+
+Don't put another link in the row-header cell's slot: the row link already wraps it.
+
 ## States
 
 | State | Appearance |
@@ -87,6 +102,8 @@ No border or background of its own: put it in a `Card` with `padding="none"`.
 | Heading hover | Text goes from black 65% to black |
 | Heading focused | 2px focus ring `#007FC9`, 1px outside (keyboard only) |
 | Scroll area focused | The same ring, 2px inside the edge so a Card's corners don't clip it (only when it scrolls) |
+| Clickable row hover | Background black 5%, pointer cursor, row link underlined |
+| Clickable row focused | Focus ring round the whole row, 2px inside its edge (keyboard only) |
 | Loading, no rows | 16px spinner and "Loading…" |
 | Loading, with rows | Rows at 50% opacity |
 
@@ -97,6 +114,7 @@ No border or background of its own: put it in a `Card` with `padding="none"`.
 | Table | `table`, named by its caption; `aria-busy` while loading |
 | Sortable heading | `columnheader` with `aria-sort` (none / ascending / descending), containing a button named by the label |
 | Row header cells | `rowheader`, so each cell is read with its row's name |
+| Clickable row | A `link` in the row header named by its text (e.g. the applicant's name); the row itself is not interactive, so other cells' controls keep their own roles |
 | Scroll area (when it scrolls) | `region` named by the caption, focusable so the keyboard can scroll it |
 | Icon-only cells (e.g. a ⋯ menu) | Name the button with the row, e.g. "More for Amelia Clarke" |
 
@@ -116,6 +134,7 @@ No border or background of its own: put it in a `Card` with `padding="none"`.
 | color black (65%) | headings, empty text |
 | color black (40%) | unsorted icon |
 | color black (15%) | lines |
+| color black (5%) | clickable row hover |
 | color white | sticky header background |
 | color focus | focus rings |
 
@@ -126,4 +145,5 @@ No border or background of its own: put it in a `Card` with `padding="none"`.
 | Give every table a caption | Rely on the surrounding heading alone |
 | Right-align numbers and amounts | Centre-align columns |
 | Make the name column the row header | Make a whole row clickable with no link or button in it |
+| Use `rowLink` to make rows open a page | Put a click handler on the row, or a second link in the name cell |
 | Use slots for Badges, links and menus | Put more than one or two actions in a row |

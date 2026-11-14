@@ -18,7 +18,7 @@
 |---|---|---|
 | menu | No | Ghost square Button with a menu icon. Opens the Sidebar on small screens. |
 | leading | No | Before the title, e.g. a logo. |
-| title | No | App or area name. Bold, truncates. |
+| title | No | App or area name. Bold, truncates. With `titleTo`, a link (e.g. to the app's dashboard) that looks the same. |
 | middle | No | Fills the space between title and trailing, e.g. breadcrumbs. |
 | trailing | No | Actions before the account menu, e.g. notifications. |
 | account | No | Round avatar (picture or initials) opening the account menu; Sign in button when signed out. Slot `account` replaces it. |
@@ -29,6 +29,8 @@
 | Property | Type | Default | Description |
 |---|---|---|---|
 | title | string | — | App or area name. |
+| titleTo | route \| string | — | Make the title a link: passed as `to` to `linkComponent`, or as `href` without one. |
+| linkComponent | string \| Component | "a" | For the title link, e.g. RouterLink. |
 | menu | boolean | false | Show the menu button (emits `menu`). |
 | menuOpen | boolean | — | Whether what it opens is open (aria-expanded). |
 | menuControls | string | — | Id of what it opens (aria-controls). |
@@ -51,6 +53,8 @@
 |---|---|---|
 | Enabled | white, bottom border black 15% | |
 | Sticky | as enabled, pinned to the top | z-index above content, below dialogs |
+| Title link hover / pressed | black 10% / 15% background round the title (radius 4px, 8px either side), as a ghost Button | text doesn't move (negative margin) |
+| Title link focused | 2px focus ring `#007FC9`, 1px outside | keyboard only |
 
 ## Behaviour
 
@@ -61,7 +65,7 @@
 ## Accessibility
 
 - Rendered as `<header>` (banner landmark when at the top level of the page).
-- The title is not a heading; each page keeps its own `h1`.
+- The title is not a heading; each page keeps its own `h1`. With `titleTo` it's a link named by the title text.
 - Icon-only buttons in trailing need an `aria-label`.
 - The avatar button is named "Account: {name}", or "{initials}, account: {name}" when it shows initials, so its visible text is part of its name (voice control). Pictures and initials are hidden from assistive tech, as the name is in the label.
 
@@ -78,7 +82,9 @@
 | Token | Used for |
 |---|---|
 | color white | background |
-| color black (15%) | bottom border, account menu divider |
+| color black (15%) | bottom border, account menu divider, title link pressed |
+| color black (10%) | title link hover |
+| color focus | title link focus ring |
 | color primary | avatar initials background |
 
 ## Do / Don't

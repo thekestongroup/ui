@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue'
+import { computed, type Component, type HTMLAttributes } from 'vue'
 import { ArrowLeftRight, LogOut, Menu, Settings } from '@lucide/vue'
 import { cn } from '../../lib/cn'
 import Avatar from '../Avatar/Avatar.vue'
@@ -34,6 +34,13 @@ export type HeaderUserAction = 'account-settings' | 'switch-account' | 'log-out'
 export interface HeaderProps {
   /** Name of the app or area, shown next to the menu button. */
   title?: string
+  /**
+   * Make the title a link, e.g. to the app's dashboard: passed as `to` to
+   * `linkComponent` (e.g. a route), or as `href` without one.
+   */
+  titleTo?: unknown
+  /** Component for the title link, e.g. RouterLink. It receives `to`. Default a plain `<a href>`. */
+  linkComponent?: string | Component
   /**
    * Show the menu button, which emits `menu` when pressed. Hide it on wide
    * screens with `ui.menu`, e.g. `{ menu: 'lg:hidden' }`.
@@ -79,6 +86,7 @@ const props = withDefaults(defineProps<HeaderProps>(), {
   menu: false,
   menuOpen: undefined,
   menuLabel: 'Menu',
+  linkComponent: 'a',
   userActions: () => ['account-settings', 'switch-account', 'log-out'],
   signIn: true,
   sticky: true
@@ -112,6 +120,19 @@ const accountLabel = computed(() => {
   if (props.user.avatar || !initials.value) return `Account: ${props.user.name}`
   return `${initials.value}, account: ${props.user.name}`
 })
+
+const titleLink = computed(() => {
+  const target = props.titleTo
+  if (target === undefined || target === null || target === '') return undefined
+  return props.linkComponent === 'a' ? { href: target as string } : { to: target }
+})
+
+// As a link the title looks the same, with a ghost button's hover and press
+// backgrounds round it; the negative margin keeps the text where it was.
+const titleLinkClass = [
+  '-mx-2 rounded px-2 py-1 transition-colors hover:bg-black/10 active:bg-black/15',
+  'outline-2 outline-offset-1 outline-transparent focus-visible:outline-focus forced-colors:not-focus-visible:outline-0'
+]
 
 function runAction(action: HeaderUserAction, close: () => void) {
   close()
@@ -148,12 +169,14 @@ function runAction(action: HeaderUserAction, close: () => void) {
 
     <slot name="leading" />
 
-    <span
+    <component
+      :is="titleLink ? linkComponent : 'span'"
       v-if="title || $slots.title"
-      :class="cn('min-w-0 truncate text-base font-bold', ui?.title)"
+      v-bind="titleLink"
+      :class="cn('min-w-0 truncate text-base font-bold', titleLink && titleLinkClass, ui?.title)"
     >
       <slot name="title">{{ title }}</slot>
-    </span>
+    </component>
 
     <div :class="cn('flex min-w-0 flex-1 items-center', ui?.middle)">
       <slot />

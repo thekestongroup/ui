@@ -60,6 +60,11 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {};
 
+/** titleTo: the app's name in the header links to its dashboard (`to` for `linkComponent`, or an href). */
+export const TitleLink: Story = {
+  args: { titleTo: "#dashboard" },
+};
+
 /** Starts with the sidebar collapsed to icons. */
 export const Collapsed: Story = {
   args: { collapsed: true },
