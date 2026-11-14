@@ -185,7 +185,16 @@ const sidebarId = `${uid}-sidebar`
         v-model:open="menuOpen"
         side="left"
         :title="title || 'Menu'"
-        :ui="{ content: 'max-w-72', header: 'h-12 items-center px-4 py-0', title: 'text-base font-bold', body: 'flex p-0' }"
+        :ui="{
+          content: 'max-w-72',
+          // The header is a column (it also holds a Progress for steps), so
+          // justify-center centres the title row vertically in the 48px bar,
+          // and the row keeps the full width: title left, × right. 20px in,
+          // so the title lines up with the menu items' icons below it.
+          header: 'h-12 justify-center px-5 py-0',
+          title: 'text-base font-bold',
+          body: 'flex p-0'
+        }"
       >
         <template #body>
           <Sidebar
