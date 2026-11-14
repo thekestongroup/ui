@@ -1,8 +1,12 @@
 name: Publish
 
+# Stages the version in package.json on npm (trusted publishing: npm trusts
+# this file by name, so keep it called publish.yml). Started by release.yml
+# on the new version's tag; run it by hand on a tag to retry. Skips a version
+# that's already on npm.
+
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   id-token: write

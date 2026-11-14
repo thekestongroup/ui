@@ -111,11 +111,20 @@ Versions follow [semver](https://semver.org): **patch** = bug fix,
 prop, component or token).
 
 1. With each change, run `pnpm changeset` and commit the file it creates.
-2. On `main`, the **Release** workflow opens a "Version Packages" pull request
-   that bumps the version and updates `CHANGELOG.md`.
-3. Merging that pull request triggers the **Publish** workflow, which stages
-   the release on npm (trusted publishing, no token needed).
-4. Approve the staged release on npmjs.com to make it live.
+   Merging only collects changes: nothing is released yet.
+2. When you want a release, run the **Release** workflow: Actions → Release →
+   Run workflow, or:
 
-The Release workflow needs **Settings → Actions → General → Allow GitHub
-Actions to create and approve pull requests** turned on.
+   ```sh
+   gh workflow run release.yml -R thekestongroup/ui
+   ```
+
+   It tests and builds, works out the version from the changesets waiting,
+   updates `package.json` and `CHANGELOG.md`, commits and tags that on
+   `main`, and creates a GitHub Release. Then it starts the **Publish**
+   workflow, which stages the release on npm (trusted publishing, no token
+   needed). With no changesets waiting, it stops without releasing.
+3. Approve the staged release on npmjs.com to make it live.
+
+If staging on npm fails, run **Publish** again by hand on the release's tag
+(e.g. `v0.4.0`); it skips a version that's already on npm.
