@@ -1,42 +1,113 @@
 name: Release
 
-# Opens (or updates) a "Version Packages" pull request from pending changesets.
-# Merging that PR bumps package.json, after which publish.yml stages the release.
+# Releases a new version, only when you run it: Actions → Release → Run
+# workflow, or `gh workflow run release.yml -R thekestongroup/ui`.
+#
+# It takes every changeset merged since the last release, works out the
+# version (any major → major, else any minor → minor, else patch), updates
+# package.json and CHANGELOG.md, commits and tags that on main, creates a
+# GitHub Release, then starts publish.yml to stage it on npm. Approve the
+# staged release on npmjs.com to make it live.
+#
+# With no changesets waiting, it stops without releasing anything.
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: write # commit the version, push the tag, create the GitHub Release
+  actions: write # start publish.yml and docs.yml
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+# One release at a time.
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
-  version:
+  release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout main
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Check for changes to release
+        id: pending
+        run: |
+          if find .changeset -name '*.md' ! -name README.md | grep -q .; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "Nothing to release: no changesets since the last release." >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Setup pnpm
+        if: steps.pending.outputs.found == 'true'
         uses: pnpm/action-setup@v4
 
       - name: Setup Node
+        if: steps.pending.outputs.found == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: pnpm
 
       - name: Install dependencies
+        if: steps.pending.outputs.found == 'true'
         run: pnpm install --frozen-lockfile
 
-      - name: Create Version Packages pull request
-        uses: changesets/action@v1
-        with:
-          version: pnpm changeset version
-          title: Version Packages
-          commit: Version Packages
+      # Don't release something that doesn't build or pass its tests.
+      - name: Test and build
+        if: steps.pending.outputs.found == 'true'
+        run: |
+          pnpm test
+          pnpm build
+
+      - name: Version
+        if: steps.pending.outputs.found == 'true'
+        id: version
+        run: |
+          pnpm changeset version
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          # This version's changelog entry, for the GitHub Release notes.
+          awk -v v="## $VERSION" '$0 == v {found=1; next} found && /^## / {exit} found' CHANGELOG.md > release-notes.md
+
+      - name: Commit and tag
+        if: steps.pending.outputs.found == 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json CHANGELOG.md .changeset
+          git commit -m "Release v$VERSION"
+          git tag "v$VERSION"
+          git push origin HEAD:main "v$VERSION"
+
+      - name: Create GitHub Release
+        if: steps.pending.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: gh release create "v$VERSION" --title "v$VERSION" --notes-file release-notes.md
+
+      # A push by this workflow doesn't start other workflows, so start them:
+      # Publish (stages the release on npm) and Docs (the changelog page).
+      - name: Stage on npm and update the docs
+        if: steps.pending.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          gh workflow run publish.yml --ref "v$VERSION"
+          gh workflow run docs.yml --ref main
+          {
+            echo "## Released v$VERSION"
+            echo
+            cat release-notes.md
+            echo
+            echo "Publish is staging it on npm. Approve it on npmjs.com to make it live."
+          } >> "$GITHUB_STEP_SUMMARY"
