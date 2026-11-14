@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { ref } from "vue";
-import { Ellipsis } from "@lucide/vue";
+import { Ellipsis, Inbox } from "@lucide/vue";
 import Badge from "../Badge/Badge.vue";
 import Button from "../Button/Button.vue";
 import Card from "../Card/Card.vue";
+import EmptyState from "../EmptyState/EmptyState.vue";
 import Table, { type TableProps } from "./Table.vue";
 import type { TableColumn, TableSort } from "./table";
 
@@ -162,20 +163,25 @@ export const StickyHeader: Story = {
   },
 };
 
-/** No rows yet, with a custom empty message. */
+/** No rows yet: an EmptyState in the empty slot, with what to do next. */
 export const Empty: Story = {
   args: { rows: [] },
   render: (args) => ({
-    components: { Table, Card, Button },
-    setup: () => ({ args }),
+    components: { Table, Card, Button, EmptyState },
+    setup: () => ({ args, Inbox }),
     template: `
       <Card padding="none">
         <Table v-bind="args">
           <template #empty>
-            <div class="flex flex-col items-center gap-3">
-              <span>No applications yet.</span>
-              <Button size="sm">Share the application form</Button>
-            </div>
+            <EmptyState
+              size="sm"
+              :icon="Inbox"
+              title="No applications yet"
+              description="Applications appear here as families send them."
+              class="p-0"
+            >
+              <template #actions><Button size="sm">Share the application form</Button></template>
+            </EmptyState>
           </template>
         </Table>
       </Card>`,

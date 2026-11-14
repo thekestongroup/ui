@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, useId, type HTMLAttributes } from 'vue'
 import { ArrowDown, ArrowUp, ChevronsUpDown } from '@lucide/vue'
 import { cn } from '../../lib/cn'
+import EmptyState from '../EmptyState/EmptyState.vue'
 import Spinner from '../Spinner/Spinner.vue'
 import { nextSort, sortRows, type TableColumn, type TableSort } from './table'
 
@@ -177,7 +178,9 @@ onBeforeUnmount(() => observer?.disconnect())
               <Spinner size="sm" />
               Loading…
             </span>
-            <slot v-else name="empty">{{ emptyText }}</slot>
+            <slot v-else name="empty">
+              <EmptyState size="sm" :description="emptyText" class="p-0" />
+            </slot>
           </td>
         </tr>
         <tr v-for="(row, index) in shownRows" :key="keyOf(row, index)" :class="cn('group/row', ui?.row)">
