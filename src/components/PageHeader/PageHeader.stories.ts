@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
-import { Building2, CalendarCog, KeyRound, Layers, LockOpen, LogOut, Pencil, Trash2, UserPlus, Users } from "@lucide/vue";
+import { Ban, Building2, CalendarCog, KeyRound, Layers, LockOpen, LogOut, Pencil, Trash2, UserPlus, Users, UsersRound, X } from "@lucide/vue";
 import AvatarGroup from "../AvatarGroup/AvatarGroup.vue";
 import Badge from "../Badge/Badge.vue";
 import Button from "../Button/Button.vue";
@@ -106,6 +106,34 @@ export const WithToolbar: Story = {
         <template #actions>
           <Button variant="primary"><template #leading><Pencil /></template>Edit user</Button>
         </template>
+      </PageHeader>`,
+  }),
+};
+
+/**
+ * Something before the buttons (`toolbar-start`), e.g. how many rows are
+ * ticked. Narrow the preview: actions that don't fit move into the "⋯" menu
+ * at the end, and come back as it widens.
+ */
+export const ToolbarWithSelection: Story = {
+  args: {
+    title: "Users",
+    description: undefined,
+    breadcrumb: undefined,
+    toolbar: [
+      { label: "Reset password", icon: KeyRound, onSelect: () => {} },
+      { label: "Change sign-in status", icon: Ban, onSelect: () => {} },
+      { label: "Manage group memberships", icon: UsersRound, onSelect: () => {} },
+      { label: "Delete users", icon: Trash2, onSelect: () => {} },
+      { label: "Clear selection", icon: X, onSelect: () => {} },
+    ],
+  },
+  render: (args) => ({
+    components: { PageHeader },
+    setup: () => ({ args }),
+    template: `
+      <PageHeader v-bind="args">
+        <template #toolbar-start>2 users selected</template>
       </PageHeader>`,
   }),
 };
