@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
-import { ref } from "vue";
+import { defineComponent, h, ref } from "vue";
 import { Ellipsis, Inbox } from "@lucide/vue";
 import Badge from "../Badge/Badge.vue";
 import Button from "../Button/Button.vue";
@@ -36,6 +36,17 @@ const columns: TableColumn<Applicant>[] = [
   { key: "status", label: "Status", sortable: true },
   { key: "actions", label: "Actions", hideLabel: true, align: "end" },
 ];
+
+// Stands in for RouterLink: renders an <a> for `to` and reports the click
+// instead of navigating, so the stories show where a row would go.
+const opened = ref("");
+const FakeRouterLink = defineComponent({
+  props: { to: { type: String, required: true } },
+  setup(props, { slots }) {
+    return () =>
+      h("a", { href: props.to, onClick: (e: MouseEvent) => (e.preventDefault(), (opened.value = props.to)) }, slots.default?.());
+  },
+});
 
 const date = (d: Date) => d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 
@@ -209,4 +220,51 @@ export const ManualSort: Story = {
         </Card>
       </div>`,
   }),
+};
+
+/**
+ * rowLink: each row goes to the applicant's page. The name is a real link,
+ * stretched over the row, so the row highlights on hover and a click anywhere
+ * on it opens the page; Tab reaches the link (the ring goes round the row).
+ * The ⋯ button in the actions column still works on its own. Pass your
+ * router's link as `linkComponent` (here a stand-in that shows where it
+ * would go); without one the links are plain `<a href>`.
+ */
+export const ClickableRows: Story = {
+  args: {
+    rowLink: (row) => `/applicants/${row.id}`,
+    linkComponent: FakeRouterLink,
+  },
+  render: (args) => ({
+    components: { Table, Card, Badge, Button, Ellipsis },
+    setup() {
+      const pressed = ref("");
+      opened.value = "";
+      return { args, statusColors, date, opened, pressed };
+    },
+    template: `
+      <div class="flex flex-col gap-3">
+        <Card padding="none">
+          <Table v-bind="args">
+            <template #cell-applied="{ value }">{{ date(value) }}</template>
+            <template #cell-score="{ value }">{{ value ?? '—' }}</template>
+            <template #cell-status="{ value }"><Badge size="sm" :color="statusColors[value]">{{ value }}</Badge></template>
+            <template #cell-actions="{ row }">
+              <Button variant="ghost" size="sm" square :aria-label="'More for ' + row.name" @click="pressed = 'More for ' + row.name"><Ellipsis /></Button>
+            </template>
+          </Table>
+        </Card>
+        <p class="text-sm">Opened: <code>{{ opened || 'none' }}</code> · Pressed: <code>{{ pressed || 'none' }}</code></p>
+      </div>`,
+  }),
+};
+
+/** Rows whose rowLink returns undefined (here, declined applicants) aren't clickable. */
+export const SomeRowsClickable: Story = {
+  args: {
+    rowLink: (row) => (row.status === "Declined" ? undefined : `/applicants/${row.id}`),
+    linkComponent: FakeRouterLink,
+    size: "sm",
+  },
+  render: ClickableRows.render,
 };

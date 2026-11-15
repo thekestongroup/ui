@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="Row extends Record<string, any>">
-import { computed, onBeforeUnmount, onMounted, ref, useId, type HTMLAttributes } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, useId, type Component, type HTMLAttributes } from 'vue'
 import { ArrowDown, ArrowUp, ChevronsUpDown } from '@lucide/vue'
 import { cn } from '../../lib/cn'
 import EmptyState from '../EmptyState/EmptyState.vue'
@@ -18,6 +18,11 @@ import { nextSort, sortRows, type TableColumn, type TableSort } from './table'
  * Sorting: mark columns `sortable`. The table sorts the rows itself; with
  * `manualSort` it only reports the sort (`v-model:sort`) so you can sort on
  * the server.
+ *
+ * Clickable rows: `rowLink` gives each row a page to go to. The row-header
+ * cell (or the first column) becomes a real link, stretched over the whole
+ * row, so the row highlights on hover and a click anywhere on it follows the
+ * link. Buttons and links in other cells still work on their own.
  *
  * Slots: cell-{key}, header-{key}, empty, footer (rows for a `<tfoot>`,
  * e.g. totals), caption.
@@ -43,6 +48,14 @@ export interface TableProps<Row = Record<string, any>> {
   stickyHeader?: boolean
   /** Don't sort the rows: just update `sort`, e.g. to sort on the server. */
   manualSort?: boolean
+  /**
+   * Where each row goes when clicked: passed as `to` to `linkComponent`
+   * (e.g. a route), or as `href` without one. Return undefined for rows that
+   * don't go anywhere.
+   */
+  rowLink?: (row: Row, index: number) => unknown
+  /** Component for row links, e.g. RouterLink. It receives `to`. Default a plain `<a href>`. */
+  linkComponent?: string | Component
   class?: HTMLAttributes['class']
   ui?: {
     table?: HTMLAttributes['class']
@@ -53,7 +66,8 @@ export interface TableProps<Row = Record<string, any>> {
 
 const props = withDefaults(defineProps<TableProps<Row>>(), {
   emptyText: 'Nothing to show.',
-  size: 'md'
+  size: 'md',
+  linkComponent: 'a'
 })
 
 const sort = defineModel<TableSort | null>('sort', { default: null })
@@ -85,6 +99,30 @@ function ariaSort(column: TableColumn<Row>) {
   if (sort.value?.key !== column.key) return 'none'
   return sort.value.direction === 'asc' ? 'ascending' : 'descending'
 }
+
+// The column whose cell holds the row's link: the row header, else the first.
+const linkColumn = computed(() => (props.columns.find((c) => c.rowHeader) ?? props.columns[0])?.key)
+
+function linkFor(row: Row, index: number) {
+  const target = props.rowLink?.(row, index)
+  if (target === undefined || target === null || target === '') return undefined
+  return props.linkComponent === 'a' ? { href: target as string } : { to: target }
+}
+
+// The link's ::after covers the row (the row is `relative`), so a click
+// anywhere follows it. Controls in other cells are lifted above it, so they
+// still get their own clicks. The focus ring is drawn on the ::after, round
+// the whole row, just inside its edge.
+const rowLinkClass = [
+  'text-inherit no-underline outline-none group-hover/row:underline underline-offset-2',
+  'after:absolute after:inset-0 after:outline-2 after:-outline-offset-2 after:outline-transparent',
+  'focus-visible:after:outline-focus forced-colors:not-focus-visible:after:outline-0'
+]
+const linkedRowClass = [
+  'relative cursor-pointer hover:bg-black/5',
+  '[&_:is(a,button,input,select,textarea,label,[tabindex]):not([data-row-link])]:relative',
+  '[&_:is(a,button,input,select,textarea,label,[tabindex]):not([data-row-link])]:z-1'
+]
 
 const cellPadding = computed(() => (props.size === 'sm' ? 'px-4 py-2' : 'px-4 py-3'))
 
@@ -183,7 +221,11 @@ onBeforeUnmount(() => observer?.disconnect())
             </slot>
           </td>
         </tr>
-        <tr v-for="(row, index) in shownRows" :key="keyOf(row, index)" :class="cn('group/row', ui?.row)">
+        <tr
+          v-for="(row, index) in shownRows"
+          :key="keyOf(row, index)"
+          :class="cn('group/row', linkFor(row, index) && linkedRowClass, ui?.row)"
+        >
           <component
             :is="column.rowHeader ? 'th' : 'td'"
             v-for="column in columns"
@@ -199,7 +241,18 @@ onBeforeUnmount(() => observer?.disconnect())
               )
             "
           >
-            <slot :name="`cell-${column.key}`" :row="row" :value="row[column.key]" :index="index">
+            <component
+              :is="linkComponent"
+              v-if="column.key === linkColumn && linkFor(row, index)"
+              v-bind="linkFor(row, index)"
+              data-row-link
+              :class="rowLinkClass"
+            >
+              <slot :name="`cell-${column.key}`" :row="row" :value="row[column.key]" :index="index">
+                {{ row[column.key] ?? '' }}
+              </slot>
+            </component>
+            <slot v-else :name="`cell-${column.key}`" :row="row" :value="row[column.key]" :index="index">
               {{ row[column.key] ?? '' }}
             </slot>
           </component>
