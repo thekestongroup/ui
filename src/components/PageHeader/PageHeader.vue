@@ -2,11 +2,32 @@
 import type { Component, HTMLAttributes } from 'vue'
 import { cn } from '../../lib/cn'
 import Breadcrumb, { type BreadcrumbItem } from '../Breadcrumb/Breadcrumb.vue'
+import Button from '../Button/Button.vue'
+
+/** One of the page's everyday actions, in the toolbar under the title. */
+export interface PageHeaderAction {
+  label: string
+  icon?: Component
+  /** Runs on click, e.g. opens a Slideover. */
+  onSelect?: () => void
+  /** Link with a plain <a href>. */
+  href?: string
+  /** Link through `linkComponent` (e.g. RouterLink), which receives `to`. */
+  to?: unknown
+  disabled?: boolean
+  /** Destructive, e.g. Delete user: shown in red. */
+  danger?: boolean
+}
 
 /**
  * The top of a page: where it is (breadcrumb), what it is (the h1 title, with
  * an optional status badge and description), and its main actions on the
  * right. Actions wrap under the title on narrow screens.
+ *
+ * `toolbar`: the everyday things people do to what the page is about (e.g.
+ * on a user: Reset password, Unblock sign-in, Delete user), as a row of quiet
+ * buttons under the title. Keep the one main action (Save, Add…) in the
+ * actions slot on the right; the toolbar is for the rest.
  *
  * Slots: badge (after the title, e.g. a Badge), description (instead of the
  * prop, for links or formatting), actions (e.g. Buttons), default (anything
@@ -21,16 +42,26 @@ export interface PageHeaderProps {
   breadcrumb?: BreadcrumbItem[]
   /** Component used for breadcrumb steps with `to`, e.g. RouterLink. */
   linkComponent?: string | Component
+  /** Everyday actions, in a row under the title. */
+  toolbar?: PageHeaderAction[]
   class?: HTMLAttributes['class']
   /** Extra classes for the parts. */
   ui?: {
     title?: HTMLAttributes['class']
     description?: HTMLAttributes['class']
     actions?: HTMLAttributes['class']
+    toolbar?: HTMLAttributes['class']
   }
 }
 
-const props = defineProps<PageHeaderProps>()
+const props = withDefaults(defineProps<PageHeaderProps>(), { linkComponent: 'a' })
+
+// Links render as links, the rest as buttons.
+function as(item: PageHeaderAction) {
+  if (item.to !== undefined) return props.linkComponent
+  if (item.href !== undefined) return 'a'
+  return 'button'
+}
 
 defineSlots<{
   badge?(): unknown
@@ -59,6 +90,29 @@ defineSlots<{
       <div v-if="$slots.actions" :class="cn('flex flex-wrap items-center gap-2', ui?.actions)">
         <slot name="actions" />
       </div>
+    </div>
+
+    <!-- Ghost buttons, pulled left so the first icon lines up with the title. -->
+    <div
+      v-if="toolbar?.length"
+      role="group"
+      :aria-label="`${title} actions`"
+      :class="cn('-ml-2.5 flex flex-wrap items-center gap-1', ui?.toolbar)"
+    >
+      <Button
+        v-for="item in toolbar"
+        :key="item.label"
+        :as="as(item)"
+        :to="item.to"
+        :href="item.href"
+        variant="ghost"
+        :disabled="item.disabled"
+        :class="cn('px-2.5', item.danger && 'text-red not-disabled:not-aria-disabled:hover:bg-red/10 not-disabled:not-aria-disabled:active:bg-red/15')"
+        @click="item.onSelect?.()"
+      >
+        <template v-if="item.icon" #leading><component :is="item.icon" aria-hidden="true" /></template>
+        {{ item.label }}
+      </Button>
     </div>
 
     <slot />
