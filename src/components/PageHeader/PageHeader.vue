@@ -90,12 +90,12 @@ defineSlots<{
       </div>
     </div>
 
-    <!-- Ghost buttons, pulled left so the first icon lines up with the title. -->
+    <!-- Ghost buttons in a white bar, like a Card. -->
     <div
       v-if="toolbar?.length"
       role="group"
       :aria-label="`${title} actions`"
-      :class="cn('-ml-4 flex flex-wrap items-center gap-1', ui?.toolbar)"
+      :class="cn('flex flex-wrap items-center gap-1 rounded-lg border border-black/15 bg-white p-1', ui?.toolbar)"
     >
       <Button
         v-for="item in toolbar"
