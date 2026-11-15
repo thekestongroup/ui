@@ -26,6 +26,8 @@ export interface CheckboxProps {
   value?: string
   required?: boolean
   disabled?: boolean
+  /** Keep the label (and description) for screen readers only, e.g. a row's box in a table. */
+  hideLabel?: boolean
   class?: HTMLAttributes['class']
 }
 
@@ -88,7 +90,7 @@ const box = [
         </CheckboxIndicator>
       </CheckboxRoot>
       <div
-        :class="cn('flex min-w-0 flex-col gap-0.5', disabled ? 'cursor-not-allowed' : 'cursor-pointer')"
+        :class="cn('flex min-w-0 flex-col gap-0.5', disabled ? 'cursor-not-allowed' : 'cursor-pointer', hideLabel && 'sr-only')"
         @click="pressControl($event, controlId)"
       >
         <label :for="controlId" :class="cn('text-sm', disabled ? 'cursor-not-allowed' : 'cursor-pointer')">{{ label }}</label>
