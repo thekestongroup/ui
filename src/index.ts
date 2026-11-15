@@ -89,6 +89,8 @@ export type { LinkProps } from './components/Link/Link.vue'
 // Overlay
 export { default as Popover } from './components/Popover/Popover.vue'
 export type { PopoverProps } from './components/Popover/Popover.vue'
+export { default as Tabs } from './components/Tabs/Tabs.vue'
+export type { Tab, TabsProps } from './components/Tabs/Tabs.vue'
 export { default as Slideover } from './components/Slideover/Slideover.vue'
 export type { SlideoverProps } from './components/Slideover/Slideover.vue'
 export { default as Tooltip } from './components/Tooltip/Tooltip.vue'
