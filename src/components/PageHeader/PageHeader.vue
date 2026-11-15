@@ -25,8 +25,8 @@ export interface PageHeaderAction {
  *
  * `toolbar`: the everyday things people do to what the page is about (e.g.
  * on a user: Reset password, Unblock sign-in, Delete user), as a row of quiet
- * buttons under the title. Those that don't fit go in a "⋯" Menu at its end
- * (and come back as it widens). `toolbar-start` and `toolbar-end` slots put
+ * buttons under the title. Those that don't fit go in a "⋯" Menu at its
+ * right-hand end (and come back as it widens). `toolbar-start` and `toolbar-end` slots put
  * something before or after them, e.g. "2 users selected". Keep the one main action (Save, Add…) in the
  * actions slot on the right; the toolbar is for the rest.
  *
@@ -168,7 +168,8 @@ const overflow = computed<MenuItem[]>(() => (props.toolbar ?? []).slice(shown.va
           <template v-if="item.icon" #leading><component :is="item.icon" aria-hidden="true" /></template>
           {{ item.label }}
         </Button>
-        <Menu v-if="overflow.length" :items="overflow" label="More actions" :link-component="linkComponent" class="shrink-0" />
+        <!-- Always at the right-hand end. -->
+        <Menu v-if="overflow.length" :items="overflow" label="More actions" :link-component="linkComponent" class="ml-auto shrink-0" />
 
         <!-- For measuring only: every button, and the ⋯ one, at full width. -->
         <div aria-hidden="true" inert class="invisible absolute top-0 left-0 size-0 overflow-hidden">
