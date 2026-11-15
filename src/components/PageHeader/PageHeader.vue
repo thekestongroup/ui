@@ -15,8 +15,6 @@ export interface PageHeaderAction {
   /** Link through `linkComponent` (e.g. RouterLink), which receives `to`. */
   to?: unknown
   disabled?: boolean
-  /** Destructive, e.g. Delete user: shown in red. */
-  danger?: boolean
 }
 
 /**
@@ -97,7 +95,7 @@ defineSlots<{
       v-if="toolbar?.length"
       role="group"
       :aria-label="`${title} actions`"
-      :class="cn('-ml-2.5 flex flex-wrap items-center gap-1', ui?.toolbar)"
+      :class="cn('-ml-4 flex flex-wrap items-center gap-1', ui?.toolbar)"
     >
       <Button
         v-for="item in toolbar"
@@ -107,7 +105,6 @@ defineSlots<{
         :href="item.href"
         variant="ghost"
         :disabled="item.disabled"
-        :class="cn('px-2.5', item.danger && 'text-red not-disabled:not-aria-disabled:hover:bg-red/10 not-disabled:not-aria-disabled:active:bg-red/15')"
         @click="item.onSelect?.()"
       >
         <template v-if="item.icon" #leading><component :is="item.icon" aria-hidden="true" /></template>

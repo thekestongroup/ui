@@ -80,8 +80,7 @@ export const WithPeople: Story = {
 
 /**
  * A record's everyday actions in the toolbar under the title, with the main
- * action on the right. `danger` marks destructive ones. Narrow the preview to
- * see the toolbar wrap.
+ * action on the right. Narrow the preview to see the toolbar wrap.
  */
 export const WithToolbar: Story = {
   args: {
@@ -95,7 +94,7 @@ export const WithToolbar: Story = {
       { label: "Reset password", icon: KeyRound, onSelect: () => {} },
       { label: "Unblock sign-in", icon: LockOpen, onSelect: () => {} },
       { label: "Sign out everywhere", icon: LogOut, onSelect: () => {} },
-      { label: "Delete user", icon: Trash2, danger: true, onSelect: () => {} },
+      { label: "Delete user", icon: Trash2, onSelect: () => {} },
     ],
   },
   render: (args) => ({
