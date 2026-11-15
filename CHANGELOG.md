@@ -1,5 +1,11 @@
 # @thekestongroup/ui
 
+## 0.7.0
+
+### Minor Changes
+
+- b5417f0: PageHeader's toolbar: actions that don't fit move into a "⋯" Menu at its right-hand end, and come back as it widens. New `toolbar-start` and `toolbar-end` slots put something before or after the buttons, e.g. "2 users selected" (shown bold, spaced like a button, and announced when it changes).
+
 ## 0.6.0
 
 ### Minor Changes
