@@ -204,3 +204,24 @@ export const NextToButton: Story = {
       </div>`,
   }),
 };
+
+/**
+ * A table of fields: the column headings say what each is, so each field's
+ * label is hidden (`hide-label`) but still read by screen readers, e.g.
+ * "First name, user 2".
+ */
+export const InATable: Story = {
+  render: () => ({
+    components: { Input },
+    setup: () => ({ rows: ref([{ first: "Jo", last: "Bloggs" }, { first: "Sam", last: "Lee" }]) }),
+    template: `
+      <div class="grid max-w-120 grid-cols-2 gap-x-3 gap-y-2">
+        <p class="text-sm" aria-hidden="true">First name</p>
+        <p class="text-sm" aria-hidden="true">Last name</p>
+        <template v-for="(r, i) in rows" :key="i">
+          <Input v-model="r.first" :label="'First name, user ' + (i + 1)" hide-label />
+          <Input v-model="r.last" :label="'Last name, user ' + (i + 1)" hide-label />
+        </template>
+      </div>`,
+  }),
+};
