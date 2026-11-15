@@ -11,7 +11,7 @@ export type { AppShellProps } from './components/AppShell/AppShell.vue'
 export { default as Header } from './components/Header/Header.vue'
 export type { HeaderProps, HeaderUser, HeaderUserAction } from './components/Header/Header.vue'
 export { default as PageHeader } from './components/PageHeader/PageHeader.vue'
-export type { PageHeaderProps } from './components/PageHeader/PageHeader.vue'
+export type { PageHeaderAction, PageHeaderProps } from './components/PageHeader/PageHeader.vue'
 
 // Element
 export { default as Avatar } from './components/Avatar/Avatar.vue'

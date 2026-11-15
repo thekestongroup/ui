@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
-import { Building2, CalendarCog, Layers, UserPlus } from "@lucide/vue";
+import { Building2, CalendarCog, KeyRound, Layers, LockOpen, LogOut, Pencil, Trash2, UserPlus, Users } from "@lucide/vue";
 import AvatarGroup from "../AvatarGroup/AvatarGroup.vue";
 import Badge from "../Badge/Badge.vue";
 import Button from "../Button/Button.vue";
@@ -73,6 +73,38 @@ export const WithPeople: Story = {
           <AvatarGroup :users="people" size="sm" label="Editing with you" class="mr-2" />
           <Button>Save draft</Button>
           <Button variant="primary">Start new year</Button>
+        </template>
+      </PageHeader>`,
+  }),
+};
+
+/**
+ * A record's everyday actions in the toolbar under the title, with the main
+ * action on the right. Narrow the preview to see the toolbar wrap.
+ */
+export const WithToolbar: Story = {
+  args: {
+    title: "Jo Bloggs",
+    description: "jo.bloggs@keston.school",
+    breadcrumb: [
+      { label: "Users", icon: Users, href: "#" },
+      { label: "Jo Bloggs" },
+    ],
+    toolbar: [
+      { label: "Reset password", icon: KeyRound, onSelect: () => {} },
+      { label: "Unblock sign-in", icon: LockOpen, onSelect: () => {} },
+      { label: "Sign out everywhere", icon: LogOut, onSelect: () => {} },
+      { label: "Delete user", icon: Trash2, onSelect: () => {} },
+    ],
+  },
+  render: (args) => ({
+    components: { PageHeader, Badge, Button, Pencil },
+    setup: () => ({ args }),
+    template: `
+      <PageHeader v-bind="args">
+        <template #badge><Badge>Disabled</Badge></template>
+        <template #actions>
+          <Button variant="primary"><template #leading><Pencil /></template>Edit user</Button>
         </template>
       </PageHeader>`,
   }),
