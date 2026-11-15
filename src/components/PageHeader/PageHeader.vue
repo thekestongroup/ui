@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { Component, HTMLAttributes } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, type Component, type HTMLAttributes } from 'vue'
 import { cn } from '../../lib/cn'
 import Breadcrumb, { type BreadcrumbItem } from '../Breadcrumb/Breadcrumb.vue'
 import Button from '../Button/Button.vue'
+import Menu, { type MenuItem } from '../Menu/Menu.vue'
 
 /** One of the page's everyday actions, in the toolbar under the title. */
 export interface PageHeaderAction {
@@ -24,12 +25,15 @@ export interface PageHeaderAction {
  *
  * `toolbar`: the everyday things people do to what the page is about (e.g.
  * on a user: Reset password, Unblock sign-in, Delete user), as a row of quiet
- * buttons under the title. Keep the one main action (Save, Add…) in the
+ * buttons under the title. Those that don't fit go in a "⋯" Menu at its end
+ * (and come back as it widens). `toolbar-start` and `toolbar-end` slots put
+ * something before or after them, e.g. "2 users selected". Keep the one main action (Save, Add…) in the
  * actions slot on the right; the toolbar is for the rest.
  *
  * Slots: badge (after the title, e.g. a Badge), description (instead of the
- * prop, for links or formatting), actions (e.g. Buttons), default (anything
- * under, e.g. an alert or tabs).
+ * prop, for links or formatting), actions (e.g. Buttons), toolbar-start and
+ * toolbar-end (in the toolbar, before and after its buttons), default
+ * (anything under, e.g. an alert or tabs).
  */
 export interface PageHeaderProps {
   /** The page's name: its h1. */
@@ -61,12 +65,59 @@ function as(item: PageHeaderAction) {
   return 'button'
 }
 
-defineSlots<{
+const slots = defineSlots<{
   badge?(): unknown
   description?(): unknown
   actions?(): unknown
+  'toolbar-start'?(): unknown
+  'toolbar-end'?(): unknown
   default?(): unknown
 }>()
+
+const hasToolbar = computed(() => !!props.toolbar?.length || !!slots['toolbar-start'] || !!slots['toolbar-end'])
+
+// ── Toolbar overflow ────────────────────────────────────────────────────────
+// A hidden copy of every button is measured; as many as fit are shown, and
+// the rest go in the "⋯" Menu (whose width is kept free for it).
+const fitArea = ref<HTMLElement>()
+const measure = ref<HTMLElement>()
+const shown = ref(Infinity)
+
+function fit() {
+  const area = fitArea.value
+  const copy = measure.value
+  const items = props.toolbar ?? []
+  if (!area || !copy || !items.length) return
+  const buttons = Array.from(copy.children) as HTMLElement[]
+  const more = buttons.pop()! // the ⋯ button, last in the copy
+  const gap = parseFloat(getComputedStyle(copy).columnGap) || 0
+  const widths = buttons.map((b) => b.getBoundingClientRect().width)
+  const available = area.clientWidth
+  const all = widths.reduce((sum, w) => sum + w, 0) + gap * Math.max(widths.length - 1, 0)
+  if (all <= available) {
+    shown.value = items.length
+    return
+  }
+  let used = more.getBoundingClientRect().width
+  let n = 0
+  while (n < widths.length && used + gap + widths[n]! <= available) used += gap + widths[n++]!
+  shown.value = n
+}
+
+let observer: ResizeObserver | undefined
+onMounted(() => {
+  observer = new ResizeObserver(() => fit())
+  if (fitArea.value) observer.observe(fitArea.value)
+  fit()
+})
+onBeforeUnmount(() => observer?.disconnect())
+watch(
+  () => props.toolbar?.map((i) => `${i.label}${i.disabled ? '-' : ''}`).join('|'),
+  () => nextTick(fit),
+)
+
+const visible = computed(() => (props.toolbar ?? []).slice(0, shown.value))
+const overflow = computed<MenuItem[]>(() => (props.toolbar ?? []).slice(shown.value))
 </script>
 
 <template>
@@ -90,26 +141,49 @@ defineSlots<{
       </div>
     </div>
 
-    <!-- Ghost buttons in a white bar, like a Card. -->
+    <!-- Ghost buttons in a white bar, like a Card; those that don't fit go
+         in the ⋯ Menu at the end. -->
     <div
-      v-if="toolbar?.length"
+      v-if="hasToolbar"
       role="group"
       :aria-label="`${title} actions`"
-      :class="cn('flex flex-wrap items-center gap-1 rounded-lg border border-black/15 bg-white p-1', ui?.toolbar)"
+      :class="cn('flex items-center gap-1 rounded-lg border border-black/15 bg-white p-1', ui?.toolbar)"
     >
-      <Button
-        v-for="item in toolbar"
-        :key="item.label"
-        :as="as(item)"
-        :to="item.to"
-        :href="item.href"
-        variant="ghost"
-        :disabled="item.disabled"
-        @click="item.onSelect?.()"
-      >
-        <template v-if="item.icon" #leading><component :is="item.icon" aria-hidden="true" /></template>
-        {{ item.label }}
-      </Button>
+      <!-- Text here reads as the toolbar's own: bold, spaced like a button. -->
+      <div v-if="$slots['toolbar-start']" class="flex shrink-0 items-center gap-2 px-3 text-sm font-bold" aria-live="polite">
+        <slot name="toolbar-start" />
+      </div>
+      <div ref="fitArea" class="relative flex min-w-0 flex-1 items-center gap-1">
+        <Button
+          v-for="item in visible"
+          :key="item.label"
+          :as="as(item)"
+          :to="item.to"
+          :href="item.href"
+          variant="ghost"
+          :disabled="item.disabled"
+          class="shrink-0"
+          @click="item.onSelect?.()"
+        >
+          <template v-if="item.icon" #leading><component :is="item.icon" aria-hidden="true" /></template>
+          {{ item.label }}
+        </Button>
+        <Menu v-if="overflow.length" :items="overflow" label="More actions" :link-component="linkComponent" class="shrink-0" />
+
+        <!-- For measuring only: every button, and the ⋯ one, at full width. -->
+        <div aria-hidden="true" inert class="invisible absolute top-0 left-0 size-0 overflow-hidden">
+          <div ref="measure" class="flex w-max gap-1">
+            <Button v-for="item in toolbar" :key="item.label" variant="ghost" tabindex="-1" class="shrink-0">
+              <template v-if="item.icon" #leading><component :is="item.icon" /></template>
+              {{ item.label }}
+            </Button>
+            <Button variant="ghost" square tabindex="-1" class="shrink-0"><span /></Button>
+          </div>
+        </div>
+      </div>
+      <div v-if="$slots['toolbar-end']" class="flex shrink-0 items-center gap-2 px-3 text-sm">
+        <slot name="toolbar-end" />
+      </div>
     </div>
 
     <slot />
