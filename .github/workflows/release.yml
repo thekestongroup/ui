@@ -1,6 +1,8 @@
 name: Release
 
-# Releases a new version, only when you run it: Actions → Release → Run
+# Releases a new version on its own whenever changesets reach main (a merged
+# PR that includes one), so the only step left is approving the staged
+# release on npmjs.com. It can also be run by hand: Actions → Release → Run
 # workflow, or `gh workflow run release.yml -R thekestongroup/ui`.
 #
 # It takes every changeset merged since the last release, works out the
@@ -9,9 +11,14 @@ name: Release
 # GitHub Release, then starts publish.yml to stage it on npm. Approve the
 # staged release on npmjs.com to make it live.
 #
-# With no changesets waiting, it stops without releasing anything.
+# With no changesets waiting, it stops without releasing anything. Its own
+# "Release vX" commit doesn't start it again (pushes made with the workflow's
+# token don't trigger workflows).
 
 on:
+  push:
+    branches: [main]
+    paths: ['.changeset/**']
   workflow_dispatch:
 
 permissions:
