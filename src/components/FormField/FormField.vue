@@ -23,6 +23,11 @@ export interface FormFieldProps {
   /** Show helper text under the label, or behind a `?` icon next to it. */
   helperPlacement?: 'below' | 'icon'
   /**
+   * Keep the label (and helper) for screen readers only, e.g. in a table of
+   * fields where the column headings say what each one is.
+   */
+  hideLabel?: boolean
+  /**
    * Error message, e.g. from a Zod / VeeValidate schema. When set (and not
    * empty) the field shows as an error with this text; leave it undefined
    * when the value is valid. Overrides `status` and `statusText`.
@@ -120,8 +125,8 @@ const statusBorder: Record<FormFieldStatus, string> = {
   <div :class="cn('flex flex-col gap-1.5 text-black', props.class)">
     <!-- Label row and box in a grid, so label-trailing can come after the
          box in the page (and the Tab order) but show at the end of the label row. -->
-    <div :class="cn('grid grid-cols-[minmax(0,1fr)_auto] gap-y-1.5', $slots['label-trailing'] && 'gap-x-3')">
-      <div class="col-start-1 row-start-1 flex flex-col gap-0.5">
+    <div :class="cn('grid grid-cols-[minmax(0,1fr)_auto]', !hideLabel && 'gap-y-1.5', $slots['label-trailing'] && 'gap-x-3')">
+      <div :class="cn('col-start-1 row-start-1 flex flex-col gap-0.5', hideLabel && 'sr-only')">
         <div class="flex items-center gap-1">
           <label :id="labelId" :for="controlId" class="text-sm" @click="focusUnlabelable">{{ label }}</label>
 

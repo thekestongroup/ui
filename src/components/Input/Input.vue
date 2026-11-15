@@ -15,6 +15,8 @@ export interface InputProps {
   helper?: string
   /** Show helper text under the label, or behind a `?` icon next to it. */
   helperPlacement?: 'below' | 'icon'
+  /** Keep the label for screen readers only, e.g. in a table of fields with column headings. */
+  hideLabel?: boolean
   /**
    * Error message, e.g. from a Zod / VeeValidate schema. When set (and not
    * empty) the field shows as an error with this text; leave it undefined
@@ -66,6 +68,7 @@ const statusText = computed(() => props.statusText ?? lengthError.value)
     :label="label"
     :helper="helper"
     :helper-placement="helperPlacement"
+    :hide-label="hideLabel"
     :error-text="errorText"
     :status="status"
     :status-text="statusText"

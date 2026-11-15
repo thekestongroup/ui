@@ -103,6 +103,8 @@ export interface SelectProps {
   helper?: string
   /** Show helper text under the label, or behind a `?` icon next to it. */
   helperPlacement?: 'below' | 'icon'
+  /** Keep the label for screen readers only, e.g. in a table of fields with column headings. */
+  hideLabel?: boolean
   /** Error message, e.g. from a Zod schema. Overrides `status` / `statusText`. */
   errorText?: string
   /** Colours the field and the status text. */
@@ -430,6 +432,7 @@ const chevron = 'transition-transform duration-150 in-data-[state=open]:rotate-1
     :label="label"
     :helper="helper"
     :helper-placement="helperPlacement"
+    :hide-label="hideLabel"
     :error-text="errorText"
     :status="status"
     :status-text="statusText"
