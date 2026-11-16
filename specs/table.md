@@ -40,6 +40,7 @@ No border or background of its own: put it in a `Card` with `padding="none"`.
 | linkComponent | string \| Component | "a" | For row links, e.g. RouterLink. |
 | manualSort | boolean | false | Only report the sort (e.g. to sort on the server); don't re-order rows. |
 | size | md \| sm | md | See Sizes. |
+| inset | boolean | false | For a table under a title in a `Card` with `padding="none"`: 24px at the table's outer edges from sm, and the same space beneath the last row, so it is balanced. Off for a table that is the whole card. |
 | stickyHeader | boolean | false | Keep the headings in view. Give the table a max height. |
 | loading | boolean | false | No rows: a spinner. With rows: rows dimmed to 50%. |
 | emptyText | string | "Nothing to show." | Slot `empty` for richer content. |
@@ -63,8 +64,8 @@ No border or background of its own: put it in a `Card` with `padding="none"`.
 
 | Size | Cell padding | Row height (one line) |
 |---|---|---|
-| md | 16px sides (24px at the table's outer edges from sm), 12px top and bottom | 44px |
-| sm | 16px sides (24px at the table's outer edges from sm), 8px top and bottom | 36px |
+| md | 16px sides, 12px top and bottom | 44px |
+| sm | 16px sides, 8px top and bottom | 36px |
 
 | Part | Value |
 |---|---|

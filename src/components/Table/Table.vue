@@ -46,6 +46,14 @@ export interface TableProps<Row = Record<string, any>> {
   loading?: boolean
   /** md (default) 12px above and below each cell, sm 8px for dense tables. */
   size?: 'sm' | 'md'
+  /**
+   * For a table that fills a `Card` with `padding="none"` and has a title
+   * above it (so the content lines up with the card's padding): the first and
+   * last columns have 24px at the table's outer edges (from sm), and there is
+   * the same space beneath the last row. The row lines still run edge to
+   * edge. Leave it off for a table that is the whole card.
+   */
+  inset?: boolean
   /** Keep the header row in view while the table scrolls. Give the table a max height (`class="max-h-96"`). */
   stickyHeader?: boolean
   /** Don't sort the rows: just update `sort`, e.g. to sort on the server. */
@@ -159,7 +167,12 @@ const linkedRowClass = [
   '[&_:is(a,button,input,select,textarea,label,[tabindex]):not([data-row-link])]:z-1'
 ]
 
-const cellPadding = computed(() => (props.size === 'sm' ? 'px-4 py-2 sm:first:pl-6 sm:last:pr-6' : 'px-4 py-3 sm:first:pl-6 sm:last:pr-6'))
+const cellPadding = computed(() => {
+  const base = props.size === 'sm' ? 'px-4 py-2' : 'px-4 py-3'
+  return props.inset ? `${base} sm:first:pl-6 sm:last:pr-6` : base
+})
+// Beneath the last row: as much as at the sides.
+const lastRowPadding = computed(() => (props.inset ? 'group-last/row:pb-4 group-last/row:sm:pb-6' : ''))
 
 function columnClasses(column: TableColumn<Row>) {
   return cn(column.align === 'end' && 'text-right', column.nowrap !== false && 'whitespace-nowrap', column.class)
@@ -205,7 +218,7 @@ onBeforeUnmount(() => observer?.disconnect())
       :class="cn('w-full border-separate border-spacing-0 text-left text-sm text-black', ui?.table)"
       :aria-busy="loading || undefined"
     >
-      <caption v-if="caption || $slots.caption" :id="captionId" :class="showCaption ? 'px-4 pt-4 pb-2 sm:px-6 text-left text-base font-bold' : 'sr-only'">
+      <caption v-if="caption || $slots.caption" :id="captionId" :class="showCaption ? cn('px-4 pt-4 pb-2 text-left text-base font-bold', inset && 'sm:px-6') : 'sr-only'">
         <slot name="caption">{{ caption }}</slot>
       </caption>
 
@@ -278,7 +291,7 @@ onBeforeUnmount(() => observer?.disconnect())
         >
           <td
             v-if="selectable"
-            :class="cn('border-b border-black/15 align-middle group-last/row:border-b-0', cellPadding, canSelect(row) && selectCell)"
+            :class="cn('border-b border-black/15 align-middle group-last/row:border-b-0', cellPadding, lastRowPadding, canSelect(row) && selectCell)"
             @click.self="canSelect(row) && setRow(row, index, !isSelected(row, index))"
           >
             <Checkbox
@@ -300,6 +313,7 @@ onBeforeUnmount(() => observer?.disconnect())
                 column.rowHeader ? 'font-bold' : 'font-normal',
                 column.align === 'end' && 'tabular-nums',
                 cellPadding,
+                lastRowPadding,
                 columnClasses(column)
               )
             "
@@ -328,7 +342,8 @@ onBeforeUnmount(() => observer?.disconnect())
         :class="
           cn(
             'font-bold *:*:border-t *:*:border-black/15',
-            size === 'sm' ? '*:*:px-4 *:*:py-2 *:*:sm:first:pl-6 *:*:sm:last:pr-6' : '*:*:px-4 *:*:py-3 *:*:sm:first:pl-6 *:*:sm:last:pr-6'
+            size === 'sm' ? '*:*:px-4 *:*:py-2' : '*:*:px-4 *:*:py-3',
+            inset && '*:*:sm:first:pl-6 *:*:sm:last:pr-6'
           )
         "
       >
