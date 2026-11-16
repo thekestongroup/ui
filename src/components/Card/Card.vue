@@ -89,7 +89,7 @@ const footerPaddings: Record<NonNullable<CardProps['padding']>, string> = {
     <div :class="cn('flex min-w-0 flex-1 flex-col gap-4', paddings[padding], ui?.body)">
       <div
         v-if="title || description || $slots.header || $slots.actions"
-        :class="cn('flex items-start justify-between gap-3', padding === 'none' && 'px-4 pt-4', ui?.header)"
+        :class="cn('flex items-start justify-between gap-3', padding === 'none' && 'px-4 pt-4 sm:px-6 sm:pt-6', ui?.header)"
       >
         <slot name="header">
           <div class="flex min-w-0 flex-col gap-1">
