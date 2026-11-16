@@ -335,7 +335,7 @@ onBeforeUnmount(() => observer?.disconnect())
         <!-- inset: the last row keeps its line, then the space below it is its
              own part, so a hovered last row isn't taller than the others. -->
         <tr v-if="inset && shownRows.length && !$slots.footer" aria-hidden="true">
-          <td :colspan="colspan" class="h-4 p-0 sm:h-6"></td>
+          <td :colspan="colspan" class="h-2 p-0 sm:h-4"></td>
         </tr>
       </tbody>
 
