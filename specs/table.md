@@ -63,8 +63,8 @@ No border or background of its own: put it in a `Card` with `padding="none"`.
 
 | Size | Cell padding | Row height (one line) |
 |---|---|---|
-| md | 16px sides (24px at the table's outer edges from sm, including below the last row), 12px top and bottom | 44px |
-| sm | 16px sides (24px at the table's outer edges from sm, including below the last row), 8px top and bottom | 36px |
+| md | 16px sides (24px at the table's outer edges from sm), 12px top and bottom | 44px |
+| sm | 16px sides (24px at the table's outer edges from sm), 8px top and bottom | 36px |
 
 | Part | Value |
 |---|---|
