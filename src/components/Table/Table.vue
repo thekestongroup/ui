@@ -161,20 +161,25 @@ function linkFor(row: Row, index: number) {
   return props.linkComponent === 'a' ? { href: target as string } : { to: target }
 }
 
-// The link's ::after covers the row (the row is `relative`), so a click
-// anywhere follows it. Controls in other cells are lifted above it, so they
-// still get their own clicks. The focus ring is drawn on the ::after, round
-// the whole row, just inside its edge.
+// A click anywhere on the row follows its link. Each cell is `relative` and
+// holds its own overlay: the real link's ::after in its cell, and in the
+// others a hidden twin (same target, out of the tab order and the
+// accessibility tree). Not one overlay stretched across the row: Safari
+// (WebKit) doesn't reliably make a <tr> the containing block for absolutely
+// positioned children, so it grew to the whole table. Controls in other cells
+// are lifted above the overlays, so they still get their own clicks. The focus
+// ring is drawn on the real link's ::after, and the row is shaded to match.
 const rowLinkClass = [
   'text-inherit no-underline outline-none group-hover/row:underline underline-offset-2',
   'after:absolute after:inset-0 after:outline-2 after:-outline-offset-2 after:outline-transparent',
   'focus-visible:after:outline-focus forced-colors:not-focus-visible:after:outline-0'
 ]
 const linkedRowClass = [
-  'relative cursor-pointer hover:bg-black/5',
-  '[&_:is(a,button,input,select,textarea,label,[tabindex]):not([data-row-link])]:relative',
-  '[&_:is(a,button,input,select,textarea,label,[tabindex]):not([data-row-link])]:z-1'
+  'cursor-pointer hover:bg-black/5 has-[[data-row-link]:focus-visible]:bg-black/5',
+  '[&_:is(a,button,input,select,textarea,label,[tabindex]):not([data-row-link],[data-row-overlay])]:relative',
+  '[&_:is(a,button,input,select,textarea,label,[tabindex]):not([data-row-link],[data-row-overlay])]:z-1'
 ]
+const overlayClass = 'absolute inset-0 outline-none'
 
 const cellPadding = computed(() => {
   const base = props.size === 'sm' ? 'px-4 py-2' : 'px-4 py-3'
@@ -321,10 +326,20 @@ onBeforeUnmount(() => observer?.disconnect())
                 column.rowHeader ? 'font-bold' : 'font-normal',
                 column.align === 'end' && 'tabular-nums',
                 cellPadding,
+                linkFor(row, index) && 'relative',
                 columnClasses(column)
               )
             "
           >
+            <component
+              :is="linkComponent"
+              v-if="column.key !== linkColumn && linkFor(row, index)"
+              v-bind="linkFor(row, index)"
+              data-row-overlay
+              tabindex="-1"
+              aria-hidden="true"
+              :class="overlayClass"
+            />
             <component
               :is="linkComponent"
               v-if="column.key === linkColumn && linkFor(row, index)"
