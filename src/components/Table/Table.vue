@@ -171,8 +171,7 @@ const cellPadding = computed(() => {
   const base = props.size === 'sm' ? 'px-4 py-2' : 'px-4 py-3'
   return props.inset ? `${base} sm:first:pl-6 sm:last:pr-6` : base
 })
-// Beneath the last row: as much as at the sides.
-const lastRowPadding = computed(() => (props.inset ? 'group-last/row:pb-4 group-last/row:sm:pb-6' : ''))
+
 
 function columnClasses(column: TableColumn<Row>) {
   return cn(column.align === 'end' && 'text-right', column.nowrap !== false && 'whitespace-nowrap', column.class)
@@ -291,7 +290,7 @@ onBeforeUnmount(() => observer?.disconnect())
         >
           <td
             v-if="selectable"
-            :class="cn('border-b border-black/15 align-middle group-last/row:border-b-0', cellPadding, lastRowPadding, canSelect(row) && selectCell)"
+            :class="cn('border-b border-black/15 align-middle', !inset && 'group-last/row:border-b-0', cellPadding, canSelect(row) && selectCell)"
             @click.self="canSelect(row) && setRow(row, index, !isSelected(row, index))"
           >
             <Checkbox
@@ -309,11 +308,10 @@ onBeforeUnmount(() => observer?.disconnect())
             :scope="column.rowHeader ? 'row' : undefined"
             :class="
               cn(
-                'border-b border-black/15 align-middle group-last/row:border-b-0',
+                'border-b border-black/15 align-middle', !inset && 'group-last/row:border-b-0',
                 column.rowHeader ? 'font-bold' : 'font-normal',
                 column.align === 'end' && 'tabular-nums',
                 cellPadding,
-                lastRowPadding,
                 columnClasses(column)
               )
             "
@@ -333,6 +331,11 @@ onBeforeUnmount(() => observer?.disconnect())
               {{ row[column.key] ?? '' }}
             </slot>
           </component>
+        </tr>
+        <!-- inset: the last row keeps its line, then the space below it is its
+             own part, so a hovered last row isn't taller than the others. -->
+        <tr v-if="inset && shownRows.length && !$slots.footer" aria-hidden="true">
+          <td :colspan="colspan" class="h-4 p-0 sm:h-6"></td>
         </tr>
       </tbody>
 
