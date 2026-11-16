@@ -278,7 +278,7 @@ onBeforeUnmount(() => observer?.disconnect())
         >
           <td
             v-if="selectable"
-            :class="cn('border-b border-black/15 align-middle group-last/row:border-b-0', cellPadding, canSelect(row) && selectCell)"
+            :class="cn('border-b border-black/15 align-middle group-last/row:border-b-0 group-last/row:pb-4 group-last/row:sm:pb-6', cellPadding, canSelect(row) && selectCell)"
             @click.self="canSelect(row) && setRow(row, index, !isSelected(row, index))"
           >
             <Checkbox
@@ -296,7 +296,7 @@ onBeforeUnmount(() => observer?.disconnect())
             :scope="column.rowHeader ? 'row' : undefined"
             :class="
               cn(
-                'border-b border-black/15 align-middle group-last/row:border-b-0',
+                'border-b border-black/15 align-middle group-last/row:border-b-0 group-last/row:pb-4 group-last/row:sm:pb-6',
                 column.rowHeader ? 'font-bold' : 'font-normal',
                 column.align === 'end' && 'tabular-nums',
                 cellPadding,
