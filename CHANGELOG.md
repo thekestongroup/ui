@@ -1,5 +1,17 @@
 # @thekestongroup/ui
 
+## 0.9.0
+
+### Minor Changes
+
+- b08ef75: Languages: components now take their words from vue-i18n, and there's a language switcher. **Breaking:** apps must install `vue-i18n` (11 or later) and set it up with `createKestonI18n` (see Guide → Languages); components throw without it. Text props such as `emptyText`, `finishLabel` and `removeLabel` still override the defaults. New components: `LanguageSwitcher`, `SettingsRow` (a setting's label and description beside its control), `CheckboxGroup` (several tick boxes under one question), `Steps` (a step header: segments plus "Step 2 of 3: Licences") and `InputTextArea` (plain multi-line text that grows with what's typed). `Switch` and `Checkbox` gain `hideLabel` (a hidden label leaves the box with a larger area to press). `Link` used as a button (`as="button"`) no longer submits the form it is in: pressing Enter in a field was triggering it.
+
+### Patch Changes
+
+- 2008b17: `Card` with `padding="none"`: the title row now has the same padding as the other sizes (24px from the sm breakpoint), so it lines up with neighbouring cards.
+- 13461e7: `Table` gains `inset`, for a table under a title in a `Card` with `padding="none"`: the outer columns have 24px at the edges (from sm) and, below the last row (which keeps its line), enough space that the last row's text is as far from the edge as at the sides. Without it, tables are unchanged. The row lines still run edge to edge.
+- b3b2ede: `Table` with `selectable`: pressing anywhere in a row's checkbox cell (its padding and the gap around the box, not only the box) ticks it, and the same for the "select all" header cell.
+
 ## 0.8.0
 
 ### Minor Changes
