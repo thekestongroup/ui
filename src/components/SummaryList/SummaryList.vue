@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="Item extends SummaryListItem">
+import { useI18n } from 'vue-i18n'
 import type { HTMLAttributes } from 'vue'
 import { cn } from '../../lib/cn'
 
@@ -38,10 +39,10 @@ export interface SummaryListProps<Item extends SummaryListItem = SummaryListItem
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<SummaryListProps<Item>>(), {
   layout: 'rows',
-  labelWidth: 'md',
-  emptyLabel: 'Not set'
+  labelWidth: 'md'
 })
 
 defineSlots<{
@@ -86,7 +87,7 @@ const labelWidths = {
           <dd :class="cn('min-w-0 break-words', item.emphasis && 'font-bold', !$slots.action && 'col-span-2')">
             <slot name="value" :item="item" :index="index">
               <template v-if="!isEmpty(item.value)">{{ item.value }}</template>
-              <template v-else><span class="text-black/40" aria-hidden="true">—</span><span class="sr-only">{{ emptyLabel }}</span></template>
+              <template v-else><span class="text-black/40" aria-hidden="true">—</span><span class="sr-only">{{ emptyLabel ?? t('ui.summaryList.notSet') }}</span></template>
             </slot>
             <span v-if="item.description" class="mt-0.5 block text-black/65">{{ item.description }}</span>
           </dd>
@@ -115,7 +116,7 @@ const labelWidths = {
           >
             <slot name="value" :item="item" :index="index">
               <template v-if="!isEmpty(item.value)">{{ item.value }}</template>
-              <template v-else><span class="text-black/40" aria-hidden="true">—</span><span class="sr-only">{{ emptyLabel }}</span></template>
+              <template v-else><span class="text-black/40" aria-hidden="true">—</span><span class="sr-only">{{ emptyLabel ?? t('ui.summaryList.notSet') }}</span></template>
             </slot>
             <span v-if="item.description" class="mt-0.5 block font-normal text-black/65">{{ item.description }}</span>
             <span v-if="$slots.action" class="mt-1 block font-normal"><slot name="action" :item="item" :index="index" /></span>

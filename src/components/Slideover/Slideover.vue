@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, nextTick, ref, useId, watch, type HTMLAttributes } from 'vue'
 import {
   DialogClose,
@@ -86,6 +87,7 @@ export interface SlideoverProps {
   }
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<SlideoverProps>(), {
   side: 'right',
   overlay: true,
@@ -93,8 +95,7 @@ const props = withDefaults(defineProps<SlideoverProps>(), {
   dismissible: true,
   modal: true,
   portal: true,
-  initialFocus: 'none',
-  finishLabel: 'Finish'
+  initialFocus: 'none'
 })
 
 const emit = defineEmits<{
@@ -144,7 +145,7 @@ const nextStatus = ref<ButtonStatus>('idle')
 // - otherwise (Next / Previous buttons, touch screens): the same words are
 //   announced. Never both, so it isn't read twice.
 const stepLabelId = `${useId()}-step`
-const stepText = computed(() => (props.steps ? `Step ${step.value + 1} of ${stepCount.value}: ${props.steps[step.value]}` : ''))
+const stepText = computed(() => (props.steps ? t('ui.slideover.stepOf', { current: step.value + 1, total: stepCount.value, name: props.steps[step.value] }) : ''))
 const announcement = ref('')
 const body = ref<HTMLElement>()
 
@@ -294,7 +295,7 @@ const panel = [
             v-if="title || description || close || steps || $slots.header || $slots.title"
             :class="cn('flex flex-col gap-4 border-b border-black/15 px-6 py-4', ui?.header)"
           >
-            <Progress v-if="steps" :label="title ?? 'Steps'" segments :value="step + 1" :max="stepCount" />
+            <Progress v-if="steps" :label="title ?? t('ui.slideover.steps')" segments :value="step + 1" :max="stepCount" />
             <div class="flex items-start gap-4">
             <slot name="header" :close="closePanel">
               <div class="flex min-w-0 flex-1 flex-col gap-1">
@@ -318,7 +319,7 @@ const panel = [
               <!-- A ghost icon Button; the negative margins keep it from making
                    the header taller and line its icon up with the panel edge. -->
               <DialogClose v-if="close" as-child>
-                <Button variant="ghost" square aria-label="Close" class="-my-1.5 -mr-3 shrink-0">
+                <Button variant="ghost" square :aria-label="t('ui.slideover.close')" class="-my-1.5 -mr-3 shrink-0">
                   <X />
                 </Button>
               </DialogClose>
@@ -350,10 +351,10 @@ const panel = [
                 @click="step === 0 ? closePanel() : goTo(step - 1)"
               >
                 <template v-if="step > 0" #leading><ChevronLeft /></template>
-                {{ step === 0 ? 'Cancel' : 'Previous' }}
+                {{ step === 0 ? t('ui.slideover.cancel') : t('ui.slideover.previous') }}
               </Button>
               <Button variant="primary" :status="nextStatus" @click="next">
-                {{ isLastStep ? finishLabel : 'Next' }}
+                {{ isLastStep ? (finishLabel ?? t('ui.slideover.finish')) : t('ui.slideover.next') }}
                 <template v-if="!isLastStep" #trailing><ChevronRight /></template>
               </Button>
             </slot>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, useId, type HTMLAttributes } from 'vue'
 import { PinInputInput, PinInputRoot } from 'reka-ui'
 import { cn } from '../../lib/cn'
@@ -41,6 +42,7 @@ export interface InputCodeProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<InputCodeProps>(), {
   helperPlacement: 'below',
   length: 6
@@ -106,7 +108,7 @@ const statusBorder: Record<InputCodeStatus, string> = {
     <div class="flex flex-col gap-0.5">
       <div class="flex items-center gap-1">
         <label :id="labelId" :for="`${id}-0`" class="text-sm">{{ label }}</label>
-        <InfoTip v-if="helper && helperPlacement === 'icon'" :text="helper" :label="`About ${label}`" />
+        <InfoTip v-if="helper && helperPlacement === 'icon'" :text="helper" :label="t('ui.formField.about', { label })" />
       </div>
       <!-- Behind the ?: hidden, but still the boxes' description. -->
       <p v-if="helper" :id="helperId" :hidden="helperPlacement === 'icon'" class="text-xs text-black/65">
@@ -132,7 +134,7 @@ const statusBorder: Record<InputCodeStatus, string> = {
         :id="`${id}-${i}`"
         :key="i"
         :index="i"
-        :aria-label="i === 0 ? undefined : `Character ${i + 1} of ${length}`"
+        :aria-label="i === 0 ? undefined : t('ui.inputCode.character', { n: i + 1, total: length })"
         :aria-labelledby="i === 0 ? labelId : undefined"
         :aria-describedby="describedBy"
         :aria-invalid="currentStatus === 'error' || undefined"

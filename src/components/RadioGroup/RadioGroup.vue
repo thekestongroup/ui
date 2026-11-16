@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, useId, type HTMLAttributes } from 'vue'
 import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'reka-ui'
 import { cn } from '../../lib/cn'
@@ -37,6 +38,7 @@ export interface RadioGroupProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<RadioGroupProps>(), {
   helperPlacement: 'below'
 })
@@ -78,7 +80,7 @@ const circle = [
     <div class="flex flex-col gap-0.5">
       <div class="flex items-center gap-1">
         <span :id="labelId" class="text-sm">{{ label }}</span>
-        <InfoTip v-if="helper && helperPlacement === 'icon'" :text="helper" :label="`About ${label}`" />
+        <InfoTip v-if="helper && helperPlacement === 'icon'" :text="helper" :label="t('ui.formField.about', { label })" />
       </div>
       <!-- Behind the ?: hidden, but still the group's description. -->
       <p v-if="helper" :id="helperId" :hidden="helperPlacement === 'icon'" class="text-xs text-black/65">

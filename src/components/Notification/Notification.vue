@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, useId, type HTMLAttributes } from 'vue'
 import { CircleCheck, CircleX, Info, TriangleAlert, X } from '@lucide/vue'
 import { cn } from '../../lib/cn'
@@ -44,6 +45,7 @@ export interface NotificationProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<NotificationProps>(), {
   type: 'info',
   appearance: 'card',
@@ -127,7 +129,7 @@ function runAction() {
       square
       :class="cn('shrink-0', !oneLine && '-mt-1 -mr-1.5')"
       data-dismiss
-      :aria-label="dismissLabel ?? `Dismiss: ${title}`"
+      :aria-label="dismissLabel ?? t('ui.notifications.dismiss', { title })"
       @click="emit('dismiss')"
     >
       <X />

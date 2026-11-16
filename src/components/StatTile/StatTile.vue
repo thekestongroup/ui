@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, type Component, type HTMLAttributes } from 'vue'
 import { ArrowDownRight, ArrowRight, ArrowUpRight } from '@lucide/vue'
 import { cn } from '../../lib/cn'
@@ -36,6 +37,7 @@ export interface StatTileProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = defineProps<StatTileProps>()
 
 defineSlots<{
@@ -56,7 +58,7 @@ const trendIcon = computed(() =>
   props.trend === 'up' ? ArrowUpRight : props.trend === 'down' ? ArrowDownRight : props.trend === 'flat' ? ArrowRight : undefined
 )
 // The arrow is decorative, so say the direction in words for screen readers.
-const trendWords = { up: 'Up', down: 'Down', flat: 'No change' } as const
+const trendWords = computed(() => ({ up: t('ui.statTile.up'), down: t('ui.statTile.down'), flat: t('ui.statTile.flat') }))
 </script>
 
 <template>

@@ -36,6 +36,7 @@
 | name / value | string | — / "on" | For native form submission. |
 | required | boolean | false | |
 | disabled | boolean | false | |
+| hideLabel | boolean | false | Label and description for screen readers only; the box gets a larger area to press. For a row checkbox in a Table. |
 
 No sizes or variants.
 

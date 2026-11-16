@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, type Component, type HTMLAttributes } from 'vue'
 import {
   ComboboxAnchor,
@@ -119,10 +120,10 @@ export interface SelectProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<SelectProps>(), {
   options: () => [],
   groups: () => [],
-  emptyText: 'No matches',
   helperPlacement: 'below'
 })
 
@@ -162,7 +163,7 @@ function setValue(next: unknown) {
   if (props.searchable) nextTick(() => searchInput.value?.$el?.select?.())
 }
 
-const placeholderText = computed(() => props.placeholder ?? (props.searchable ? 'Search…' : 'Choose…'))
+const placeholderText = computed(() => props.placeholder ?? (props.searchable ? t('ui.select.search') : t('ui.select.choose')))
 
 const toOption = (option: SelectOption | string): SelectOption =>
   typeof option === 'string' ? { label: option, value: option } : { ...option, value: option.value ?? option.label }
@@ -477,7 +478,7 @@ const chevron = 'transition-transform duration-150 in-data-[state=open]:rotate-1
               :key="String(option.value)"
               size="sm"
               removable
-              :remove-label="`Remove ${option.label}`"
+              :remove-label="t('ui.select.remove', { name: option.label })"
               :remove-focusable="false"
               :disabled="disabled"
               @pointerdown.stop
@@ -503,7 +504,7 @@ const chevron = 'transition-transform duration-150 in-data-[state=open]:rotate-1
               @keydown.backspace="onSearchBackspace"
             />
           </span>
-          <ComboboxTrigger tabindex="-1" aria-label="Show options" class="flex cursor-pointer disabled:cursor-not-allowed">
+          <ComboboxTrigger tabindex="-1" :aria-label="t('ui.select.showOptions')" class="flex cursor-pointer disabled:cursor-not-allowed">
             <ChevronDown aria-hidden="true" :class="chevron" />
           </ComboboxTrigger>
         </ComboboxAnchor>
@@ -555,7 +556,7 @@ const chevron = 'transition-transform duration-150 in-data-[state=open]:rotate-1
               class="flex flex-col gap-0.5 p-1 [scrollbar-width:thin]! [&::-webkit-scrollbar]:block!"
             >
               <ComboboxEmpty v-if="searchable" class="px-2 py-1.5 text-sm text-black/65">
-                {{ emptyText }}
+                {{ emptyText ?? t('ui.select.noMatches') }}
               </ComboboxEmpty>
 
               <!-- Inside a nested option: back to the level above. -->

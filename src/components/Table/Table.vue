@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="Row extends Record<string, any>">
+import { useI18n } from 'vue-i18n'
 import { computed, onBeforeUnmount, onMounted, ref, useId, type Component, type HTMLAttributes } from 'vue'
 import { ArrowDown, ArrowUp, ChevronsUpDown } from '@lucide/vue'
 import { cn } from '../../lib/cn'
@@ -45,6 +46,14 @@ export interface TableProps<Row = Record<string, any>> {
   loading?: boolean
   /** md (default) 12px above and below each cell, sm 8px for dense tables. */
   size?: 'sm' | 'md'
+  /**
+   * For a table that fills a `Card` with `padding="none"` and has a title
+   * above it (so the content lines up with the card's padding): the first and
+   * last columns have 24px at the table's outer edges (from sm), and there is
+   * the same space beneath the last row. The row lines still run edge to
+   * edge. Leave it off for a table that is the whole card.
+   */
+  inset?: boolean
   /** Keep the header row in view while the table scrolls. Give the table a max height (`class="max-h-96"`). */
   stickyHeader?: boolean
   /** Don't sort the rows: just update `sort`, e.g. to sort on the server. */
@@ -74,8 +83,8 @@ export interface TableProps<Row = Record<string, any>> {
   }
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<TableProps<Row>>(), {
-  emptyText: 'Nothing to show.',
   size: 'md',
   linkComponent: 'a'
 })
@@ -118,6 +127,15 @@ function setAll(on: boolean) {
 // The checkbox cell is above a row's link, so clicking anywhere in it ticks
 // the box rather than opening the row.
 const selectCell = 'relative z-1 w-0 cursor-pointer'
+/**
+ * Pressing anywhere in the cell ticks the box: the cell's padding and the gap
+ * around the box, not only the box. The box and its (hidden) label do their
+ * own ticking, so they're left alone, or it would tick twice.
+ */
+function onCellPress(event: MouseEvent, toggle: () => void) {
+  if ((event.target as HTMLElement).closest('button, label, .sr-only')) return
+  toggle()
+}
 const colspan = computed(() => props.columns.length + (props.selectable ? 1 : 0))
 
 const shownRows = computed(() => (props.manualSort ? props.rows : sortRows(props.rows, props.columns, sort.value)))
@@ -158,7 +176,11 @@ const linkedRowClass = [
   '[&_:is(a,button,input,select,textarea,label,[tabindex]):not([data-row-link])]:z-1'
 ]
 
-const cellPadding = computed(() => (props.size === 'sm' ? 'px-4 py-2' : 'px-4 py-3'))
+const cellPadding = computed(() => {
+  const base = props.size === 'sm' ? 'px-4 py-2' : 'px-4 py-3'
+  return props.inset ? `${base} sm:first:pl-6 sm:last:pr-6` : base
+})
+
 
 function columnClasses(column: TableColumn<Row>) {
   return cn(column.align === 'end' && 'text-right', column.nowrap !== false && 'whitespace-nowrap', column.class)
@@ -198,13 +220,13 @@ onBeforeUnmount(() => observer?.disconnect())
     :tabindex="scrolls ? 0 : undefined"
     :role="scrolls ? 'region' : undefined"
     :aria-labelledby="scrolls && (caption || $slots.caption) ? captionId : undefined"
-    :aria-label="scrolls && !caption && !$slots.caption ? 'Table' : undefined"
+    :aria-label="scrolls && !caption && !$slots.caption ? t('ui.table.table') : undefined"
   >
     <table
       :class="cn('w-full border-separate border-spacing-0 text-left text-sm text-black', ui?.table)"
       :aria-busy="loading || undefined"
     >
-      <caption v-if="caption || $slots.caption" :id="captionId" :class="showCaption ? 'px-4 pt-4 pb-2 text-left text-base font-bold' : 'sr-only'">
+      <caption v-if="caption || $slots.caption" :id="captionId" :class="showCaption ? cn('px-4 pt-4 pb-2 text-left text-base font-bold', inset && 'sm:px-6') : 'sr-only'">
         <slot name="caption">{{ caption }}</slot>
       </caption>
 
@@ -214,16 +236,16 @@ onBeforeUnmount(() => observer?.disconnect())
             v-if="selectable"
             scope="col"
             :class="cn('border-b border-black/15', cellPadding, selectableKeys.length && selectCell)"
-            @click.self="setAll(allState !== true)"
+            @click="onCellPress($event, () => selectableKeys.length && setAll(allState !== true))"
           >
             <Checkbox
               v-if="selectableKeys.length"
               :model-value="allState"
-              label="Select all rows"
+              :label="t('ui.table.selectAll')"
               hide-label
               @update:model-value="setAll($event === true)"
             />
-            <span v-else class="sr-only">Select</span>
+            <span v-else class="sr-only">{{ t('ui.table.select') }}</span>
           </th>
           <th
             v-for="column in columns"
@@ -266,7 +288,7 @@ onBeforeUnmount(() => observer?.disconnect())
               Loading…
             </span>
             <slot v-else name="empty">
-              <EmptyState size="sm" :description="emptyText" class="p-0" />
+              <EmptyState size="sm" :description="emptyText ?? t('ui.table.empty')" class="p-0" />
             </slot>
           </td>
         </tr>
@@ -277,13 +299,13 @@ onBeforeUnmount(() => observer?.disconnect())
         >
           <td
             v-if="selectable"
-            :class="cn('border-b border-black/15 align-middle group-last/row:border-b-0', cellPadding, canSelect(row) && selectCell)"
-            @click.self="canSelect(row) && setRow(row, index, !isSelected(row, index))"
+            :class="cn('border-b border-black/15 align-middle', !inset && 'group-last/row:border-b-0', cellPadding, canSelect(row) && selectCell)"
+            @click="canSelect(row) && onCellPress($event, () => setRow(row, index, !isSelected(row, index)))"
           >
             <Checkbox
               v-if="canSelect(row)"
               :model-value="isSelected(row, index)"
-              :label="rowLabel ? rowLabel(row, index) : `Select row ${index + 1}`"
+              :label="rowLabel ? rowLabel(row, index) : t('ui.table.selectRow', { n: index + 1 })"
               hide-label
               @update:model-value="setRow(row, index, $event === true)"
             />
@@ -295,7 +317,7 @@ onBeforeUnmount(() => observer?.disconnect())
             :scope="column.rowHeader ? 'row' : undefined"
             :class="
               cn(
-                'border-b border-black/15 align-middle group-last/row:border-b-0',
+                'border-b border-black/15 align-middle', !inset && 'group-last/row:border-b-0',
                 column.rowHeader ? 'font-bold' : 'font-normal',
                 column.align === 'end' && 'tabular-nums',
                 cellPadding,
@@ -319,6 +341,11 @@ onBeforeUnmount(() => observer?.disconnect())
             </slot>
           </component>
         </tr>
+        <!-- inset: the last row keeps its line, then the space below it is its
+             own part, so a hovered last row isn't taller than the others. -->
+        <tr v-if="inset && shownRows.length && !$slots.footer" aria-hidden="true">
+          <td :colspan="colspan" class="h-2 p-0 sm:h-4"></td>
+        </tr>
       </tbody>
 
       <!-- Footer cells get the same padding and a top border, so totals line up. -->
@@ -327,7 +354,8 @@ onBeforeUnmount(() => observer?.disconnect())
         :class="
           cn(
             'font-bold *:*:border-t *:*:border-black/15',
-            size === 'sm' ? '*:*:px-4 *:*:py-2' : '*:*:px-4 *:*:py-3'
+            size === 'sm' ? '*:*:px-4 *:*:py-2' : '*:*:px-4 *:*:py-3',
+            inset && '*:*:sm:first:pl-6 *:*:sm:last:pr-6'
           )
         "
       >

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import type { Component, HTMLAttributes } from 'vue'
 import { ChevronRight } from '@lucide/vue'
 import { cn } from '../../lib/cn'
@@ -33,8 +34,8 @@ export interface BreadcrumbProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<BreadcrumbProps>(), {
-  label: 'Breadcrumb',
   linkComponent: 'a'
 })
 
@@ -74,7 +75,7 @@ const link = [
 </script>
 
 <template>
-  <nav :aria-label="label" :class="cn('min-w-0 text-sm', props.class)">
+  <nav :aria-label="label ?? t('ui.breadcrumb.label')" :class="cn('min-w-0 text-sm', props.class)">
     <ol class="flex flex-wrap items-center gap-x-1.5 gap-y-1">
       <li v-for="(item, i) in items" :key="`${item.label}-${i}`" class="flex min-w-0 items-center gap-1.5">
         <!-- The current page. -->

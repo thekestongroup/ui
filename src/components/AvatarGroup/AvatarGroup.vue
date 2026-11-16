@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, type HTMLAttributes } from 'vue'
 import { cn } from '../../lib/cn'
 import Avatar, { type AvatarProps, type AvatarUser } from '../Avatar/Avatar.vue'
@@ -21,6 +22,7 @@ export interface AvatarGroupProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<AvatarGroupProps>(), {
   size: 'md',
   max: 4,
@@ -58,7 +60,7 @@ const counterSizes: Record<NonNullable<AvatarProps['size']>, string> = {
 </script>
 
 <template>
-  <div role="group" :aria-label="label ?? `${users.length} ${users.length === 1 ? 'person' : 'people'}`" :class="cn('flex items-center', props.class)">
+  <div role="group" :aria-label="label ?? t('ui.avatarGroup.people', users.length)" :class="cn('flex items-center', props.class)">
     <!-- A white ring keeps overlapping circles apart; the one pointed at or
          focused comes to the front, so its ring and focus outline show. -->
     <span
@@ -73,7 +75,7 @@ const counterSizes: Record<NonNullable<AvatarProps['size']>, string> = {
       <Popover mode="hover" :open-delay="300" :close-delay="150" :content="{ side: 'bottom', align: 'start', sideOffset: 6 }" :ui="{ content: 'w-56' }">
         <button
           type="button"
-          :aria-label="`${hidden.length} more: ${hidden.map((u) => u.name).join(', ')}`"
+          :aria-label="t('ui.avatarGroup.more', { count: hidden.length, names: hidden.map((u) => u.name).join(', ') })"
           :class="cn(
             'inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full bg-surface font-bold text-black select-none',
             'outline-2 outline-offset-1 outline-transparent transition focus-visible:outline-focus',

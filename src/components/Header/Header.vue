@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, type Component, type HTMLAttributes } from 'vue'
 import { ArrowLeftRight, LogOut, Menu, Settings } from '@lucide/vue'
 import { cn } from '../../lib/cn'
@@ -82,10 +83,10 @@ export interface HeaderProps {
   }
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<HeaderProps>(), {
   menu: false,
   menuOpen: undefined,
-  menuLabel: 'Menu',
   linkComponent: 'a',
   userActions: () => ['account-settings', 'switch-account', 'log-out'],
   signIn: true,
@@ -117,8 +118,8 @@ const initials = computed(() => toInitials(props.user?.name ?? ''))
 // BS"): "BS, account: Ben Smith". Not in brackets: axe doesn't match "(BS)".
 const accountLabel = computed(() => {
   if (!props.user) return ''
-  if (props.user.avatar || !initials.value) return `Account: ${props.user.name}`
-  return `${initials.value}, account: ${props.user.name}`
+  if (props.user.avatar || !initials.value) return t('ui.header.account', { name: props.user.name })
+  return t('ui.header.accountWithInitials', { initials: initials.value, name: props.user.name })
 })
 
 const titleLink = computed(() => {
@@ -158,7 +159,7 @@ function runAction(action: HeaderUserAction, close: () => void) {
       v-if="menu"
       variant="ghost"
       square
-      :aria-label="menuLabel"
+      :aria-label="menuLabel ?? t('ui.header.menu')"
       :aria-expanded="menuOpen"
       :aria-controls="menuControls"
       :class="cn('-ml-2.5', ui?.menu)"
@@ -248,7 +249,7 @@ function runAction(action: HeaderUserAction, close: () => void) {
           </template>
         </Popover>
 
-        <Button v-else-if="signIn" size="sm" variant="primary" @click="emit('sign-in')">Sign in</Button>
+        <Button v-else-if="signIn" size="sm" variant="primary" @click="emit('sign-in')">{{ t('ui.header.signIn') }}</Button>
       </slot>
     </div>
   </header>

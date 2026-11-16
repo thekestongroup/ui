@@ -42,6 +42,7 @@ const base = [
   <Primitive
     :as="as"
     :href="href"
+    :type="as === 'button' ? 'button' : undefined"
     :target="newTab ? '_blank' : undefined"
     :rel="newTab ? 'noopener noreferrer' : undefined"
     :class="cn(base, props.class)"

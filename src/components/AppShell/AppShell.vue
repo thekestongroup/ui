@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { onBeforeUnmount, onMounted, useId, type HTMLAttributes } from 'vue'
 import { Menu } from '@lucide/vue'
 import { TooltipProvider } from 'reka-ui'
@@ -62,6 +63,7 @@ export interface AppShellProps {
   }
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<AppShellProps>(), {
   items: () => [],
   sections: () => [],
@@ -150,7 +152,7 @@ const sidebarId = `${uid}-sidebar`
           v-if="collapsible"
           variant="ghost"
           square
-          :aria-label="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+          :aria-label="collapsed ? t('ui.appShell.expandSidebar') : t('ui.appShell.collapseSidebar')"
           :aria-expanded="!collapsed"
           :aria-controls="sidebarId"
           class="-ml-2.5 max-lg:hidden"
@@ -188,7 +190,7 @@ const sidebarId = `${uid}-sidebar`
       <Slideover
         v-model:open="menuOpen"
         side="left"
-        :title="title || 'Menu'"
+        :title="title || t('ui.appShell.menu')"
         :ui="{
           content: 'max-w-72',
           // The header is a column (it also holds a Progress for steps), so

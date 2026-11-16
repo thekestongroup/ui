@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, ref, watch, type HTMLAttributes } from 'vue'
 import { DatePickerContent, DatePickerRoot, DatePickerTrigger } from 'reka-ui'
 import { getLocalTimeZone, parseDate, today, type DateValue } from '@internationalized/date'
@@ -43,6 +44,7 @@ export interface InputDateProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<InputDateProps>(), {
   helperPlacement: 'below',
   locale: 'en-GB',
@@ -164,7 +166,7 @@ function onTextBlur() {
     text.value = formatShort(date)
     formatError.value = undefined
   } else {
-    formatError.value = `Enter a date like ${example.value}`
+    formatError.value = t('ui.inputDate.enterDate', { example: example.value })
   }
 }
 
@@ -244,7 +246,7 @@ const trigger = [
           {{ phrasePreview }}
         </span>
 
-        <DatePickerTrigger aria-label="Open calendar" :class="trigger">
+        <DatePickerTrigger :aria-label="t('ui.inputDate.openCalendar')" :class="trigger">
           <CalendarDays />
         </DatePickerTrigger>
 
