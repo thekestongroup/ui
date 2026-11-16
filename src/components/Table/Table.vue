@@ -159,7 +159,7 @@ const linkedRowClass = [
   '[&_:is(a,button,input,select,textarea,label,[tabindex]):not([data-row-link])]:z-1'
 ]
 
-const cellPadding = computed(() => (props.size === 'sm' ? 'px-4 py-2' : 'px-4 py-3'))
+const cellPadding = computed(() => (props.size === 'sm' ? 'px-4 py-2 sm:first:pl-6 sm:last:pr-6' : 'px-4 py-3 sm:first:pl-6 sm:last:pr-6'))
 
 function columnClasses(column: TableColumn<Row>) {
   return cn(column.align === 'end' && 'text-right', column.nowrap !== false && 'whitespace-nowrap', column.class)
@@ -205,7 +205,7 @@ onBeforeUnmount(() => observer?.disconnect())
       :class="cn('w-full border-separate border-spacing-0 text-left text-sm text-black', ui?.table)"
       :aria-busy="loading || undefined"
     >
-      <caption v-if="caption || $slots.caption" :id="captionId" :class="showCaption ? 'px-4 pt-4 pb-2 text-left text-base font-bold' : 'sr-only'">
+      <caption v-if="caption || $slots.caption" :id="captionId" :class="showCaption ? 'px-4 pt-4 pb-2 sm:px-6 text-left text-base font-bold' : 'sr-only'">
         <slot name="caption">{{ caption }}</slot>
       </caption>
 
@@ -328,7 +328,7 @@ onBeforeUnmount(() => observer?.disconnect())
         :class="
           cn(
             'font-bold *:*:border-t *:*:border-black/15',
-            size === 'sm' ? '*:*:px-4 *:*:py-2' : '*:*:px-4 *:*:py-3'
+            size === 'sm' ? '*:*:px-4 *:*:py-2 *:*:sm:first:pl-6 *:*:sm:last:pr-6' : '*:*:px-4 *:*:py-3 *:*:sm:first:pl-6 *:*:sm:last:pr-6'
           )
         "
       >
