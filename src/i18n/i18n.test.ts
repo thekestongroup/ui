@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createKestonI18n } from './index'
+import { createKestonI18n, en } from './index'
 
 // Tests run in Node: stand in for the browser's storage and <html>.
 const store = new Map<string, string>()
@@ -38,5 +38,19 @@ describe('createKestonI18n', () => {
   it('ignores a saved language the app no longer has', () => {
     localStorage.setItem('keston-locale', 'fr')
     expect(createKestonI18n().global.locale.value).toBe('en')
+  })
+
+  it('has a working message for every key', () => {
+    const i18n = createKestonI18n()
+    const leaves = (node: Record<string, unknown>, path = ''): string[] =>
+      Object.entries(node).flatMap(([k, v]) =>
+        typeof v === 'object' && v ? leaves(v as Record<string, unknown>, `${path}${k}.`) : [`${path}${k}`]
+      )
+    const keys = leaves(en)
+    expect(keys.length).toBeGreaterThan(50)
+    for (const key of keys) {
+      const text = i18n.global.t(key, { count: 2, n: 2, current: 1, total: 3, name: 'X', label: 'X', title: 'X', names: 'X', hotkey: 'X', example: 'X', initials: 'X', date: 'X', days: 2 }, 2)
+      expect(text, key).not.toBe(key)
+    }
   })
 })
