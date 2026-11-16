@@ -55,18 +55,12 @@ defineSlots<{
 const headingId = `${useId()}-title`
 const tag = computed(() => props.as ?? (props.title ? 'section' : 'div'))
 
+// With no padding the content (e.g. a table) runs to the edges, but the
+// title keeps 16px, like the footer.
 const paddings: Record<NonNullable<CardProps['padding']>, string> = {
   none: '',
   sm: 'p-4',
   md: 'p-4 sm:p-6'
-}
-
-// The title row keeps the body's padding on its sides and top even when the
-// body has none, so a table below it can still run to the edges.
-const headerPaddings: Record<NonNullable<CardProps['padding']>, string> = {
-  none: 'px-4 pt-4 sm:px-6 sm:pt-6',
-  sm: '',
-  md: ''
 }
 
 // The footer lines up with the body's sides; with no padding it keeps 16px.
@@ -95,7 +89,7 @@ const footerPaddings: Record<NonNullable<CardProps['padding']>, string> = {
     <div :class="cn('flex min-w-0 flex-1 flex-col gap-4', paddings[padding], ui?.body)">
       <div
         v-if="title || description || $slots.header || $slots.actions"
-        :class="cn('flex items-start justify-between gap-3', headerPaddings[padding], ui?.header)"
+        :class="cn('flex items-start justify-between gap-3', padding === 'none' && 'px-4 pt-4', ui?.header)"
       >
         <slot name="header">
           <div class="flex min-w-0 flex-col gap-1">

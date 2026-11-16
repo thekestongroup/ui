@@ -4,6 +4,7 @@ import { computed, onBeforeUnmount, onMounted, ref, useId, type Component, type 
 import { ArrowDown, ArrowUp, ChevronsUpDown } from '@lucide/vue'
 import { cn } from '../../lib/cn'
 import EmptyState from '../EmptyState/EmptyState.vue'
+import Checkbox from '../Checkbox/Checkbox.vue'
 import Spinner from '../Spinner/Spinner.vue'
 import { nextSort, sortRows, type TableColumn, type TableSort } from './table'
 
@@ -57,6 +58,15 @@ export interface TableProps<Row = Record<string, any>> {
   rowLink?: (row: Row, index: number) => unknown
   /** Component for row links, e.g. RouterLink. It receives `to`. Default a plain `<a href>`. */
   linkComponent?: string | Component
+  /**
+   * A checkbox at the start of each row (and "select all" in the header), for
+   * acting on several rows. `true` for every row, or a function saying which
+   * rows can be ticked. The whole cell is the click target. Ticked rows'
+   * keys (`rowKey`) are in `v-model:selected`.
+   */
+  selectable?: boolean | ((row: Row) => boolean)
+  /** Describes a row for its checkbox, e.g. its name: "Select Jo Bloggs". Default "Select row 2". */
+  rowLabel?: (row: Row, index: number) => string
   class?: HTMLAttributes['class']
   ui?: {
     table?: HTMLAttributes['class']
@@ -72,6 +82,8 @@ const props = withDefaults(defineProps<TableProps<Row>>(), {
 })
 
 const sort = defineModel<TableSort | null>('sort', { default: null })
+/** Ticked rows' keys (see `selectable`). */
+const selected = defineModel<(string | number)[]>('selected', { default: () => [] })
 
 defineSlots<
   {
@@ -86,6 +98,28 @@ defineSlots<
 >()
 
 const captionId = `${useId()}-caption`
+
+// ── Selecting rows ──────────────────────────────────────────────────────────
+const canSelect = (row: Row) => (typeof props.selectable === 'function' ? props.selectable(row) : !!props.selectable)
+const selectableKeys = computed(() => shownRows.value.flatMap((row, i) => (canSelect(row) ? [keyOf(row, i)] : [])))
+const isSelected = (row: Row, index: number) => selected.value.includes(keyOf(row, index))
+function setRow(row: Row, index: number, on: boolean) {
+  const key = keyOf(row, index)
+  selected.value = on ? [...selected.value.filter((k) => k !== key), key] : selected.value.filter((k) => k !== key)
+}
+/** Header box: ticked when every row is, a dash when some are. */
+const allState = computed<boolean | 'indeterminate'>(() => {
+  const n = selectableKeys.value.filter((k) => selected.value.includes(k)).length
+  return n === 0 ? false : n === selectableKeys.value.length ? true : 'indeterminate'
+})
+function setAll(on: boolean) {
+  const keys = selectableKeys.value
+  selected.value = on ? [...new Set([...selected.value, ...keys])] : selected.value.filter((k) => !keys.includes(k))
+}
+// The checkbox cell is above a row's link, so clicking anywhere in it ticks
+// the box rather than opening the row.
+const selectCell = 'relative z-1 w-0 cursor-pointer'
+const colspan = computed(() => props.columns.length + (props.selectable ? 1 : 0))
 
 const shownRows = computed(() => (props.manualSort ? props.rows : sortRows(props.rows, props.columns, sort.value)))
 
@@ -178,6 +212,21 @@ onBeforeUnmount(() => observer?.disconnect())
       <thead :class="cn(stickyHeader && 'sticky top-0 z-10 bg-white', ui?.header)">
         <tr>
           <th
+            v-if="selectable"
+            scope="col"
+            :class="cn('border-b border-black/15', cellPadding, selectableKeys.length && selectCell)"
+            @click.self="setAll(allState !== true)"
+          >
+            <Checkbox
+              v-if="selectableKeys.length"
+              :model-value="allState"
+              label="Select all rows"
+              hide-label
+              @update:model-value="setAll($event === true)"
+            />
+            <span v-else class="sr-only">Select</span>
+          </th>
+          <th
             v-for="column in columns"
             :key="column.key"
             scope="col"
@@ -212,7 +261,7 @@ onBeforeUnmount(() => observer?.disconnect())
 
       <tbody :class="cn(loading && shownRows.length && 'opacity-50 transition-opacity')">
         <tr v-if="!shownRows.length">
-          <td :colspan="columns.length" class="px-4 py-8 text-center text-black/65">
+          <td :colspan="colspan" class="px-4 py-8 text-center text-black/65">
             <span v-if="loading" class="inline-flex items-center gap-2">
               <Spinner size="sm" />
               Loading…
@@ -227,6 +276,19 @@ onBeforeUnmount(() => observer?.disconnect())
           :key="keyOf(row, index)"
           :class="cn('group/row', linkFor(row, index) && linkedRowClass, ui?.row)"
         >
+          <td
+            v-if="selectable"
+            :class="cn('border-b border-black/15 align-middle group-last/row:border-b-0', cellPadding, canSelect(row) && selectCell)"
+            @click.self="canSelect(row) && setRow(row, index, !isSelected(row, index))"
+          >
+            <Checkbox
+              v-if="canSelect(row)"
+              :model-value="isSelected(row, index)"
+              :label="rowLabel ? rowLabel(row, index) : `Select row ${index + 1}`"
+              hide-label
+              @update:model-value="setRow(row, index, $event === true)"
+            />
+          </td>
           <component
             :is="column.rowHeader ? 'th' : 'td'"
             v-for="column in columns"

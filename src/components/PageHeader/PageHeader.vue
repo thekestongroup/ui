@@ -106,11 +106,20 @@ function fit() {
   shown.value = n
 }
 
+// Watched for size changes whenever it's there: the toolbar may only appear
+// after the page has loaded (e.g. once its actions arrive).
 let observer: ResizeObserver | undefined
 onMounted(() => {
   observer = new ResizeObserver(() => fit())
   if (fitArea.value) observer.observe(fitArea.value)
   fit()
+})
+watch(fitArea, (el, old) => {
+  if (old) observer?.unobserve(old)
+  if (el) {
+    observer?.observe(el)
+    nextTick(fit)
+  }
 })
 onBeforeUnmount(() => observer?.disconnect())
 watch(

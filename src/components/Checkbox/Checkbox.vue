@@ -26,10 +26,7 @@ export interface CheckboxProps {
   value?: string
   required?: boolean
   disabled?: boolean
-  /**
-   * Keep the label (and description) for screen readers only, e.g. a row
-   * checkbox in a Table. The box then gets a larger area to press.
-   */
+  /** Keep the label (and description) for screen readers only, e.g. a row's box in a table. */
   hideLabel?: boolean
   class?: HTMLAttributes['class']
 }
@@ -71,10 +68,6 @@ const box = [
   'outline-2 outline-offset-2 outline-transparent focus-visible:outline-focus',
   '[&_svg]:size-3.5 [&_svg]:stroke-3'
 ]
-
-// With no label to press, the box gets a 40px square to press (WCAG 2.5.8
-// asks for 24px); it's invisible and doesn't change the layout.
-const hitArea = 'relative after:absolute after:-inset-3 after:content-[""]'
 </script>
 
 <template>
@@ -89,7 +82,7 @@ const hitArea = 'relative after:absolute after:-inset-3 after:content-[""]'
         :disabled="disabled"
         :aria-invalid="errorText ? true : undefined"
         :aria-describedby="describedBy"
-        :class="cn(box, hideLabel && hitArea, errorText ? 'border-red' : 'border-black/55')"
+        :class="cn(box, errorText ? 'border-red' : 'border-black/55')"
       >
         <CheckboxIndicator class="flex">
           <Minus v-if="model === 'indeterminate'" aria-hidden="true" />

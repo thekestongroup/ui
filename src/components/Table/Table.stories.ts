@@ -268,3 +268,37 @@ export const SomeRowsClickable: Story = {
   },
   render: ClickableRows.render,
 };
+
+/**
+ * Ticking rows to act on several at once: `selectable` (here, everyone but
+ * declined applicants), `v-model:selected` for the ticked rows' keys, and
+ * `rowLabel` to name each box. Clicking anywhere in a checkbox's cell ticks
+ * it, without opening the row.
+ */
+export const SelectableRows: Story = {
+  args: {
+    rowLink: (row) => `/applicants/${row.id}`,
+    linkComponent: FakeRouterLink,
+    selectable: (row) => row.status !== "Declined",
+    rowLabel: (row) => `Select ${row.name}`,
+  },
+  render: (args) => ({
+    components: { Table, Card, Badge },
+    setup() {
+      const selected = ref<(string | number)[]>([2]);
+      opened.value = "";
+      return { args, statusColors, date, opened, selected };
+    },
+    template: `
+      <div class="flex flex-col gap-3">
+        <Card padding="none">
+          <Table v-bind="args" v-model:selected="selected">
+            <template #cell-applied="{ value }">{{ date(value) }}</template>
+            <template #cell-score="{ value }">{{ value ?? '—' }}</template>
+            <template #cell-status="{ value }"><Badge size="sm" :color="statusColors[value]">{{ value }}</Badge></template>
+          </Table>
+        </Card>
+        <p class="text-sm">Selected: <code>{{ selected.join(', ') || 'none' }}</code> · Opened: <code>{{ opened || 'none' }}</code></p>
+      </div>`,
+  }),
+};
