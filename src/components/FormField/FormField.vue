@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, useId, type HTMLAttributes } from 'vue'
 import { cn } from '../../lib/cn'
 import InfoTip from '../InfoTip/InfoTip.vue'
@@ -45,6 +46,7 @@ export interface FormFieldProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<FormFieldProps>(), {
   helperPlacement: 'below'
 })
@@ -132,7 +134,7 @@ const statusBorder: Record<FormFieldStatus, string> = {
 
           <!-- Screen readers get the helper from the control's aria-describedby
                (the hidden copy below), so the ? is for sighted users. -->
-          <InfoTip v-if="helper && helperPlacement === 'icon'" :text="helper" :label="`About ${label}`" />
+          <InfoTip v-if="helper && helperPlacement === 'icon'" :text="helper" :label="t('ui.formField.about', { label })" />
         </div>
 
         <!-- Behind the ?: hidden, but still the control's description. -->

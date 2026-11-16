@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, onBeforeUnmount, onMounted, ref, useAttrs, type HTMLAttributes } from 'vue'
 import { Eye, EyeOff } from '@lucide/vue'
 import FormField, { type FormFieldStatus } from '../FormField/FormField.vue'
@@ -38,6 +39,7 @@ export interface InputPasswordProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<InputPasswordProps>(), {
   helperPlacement: 'below'
 })
@@ -71,7 +73,7 @@ function checkCapsLock(event: KeyboardEvent) {
   capsLock.value = event.getModifierState?.('CapsLock') ?? false
 }
 
-const statusText = computed(() => props.statusText ?? (capsLock.value ? 'Caps Lock is on' : undefined))
+const statusText = computed(() => props.statusText ?? (capsLock.value ? t('ui.inputPassword.capsLock') : undefined))
 
 // Same square end segment as InputNumber's + button, so the field reads
 // [ password | 👁 ]. Pressing it keeps focus (and the caret) in the input.
@@ -126,7 +128,7 @@ const toggle = [
         @pointerdown.prevent
         @click="visible = !visible"
       >
-        <span class="sr-only">Show password</span>
+        <span class="sr-only">{{ t('ui.inputPassword.show') }}</span>
         <EyeOff v-if="visible" aria-hidden="true" />
         <Eye v-else aria-hidden="true" />
       </button>

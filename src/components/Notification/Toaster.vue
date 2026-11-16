@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch, type ComponentPublicInstance, type HTMLAttributes } from 'vue'
 import { ToastProvider, ToastRoot, ToastViewport } from 'reka-ui'
 import { cn } from '../../lib/cn'
@@ -44,6 +45,7 @@ export interface ToasterProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<ToasterProps>(), {
   position: 'bottom-right',
   maxHeight: 320,
@@ -345,7 +347,7 @@ const positions = {
 
 <template>
   <!-- label: said before each toast. The viewport's label names the area F8 jumps to. -->
-  <ToastProvider swipe-direction="right" label="Notification">
+  <ToastProvider swipe-direction="right" :label="t('ui.notifications.region')">
     <ToastRoot
       v-for="toast in rendered"
       :key="toast.id"
@@ -379,14 +381,14 @@ const positions = {
         :action="toast.item.action"
         :compact="toast.item.compact"
         class="shadow-md"
-        :dismiss-label="`Close: ${toast.item.title}`"
+        :dismiss-label="t('ui.notifications.close', { title: toast.item.title })"
         @dismiss="setOpen(toast.id, false)"
         @action="setOpen(toast.id, false)"
       />
     </ToastRoot>
 
     <ToastViewport
-      label="Notifications ({hotkey})"
+      :label="t('ui.notifications.hotkeyRegion', { hotkey: '{hotkey}' })"
       :style="viewportStyle"
       :class="
         cn(
@@ -434,11 +436,11 @@ const positions = {
           @click="onMore"
         >
           <template v-if="hidden">
-            <span class="in-data-expanded:hidden">+{{ layout.notInView }} more</span>
-            <span class="hidden in-data-expanded:inline">+{{ hidden }} more</span>
+            <span class="in-data-expanded:hidden">{{ t('ui.notifications.more', { count: layout.notInView }) }}</span>
+            <span class="hidden in-data-expanded:inline">{{ t('ui.notifications.more', { count: hidden }) }}</span>
           </template>
-          <template v-else>+{{ layout.notInView }} more</template>
-          <span class="sr-only">&nbsp;notifications</span>
+          <template v-else>{{ t('ui.notifications.more', { count: layout.notInView }) }}</template>
+          <span class="sr-only">&nbsp;{{ t('ui.notifications.notifications') }}</span>
         </button>
       </li>
     </ToastViewport>

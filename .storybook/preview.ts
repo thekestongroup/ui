@@ -1,6 +1,12 @@
-import type { Preview } from '@storybook/vue3-vite'
+import { setup, type Preview } from '@storybook/vue3-vite'
 import './preview.css'
+import { createKestonI18n } from '../src/i18n/index.ts'
 import { kestonTheme } from './theme.ts'
+
+// Keston UI's components take their words from vue-i18n, like any Keston app.
+setup((app) => {
+  app.use(createKestonI18n())
+})
 
 const preview: Preview = {
   parameters: {

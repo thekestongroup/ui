@@ -52,6 +52,7 @@ export default defineConfig({
             { text: 'Getting started', link: '/guide/getting-started' },
             { text: 'Colours', link: '/guide/colours' },
             { text: 'Typography', link: '/guide/typography' },
+            { text: 'Languages', link: '/guide/languages' },
           ],
         },
       ],

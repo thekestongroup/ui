@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, nextTick, ref, useId, watch, type HTMLAttributes } from 'vue'
 import { Bell, BellOff } from '@lucide/vue'
 import { cn } from '../../lib/cn'
@@ -27,10 +28,8 @@ export interface NotificationPaneProps {
   ui?: { content?: HTMLAttributes['class']; trigger?: HTMLAttributes['class'] }
 }
 
-const props = withDefaults(defineProps<NotificationPaneProps>(), {
-  label: 'Notifications',
-  emptyText: "You're all caught up."
-})
+const { t } = useI18n()
+const props = defineProps<NotificationPaneProps>()
 
 const open = defineModel<boolean>('open', { default: false })
 
@@ -40,7 +39,10 @@ const unread = computed(() => store.value.unreadCount.value)
 // The name uses the same text as the badge ("99+"), so voice control users
 // can say what they see.
 const countText = computed(() => (unread.value > 99 ? '99+' : String(unread.value)))
-const triggerLabel = computed(() => (unread.value ? `${props.label}, ${countText.value} unread` : props.label))
+const title = computed(() => props.label ?? t('ui.notifications.title'))
+const triggerLabel = computed(() =>
+  unread.value ? t('ui.notifications.withUnread', { label: title.value, count: countText.value }) : title.value
+)
 
 const headingId = `${useId()}-heading`
 const heading = ref<HTMLElement>()
@@ -143,9 +145,9 @@ async function finishClear() {
     <template #content="{ close }">
       <section ref="pane" :aria-labelledby="headingId" class="flex min-h-0 flex-col">
         <div class="flex h-11 shrink-0 items-center justify-between gap-2 border-b border-black/15 pr-2 pl-4">
-          <h2 :id="headingId" ref="heading" tabindex="-1" class="font-bold outline-none">{{ label }}</h2>
+          <h2 :id="headingId" ref="heading" tabindex="-1" class="font-bold outline-none">{{ title }}</h2>
           <Button v-if="items.length" variant="ghost" size="sm" :disabled="clearing" @click="clearAll">
-            Clear all
+            {{ t('ui.notifications.clearAll') }}
           </Button>
         </div>
 
@@ -176,7 +178,7 @@ async function finishClear() {
           v-else
           size="sm"
           :icon="BellOff"
-          :description="emptyText"
+          :description="emptyText ?? t('ui.notifications.empty')"
           :class="cn(emptied && 'motion-safe:animate-empty-in')"
           :ui="{ icon: cn('origin-top', emptied && 'motion-safe:animate-bell-wobble') }"
         />

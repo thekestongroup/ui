@@ -26,6 +26,8 @@ export interface SwitchProps {
   /** Name for native form submission. */
   name?: string
   disabled?: boolean
+  /** Keep the label (and description) for screen readers only, e.g. a switch in a SettingsRow. */
+  hideLabel?: boolean
   class?: HTMLAttributes['class']
 }
 
@@ -82,7 +84,7 @@ const thumb = 'size-4 rounded-full bg-white shadow-sm transition-transform data-
         <SwitchThumb :class="thumb" />
       </SwitchRoot>
       <div
-        :class="cn('flex min-w-0 flex-col gap-0.5', disabled ? 'cursor-not-allowed' : 'cursor-pointer')"
+        :class="cn('flex min-w-0 flex-col gap-0.5', disabled ? 'cursor-not-allowed' : 'cursor-pointer', hideLabel && 'sr-only')"
         @click="pressControl($event, controlId)"
       >
         <label :for="controlId" :class="cn('text-sm', disabled ? 'cursor-not-allowed' : 'cursor-pointer')">{{ label }}</label>

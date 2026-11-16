@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="Row extends Record<string, any>">
+import { useI18n } from 'vue-i18n'
 import { computed, onBeforeUnmount, onMounted, ref, useId, type Component, type HTMLAttributes } from 'vue'
 import { ArrowDown, ArrowUp, ChevronsUpDown } from '@lucide/vue'
 import { cn } from '../../lib/cn'
@@ -64,8 +65,8 @@ export interface TableProps<Row = Record<string, any>> {
   }
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<TableProps<Row>>(), {
-  emptyText: 'Nothing to show.',
   size: 'md',
   linkComponent: 'a'
 })
@@ -164,7 +165,7 @@ onBeforeUnmount(() => observer?.disconnect())
     :tabindex="scrolls ? 0 : undefined"
     :role="scrolls ? 'region' : undefined"
     :aria-labelledby="scrolls && (caption || $slots.caption) ? captionId : undefined"
-    :aria-label="scrolls && !caption && !$slots.caption ? 'Table' : undefined"
+    :aria-label="scrolls && !caption && !$slots.caption ? t('ui.table.table') : undefined"
   >
     <table
       :class="cn('w-full border-separate border-spacing-0 text-left text-sm text-black', ui?.table)"
@@ -217,7 +218,7 @@ onBeforeUnmount(() => observer?.disconnect())
               Loading…
             </span>
             <slot v-else name="empty">
-              <EmptyState size="sm" :description="emptyText" class="p-0" />
+              <EmptyState size="sm" :description="emptyText ?? t('ui.table.empty')" class="p-0" />
             </slot>
           </td>
         </tr>

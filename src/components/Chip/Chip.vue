@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import type { HTMLAttributes } from 'vue'
 import { X } from '@lucide/vue'
 import { cn } from '../../lib/cn'
@@ -26,9 +27,9 @@ export interface ChipProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<ChipProps>(), {
   size: 'md',
-  removeLabel: 'Remove',
   removeFocusable: true
 })
 
@@ -70,7 +71,7 @@ const removeSizes: Record<NonNullable<ChipProps['size']>, string> = {
       v-if="removable"
       type="button"
       :tabindex="removeFocusable ? undefined : -1"
-      :aria-label="removeLabel"
+      :aria-label="removeLabel ?? t('ui.chip.remove')"
       :disabled="disabled"
       :class="cn(
         'flex shrink-0 cursor-pointer items-center justify-center rounded-sm transition',

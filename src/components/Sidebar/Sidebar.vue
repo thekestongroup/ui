@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, nextTick, ref, useId, watch, type Component, type HTMLAttributes } from 'vue'
 import { ChevronLeft, ChevronRight, PanelLeftClose, PanelLeftOpen } from '@lucide/vue'
 import { cn } from '../../lib/cn'
@@ -73,10 +74,10 @@ export interface SidebarProps {
   }
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<SidebarProps>(), {
   items: () => [],
   sections: () => [],
-  label: 'Main',
   collapsible: false,
   linkComponent: 'a'
 })
@@ -276,7 +277,7 @@ const itemActiveParent = 'font-bold text-primary'
 
     <nav
       ref="navRef"
-      :aria-label="label"
+      :aria-label="label ?? t('ui.sidebar.main')"
       :class="cn(
         'relative flex-1 overflow-x-hidden overflow-y-auto p-2 [scrollbar-width:thin]',
         // Collapsed, a scrollbar would take a third of the 40px strip and cut
@@ -293,7 +294,7 @@ const itemActiveParent = 'font-bold text-primary'
             <button
               type="button"
               data-back
-              :title="collapsed ? `Back from ${current.label}` : undefined"
+              :title="collapsed ? t('ui.sidebar.backFrom', { name: current.label }) : undefined"
               :class="cn(itemBase, 'font-bold', ui?.item)"
               @click="goBack"
             >
@@ -369,7 +370,7 @@ const itemActiveParent = 'font-bold text-primary'
         v-if="collapsible"
         variant="ghost"
         square
-        :aria-label="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+        :aria-label="collapsed ? t('ui.sidebar.expand') : t('ui.sidebar.collapse')"
         :aria-expanded="!collapsed"
         class="self-start"
         @click="collapsed = !collapsed"

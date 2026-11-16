@@ -12,6 +12,8 @@ export { default as Header } from './components/Header/Header.vue'
 export type { HeaderProps, HeaderUser, HeaderUserAction } from './components/Header/Header.vue'
 export { default as PageHeader } from './components/PageHeader/PageHeader.vue'
 export type { PageHeaderAction, PageHeaderProps } from './components/PageHeader/PageHeader.vue'
+export { default as SettingsRow } from './components/SettingsRow/SettingsRow.vue'
+export type { SettingsRowProps } from './components/SettingsRow/SettingsRow.vue'
 
 // Element
 export { default as Avatar } from './components/Avatar/Avatar.vue'
@@ -58,6 +60,12 @@ export { default as Switch } from './components/Switch/Switch.vue'
 export type { SwitchProps } from './components/Switch/Switch.vue'
 export { default as Calendar } from './components/Calendar/Calendar.vue'
 export type { CalendarProps } from './components/Calendar/Calendar.vue'
+export { default as InputTextArea } from './components/InputTextArea/InputTextArea.vue'
+export type { InputTextAreaProps } from './components/InputTextArea/InputTextArea.vue'
+export { default as CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup.vue'
+export type { CheckboxGroupProps, CheckboxOption, CheckboxGroupValue } from './components/CheckboxGroup/CheckboxGroup.vue'
+export { default as LanguageSwitcher } from './components/LanguageSwitcher/LanguageSwitcher.vue'
+export type { LanguageSwitcherProps } from './components/LanguageSwitcher/LanguageSwitcher.vue'
 
 // Data
 export { default as Table } from './components/Table/Table.vue'
@@ -85,6 +93,8 @@ export type { SidebarProps, SidebarItem, SidebarSection } from './components/Sid
 export { sidebarTrail } from './components/Sidebar/sidebar'
 export { default as Link } from './components/Link/Link.vue'
 export type { LinkProps } from './components/Link/Link.vue'
+export { default as Steps } from './components/Steps/Steps.vue'
+export type { StepsProps } from './components/Steps/Steps.vue'
 
 // Overlay
 export { default as Popover } from './components/Popover/Popover.vue'
@@ -114,6 +124,10 @@ export type {
   NotificationType,
   ToastOptions
 } from './components/Notification/notifications'
+
+// Languages
+export { createKestonI18n, uiMessages, en } from './i18n'
+export type { KestonI18nOptions, Messages, UiMessages } from './i18n'
 
 // Helpers
 export { age, daysToBirthday, formatDate, formatDateTime, toDate } from './lib/dates'

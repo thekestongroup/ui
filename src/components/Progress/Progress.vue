@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, type HTMLAttributes } from 'vue'
 import { ProgressIndicator, ProgressRoot } from 'reka-ui'
 import { cn } from '../../lib/cn'
@@ -23,6 +24,7 @@ export interface ProgressProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<ProgressProps>(), {
   value: null,
   max: 100
@@ -38,7 +40,7 @@ const valueText = () =>
   indeterminate.value
     ? undefined
     : props.segments
-      ? `Step ${clamped.value} of ${props.max}`
+      ? t('ui.progress.stepOf', { current: clamped.value, total: props.max })
       : `${Math.round(percent.value)}%`
 
 const track = 'h-1.5 overflow-hidden rounded-full bg-black/10'

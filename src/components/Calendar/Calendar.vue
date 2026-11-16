@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, ref, shallowRef, watch, type HTMLAttributes } from 'vue'
 import {
   CalendarCell,
@@ -45,6 +46,7 @@ export interface CalendarProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<CalendarProps>(), {
   locale: 'en-GB'
 })
@@ -242,14 +244,14 @@ const day = [
     <CalendarHeader class="flex items-center justify-between gap-1">
       <!-- Days: arrows change month. Months / years: arrows page years. -->
       <CalendarPrev v-if="view === 'days'" as-child>
-        <Button variant="ghost" size="sm" square aria-label="Previous month"><ChevronLeft /></Button>
+        <Button variant="ghost" size="sm" square :aria-label="t('ui.calendar.previousMonth')"><ChevronLeft /></Button>
       </CalendarPrev>
       <Button
         v-else
         variant="ghost"
         size="sm"
         square
-        :aria-label="view === 'months' ? 'Previous year' : 'Previous years'"
+        :aria-label="view === 'months' ? t('ui.calendar.previousYear') : t('ui.calendar.previousYears')"
         :disabled="disabled || pageBackDisabled"
         @click="page(-1)"
       >
@@ -261,7 +263,7 @@ const day = [
           v-if="view === 'days'"
           type="button"
           :class="headingButton"
-          aria-label="Choose month"
+          :aria-label="t('ui.calendar.chooseMonth')"
           :disabled="disabled"
           @click="showMonths"
         >
@@ -271,7 +273,7 @@ const day = [
           v-if="view !== 'years'"
           type="button"
           :class="headingButton"
-          aria-label="Choose year"
+          :aria-label="t('ui.calendar.chooseYear')"
           :disabled="disabled"
           @click="showYears"
         >
@@ -283,14 +285,14 @@ const day = [
       </div>
 
       <CalendarNext v-if="view === 'days'" as-child>
-        <Button variant="ghost" size="sm" square aria-label="Next month"><ChevronRight /></Button>
+        <Button variant="ghost" size="sm" square :aria-label="t('ui.calendar.nextMonth')"><ChevronRight /></Button>
       </CalendarNext>
       <Button
         v-else
         variant="ghost"
         size="sm"
         square
-        :aria-label="view === 'months' ? 'Next year' : 'Next years'"
+        :aria-label="view === 'months' ? t('ui.calendar.nextYear') : t('ui.calendar.nextYears')"
         :disabled="disabled || pageForwardDisabled"
         @click="page(1)"
       >

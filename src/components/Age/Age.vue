@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, type HTMLAttributes } from 'vue'
 import { cn } from '../../lib/cn'
 import { age, daysToBirthday, formatDate, toDate, type DateInput } from '../../lib/dates'
@@ -20,6 +21,7 @@ export interface AgeProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = defineProps<AgeProps>()
 
 const liveNow = useNow()
@@ -28,8 +30,8 @@ const today = computed(() => props.now ?? liveNow.value)
 const years = computed(() => age(born.value, today.value))
 const tooltip = computed(() => {
   const days = daysToBirthday(born.value, today.value)
-  const soon = days === 0 ? ' · Birthday today' : days === 1 ? ' · Birthday tomorrow' : days <= 7 ? ` · Birthday in ${days} days` : ''
-  return `Born ${formatDate(born.value)}${soon}`
+  const soon = days === 0 ? ` · ${t('ui.age.birthdayToday')}` : days === 1 ? ` · ${t('ui.age.birthdayTomorrow')}` : days <= 7 ? ` · ${t('ui.age.birthdayInDays', { days })}` : ''
+  return `${t('ui.age.born', { date: formatDate(born.value) })}${soon}`
 })
 const iso = computed(() => {
   const d = born.value

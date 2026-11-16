@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, type Component, type HTMLAttributes } from 'vue'
 import { cn } from '../../lib/cn'
 import Breadcrumb, { type BreadcrumbItem } from '../Breadcrumb/Breadcrumb.vue'
@@ -56,6 +57,7 @@ export interface PageHeaderProps {
   }
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<PageHeaderProps>(), { linkComponent: 'a' })
 
 // Links render as links, the rest as buttons.
@@ -146,7 +148,7 @@ const overflow = computed<MenuItem[]>(() => (props.toolbar ?? []).slice(shown.va
     <div
       v-if="hasToolbar"
       role="group"
-      :aria-label="`${title} actions`"
+      :aria-label="t('ui.pageHeader.actions', { title })"
       :class="cn('flex items-center gap-1 rounded-lg border border-black/15 bg-white p-1', ui?.toolbar)"
     >
       <!-- Text here reads as the toolbar's own: bold, spaced like a button. -->
@@ -169,7 +171,7 @@ const overflow = computed<MenuItem[]>(() => (props.toolbar ?? []).slice(shown.va
           {{ item.label }}
         </Button>
         <!-- Always at the right-hand end. -->
-        <Menu v-if="overflow.length" :items="overflow" label="More actions" :link-component="linkComponent" class="ml-auto shrink-0" />
+        <Menu v-if="overflow.length" :items="overflow" :label="t('ui.pageHeader.moreActions')" :link-component="linkComponent" class="ml-auto shrink-0" />
 
         <!-- For measuring only: every button, and the ⋯ one, at full width. -->
         <div aria-hidden="true" inert class="invisible absolute top-0 left-0 size-0 overflow-hidden">

@@ -1,11 +1,11 @@
 # Getting started
 
-Keston UI is published on npm as `@thekestongroup/ui`. It needs Vue 3.5 or later and Tailwind CSS v4.
+Keston UI is published on npm as `@thekestongroup/ui`. It needs Vue 3.5 or later, vue-i18n 11 and Tailwind CSS v4.
 
 ## Install
 
 ```sh
-pnpm add @thekestongroup/ui
+pnpm add @thekestongroup/ui vue-i18n
 ```
 
 ## Add the theme
@@ -18,6 +18,19 @@ In your app's main CSS file, after Tailwind:
 ```
 
 `theme.css` adds Keston's colours and font (Lato, served with the library, so no requests to Google). It also tells Tailwind to scan the library's components for the classes they use.
+
+## Set up languages
+
+Components take their words (button names, screen reader text, messages) from [vue-i18n](https://vue-i18n.intlify.dev), so every app needs it installed. `createKestonI18n` sets it up with Keston UI's words and yours; see [Languages](/guide/languages).
+
+```ts
+import { createApp } from 'vue'
+import { createKestonI18n } from '@thekestongroup/ui'
+import App from './App.vue'
+import en from './locales/en.json'
+
+createApp(App).use(createKestonI18n({ messages: { en } })).mount('#app')
+```
 
 ## Use a component
 

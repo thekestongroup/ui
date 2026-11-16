@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, ref, type HTMLAttributes } from 'vue'
 import FormField, { type FormFieldStatus } from '../FormField/FormField.vue'
 
@@ -36,6 +37,7 @@ export interface InputProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<InputProps>(), {
   helperPlacement: 'below'
 })
@@ -50,10 +52,10 @@ const touched = ref(false)
 const lengthError = computed(() => {
   const length = model.value.length
   if (props.maxLength !== undefined && length > props.maxLength) {
-    return `Must be ${props.maxLength} characters or fewer`
+    return t('ui.input.maxLength', { count: props.maxLength })
   }
   if (touched.value && props.minLength !== undefined && length > 0 && length < props.minLength) {
-    return `Must be at least ${props.minLength} characters`
+    return t('ui.input.minLength', { count: props.minLength })
   }
   return undefined
 })

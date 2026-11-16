@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { defineComponent, onBeforeUnmount, ref, watch, watchEffect, type HTMLAttributes, type PropType } from 'vue'
 import { EditorContent, useEditor } from '@tiptap/vue-3'
 import type { Editor } from '@tiptap/core'
@@ -46,6 +47,7 @@ export interface InputRichTextProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<InputRichTextProps>(), {
   helperPlacement: 'below'
 })
@@ -131,9 +133,9 @@ const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigat
 const mod = isMac ? '⌘' : 'Ctrl+'
 
 const marks = [
-  { name: 'bold', label: 'Bold', icon: BoldIcon, key: 'B', toggle: () => editor.value?.chain().focus().toggleBold().run() },
-  { name: 'italic', label: 'Italic', icon: ItalicIcon, key: 'I', toggle: () => editor.value?.chain().focus().toggleItalic().run() },
-  { name: 'underline', label: 'Underline', icon: UnderlineIcon, key: 'U', toggle: () => editor.value?.chain().focus().toggleUnderline().run() }
+  { name: 'bold', get label() { return t('ui.inputRichText.bold') }, icon: BoldIcon, key: 'B', toggle: () => editor.value?.chain().focus().toggleBold().run() },
+  { name: 'italic', get label() { return t('ui.inputRichText.italic') }, icon: ItalicIcon, key: 'I', toggle: () => editor.value?.chain().focus().toggleItalic().run() },
+  { name: 'underline', get label() { return t('ui.inputRichText.underline') }, icon: UnderlineIcon, key: 'U', toggle: () => editor.value?.chain().focus().toggleUnderline().run() }
 ] as const
 
 // The text area: at least 4 lines, then it grows to 15 lines and scrolls.
@@ -168,7 +170,7 @@ const editable = [
         <!-- Pressing a button keeps focus (and the selection) in the text. -->
         <div
           role="toolbar"
-          :aria-label="`Formatting for ${label}`"
+          :aria-label="t('ui.inputRichText.formattingFor', { label })"
           :aria-controls="slot.id"
           class="flex items-center gap-0.5 border-b border-black/15 px-1.5 py-1 [&_svg]:opacity-100!"
           @mousedown.prevent

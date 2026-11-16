@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, type HTMLAttributes } from 'vue'
 import { ProgressRoot } from 'reka-ui'
 import { cn } from '../../lib/cn'
@@ -26,10 +27,10 @@ export interface SpinnerProps {
   class?: HTMLAttributes['class']
 }
 
+const { t } = useI18n()
 const props = withDefaults(defineProps<SpinnerProps>(), {
   max: 100,
-  size: 'md',
-  label: 'Loading'
+  size: 'md'
 })
 
 const indeterminate = computed(() => props.value === null || props.value === undefined)
@@ -57,7 +58,7 @@ const sizes: Record<NonNullable<SpinnerProps['size']>, string> = {
     as="span"
     :model-value="indeterminate ? null : fraction * max"
     :max="max"
-    :aria-label="label"
+    :aria-label="label ?? t('ui.spinner.loading')"
     :class="cn('relative inline-flex shrink-0 items-center justify-center', sizes[size], props.class)"
   >
     <svg
