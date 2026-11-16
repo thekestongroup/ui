@@ -92,6 +92,9 @@ export const SelectAll: Story = {
 
 export const Disabled: Story = { args: { disabled: true } };
 
+/** For a row checkbox in a Table: the label is for screen readers, and the box has a larger area to press. */
+export const HiddenLabel: Story = { args: { hideLabel: true } };
+
 export const DisabledTicked: Story = {
   args: { disabled: true },
   render: (args) => ({

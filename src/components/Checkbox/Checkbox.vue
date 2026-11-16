@@ -26,6 +26,11 @@ export interface CheckboxProps {
   value?: string
   required?: boolean
   disabled?: boolean
+  /**
+   * Keep the label (and description) for screen readers only, e.g. a row
+   * checkbox in a Table. The box then gets a larger area to press.
+   */
+  hideLabel?: boolean
   class?: HTMLAttributes['class']
 }
 
@@ -66,6 +71,10 @@ const box = [
   'outline-2 outline-offset-2 outline-transparent focus-visible:outline-focus',
   '[&_svg]:size-3.5 [&_svg]:stroke-3'
 ]
+
+// With no label to press, the box gets a 40px square to press (WCAG 2.5.8
+// asks for 24px); it's invisible and doesn't change the layout.
+const hitArea = 'relative after:absolute after:-inset-3 after:content-[""]'
 </script>
 
 <template>
@@ -80,7 +89,7 @@ const box = [
         :disabled="disabled"
         :aria-invalid="errorText ? true : undefined"
         :aria-describedby="describedBy"
-        :class="cn(box, errorText ? 'border-red' : 'border-black/55')"
+        :class="cn(box, hideLabel && hitArea, errorText ? 'border-red' : 'border-black/55')"
       >
         <CheckboxIndicator class="flex">
           <Minus v-if="model === 'indeterminate'" aria-hidden="true" />
@@ -88,7 +97,7 @@ const box = [
         </CheckboxIndicator>
       </CheckboxRoot>
       <div
-        :class="cn('flex min-w-0 flex-col gap-0.5', disabled ? 'cursor-not-allowed' : 'cursor-pointer')"
+        :class="cn('flex min-w-0 flex-col gap-0.5', disabled ? 'cursor-not-allowed' : 'cursor-pointer', hideLabel && 'sr-only')"
         @click="pressControl($event, controlId)"
       >
         <label :for="controlId" :class="cn('text-sm', disabled ? 'cursor-not-allowed' : 'cursor-pointer')">{{ label }}</label>
