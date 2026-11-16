@@ -116,7 +116,10 @@ export const en = {
     summaryList: { notSet: 'Not set' },
     table: {
       table: 'Table',
-      empty: 'Nothing to show.'
+      empty: 'Nothing to show.',
+      selectAll: 'Select all rows',
+      selectRow: 'Select row {n}',
+      select: 'Select'
     }
   }
 }

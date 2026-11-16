@@ -241,11 +241,11 @@ onBeforeUnmount(() => observer?.disconnect())
             <Checkbox
               v-if="selectableKeys.length"
               :model-value="allState"
-              label="Select all rows"
+              :label="t('ui.table.selectAll')"
               hide-label
               @update:model-value="setAll($event === true)"
             />
-            <span v-else class="sr-only">Select</span>
+            <span v-else class="sr-only">{{ t('ui.table.select') }}</span>
           </th>
           <th
             v-for="column in columns"
@@ -305,7 +305,7 @@ onBeforeUnmount(() => observer?.disconnect())
             <Checkbox
               v-if="canSelect(row)"
               :model-value="isSelected(row, index)"
-              :label="rowLabel ? rowLabel(row, index) : `Select row ${index + 1}`"
+              :label="rowLabel ? rowLabel(row, index) : t('ui.table.selectRow', { n: index + 1 })"
               hide-label
               @update:model-value="setRow(row, index, $event === true)"
             />
