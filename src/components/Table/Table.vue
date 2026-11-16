@@ -127,6 +127,15 @@ function setAll(on: boolean) {
 // The checkbox cell is above a row's link, so clicking anywhere in it ticks
 // the box rather than opening the row.
 const selectCell = 'relative z-1 w-0 cursor-pointer'
+/**
+ * Pressing anywhere in the cell ticks the box: the cell's padding and the gap
+ * around the box, not only the box. The box and its (hidden) label do their
+ * own ticking, so they're left alone, or it would tick twice.
+ */
+function onCellPress(event: MouseEvent, toggle: () => void) {
+  if ((event.target as HTMLElement).closest('button, label, .sr-only')) return
+  toggle()
+}
 const colspan = computed(() => props.columns.length + (props.selectable ? 1 : 0))
 
 const shownRows = computed(() => (props.manualSort ? props.rows : sortRows(props.rows, props.columns, sort.value)))
@@ -227,7 +236,7 @@ onBeforeUnmount(() => observer?.disconnect())
             v-if="selectable"
             scope="col"
             :class="cn('border-b border-black/15', cellPadding, selectableKeys.length && selectCell)"
-            @click.self="setAll(allState !== true)"
+            @click="onCellPress($event, () => selectableKeys.length && setAll(allState !== true))"
           >
             <Checkbox
               v-if="selectableKeys.length"
@@ -291,7 +300,7 @@ onBeforeUnmount(() => observer?.disconnect())
           <td
             v-if="selectable"
             :class="cn('border-b border-black/15 align-middle', !inset && 'group-last/row:border-b-0', cellPadding, canSelect(row) && selectCell)"
-            @click.self="canSelect(row) && setRow(row, index, !isSelected(row, index))"
+            @click="canSelect(row) && onCellPress($event, () => setRow(row, index, !isSelected(row, index)))"
           >
             <Checkbox
               v-if="canSelect(row)"
