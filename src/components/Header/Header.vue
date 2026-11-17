@@ -202,6 +202,7 @@ function runAction(action: HeaderUserAction, close: () => void) {
               <p
                 v-if="user.organisation"
                 class="truncate px-4 pt-3 text-xs font-bold text-black/65 uppercase"
+                :title="user.organisation"
               >
                 {{ user.organisation }}
               </p>
@@ -211,8 +212,8 @@ function runAction(action: HeaderUserAction, close: () => void) {
               <div class="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3 gap-y-2 px-4 py-3">
                 <Avatar :user="user" size="lg" decorative />
                 <div class="flex min-w-0 flex-col">
-                  <span class="truncate font-bold">{{ user.name }}</span>
-                  <span v-if="user.email" class="truncate text-sm text-black/65">{{ user.email }}</span>
+                  <span class="truncate font-bold" :title="user.name">{{ user.name }}</span>
+                  <span v-if="user.email" class="truncate text-sm text-black/65" :title="user.email">{{ user.email }}</span>
                 </div>
                 <Button
                   v-if="userActions.includes('account-settings')"
