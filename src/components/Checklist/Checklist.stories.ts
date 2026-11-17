@@ -25,6 +25,12 @@ export const Default: Story = {
   decorators: [() => ({ template: '<div class="max-w-72"><story /></div>' })],
 };
 
+/** After submitting without meeting everything: the circles not done yet turn red. */
+export const Invalid: Story = {
+  decorators: [() => ({ template: '<div class="max-w-72"><story /></div>' })],
+  args: { invalid: true },
+};
+
 /** Long steps wrap; the icon stays level with the first line. */
 export const LongItems: Story = {
   decorators: [() => ({ template: '<div class="max-w-72"><story /></div>' })],

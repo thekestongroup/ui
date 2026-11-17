@@ -16,6 +16,8 @@ export interface ChecklistItem {
 
 export interface ChecklistProps {
   items: ChecklistItem[]
+  /** Turns the circles of items not done yet red, e.g. after submitting a form that doesn't meet them. */
+  invalid?: boolean
   class?: HTMLAttributes['class']
 }
 
@@ -28,7 +30,7 @@ const props = defineProps<ChecklistProps>()
       <!-- h-5 keeps the icon level with the first line of a label that wraps. -->
       <span class="flex h-5 shrink-0 items-center">
         <CircleCheck v-if="item.done" class="size-4 text-green" aria-hidden="true" />
-        <Circle v-else class="size-4 text-black/40" aria-hidden="true" />
+        <Circle v-else :class="cn('size-4', invalid ? 'text-red' : 'text-black/40')" aria-hidden="true" />
       </span>
       <span :class="item.done ? 'text-black' : 'text-black/65'">
         {{ item.label }}<span class="sr-only">{{ item.done ? ' (done)' : ' (to do)' }}</span>

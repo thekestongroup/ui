@@ -295,6 +295,10 @@ const panel = [
             v-if="title || description || close || steps || $slots.header || $slots.title"
             :class="cn('flex flex-col gap-4 border-b border-black/15 px-6 py-4', ui?.header)"
           >
+            <!-- The step sits above its progress bar. -->
+            <p v-if="steps" :id="stepLabelId" class="text-sm text-black/65">
+              Step {{ step + 1 }} of {{ stepCount }}: <span class="text-black">{{ steps[step] }}</span>
+            </p>
             <Progress v-if="steps" :label="title ?? t('ui.slideover.steps')" segments :value="step + 1" :max="stepCount" />
             <div class="flex items-start gap-4">
             <slot name="header" :close="closePanel">
@@ -310,9 +314,7 @@ const panel = [
                   class="flex flex-col gap-1 text-sm text-black/65"
                 >
                   <p v-if="description || $slots.description"><slot name="description">{{ description }}</slot></p>
-                  <p v-if="steps" :id="stepLabelId">
-                    Step {{ step + 1 }} of {{ stepCount }}: <span class="text-black">{{ steps[step] }}</span>
-                  </p>
+                  <p v-if="steps" class="sr-only">{{ stepText }}</p>
                 </DialogDescription>
                 <p v-if="steps" aria-live="polite" class="sr-only">{{ announcement }}</p>
               </div>
