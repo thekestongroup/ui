@@ -40,6 +40,7 @@ export const en = {
       chooseMonth: 'Choose month',
       chooseYear: 'Choose year'
     },
+    changeIndicator: { changed: 'Changed from {from} to {to}' },
     chip: { remove: 'Remove' },
     formField: { about: 'About {label}' },
     header: {
@@ -120,6 +121,11 @@ export const en = {
       selectAll: 'Select all rows',
       selectRow: 'Select row {n}',
       select: 'Select'
+    },
+    unsavedChangesBar: {
+      message: 'Unsaved changes',
+      discard: 'Discard',
+      save: 'Save'
     }
   }
 }

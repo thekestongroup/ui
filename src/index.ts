@@ -34,6 +34,8 @@ export { default as Spinner } from './components/Spinner/Spinner.vue'
 export type { SpinnerProps } from './components/Spinner/Spinner.vue'
 export { default as Progress } from './components/Progress/Progress.vue'
 export type { ProgressProps } from './components/Progress/Progress.vue'
+export { default as ChangeIndicator } from './components/ChangeIndicator/ChangeIndicator.vue'
+export type { ChangeIndicatorProps } from './components/ChangeIndicator/ChangeIndicator.vue'
 
 // Form
 export { default as FormField } from './components/FormField/FormField.vue'
@@ -66,6 +68,8 @@ export { default as CheckboxGroup } from './components/CheckboxGroup/CheckboxGro
 export type { CheckboxGroupProps, CheckboxOption, CheckboxGroupValue } from './components/CheckboxGroup/CheckboxGroup.vue'
 export { default as LanguageSwitcher } from './components/LanguageSwitcher/LanguageSwitcher.vue'
 export type { LanguageSwitcherProps } from './components/LanguageSwitcher/LanguageSwitcher.vue'
+export { default as CardSelect } from './components/CardSelect/CardSelect.vue'
+export type { CardSelectProps } from './components/CardSelect/CardSelect.vue'
 
 // Data
 export { default as Table } from './components/Table/Table.vue'
@@ -124,6 +128,8 @@ export type {
   NotificationType,
   ToastOptions
 } from './components/Notification/notifications'
+export { default as UnsavedChangesBar } from './components/UnsavedChangesBar/UnsavedChangesBar.vue'
+export type { UnsavedChangesBarProps } from './components/UnsavedChangesBar/UnsavedChangesBar.vue'
 
 // Languages
 export { createKestonI18n, uiMessages, en } from './i18n'
