@@ -54,3 +54,13 @@ describe('createKestonI18n', () => {
     }
   })
 })
+
+describe('new component words', () => {
+  it('has words for the unsaved changes bar and change indicator', () => {
+    const i18n = createKestonI18n()
+    expect(i18n.global.t('ui.unsavedChangesBar.message')).toBe('Unsaved changes')
+    expect(i18n.global.t('ui.unsavedChangesBar.discard')).toBe('Discard')
+    expect(i18n.global.t('ui.unsavedChangesBar.save')).toBe('Save')
+    expect(i18n.global.t('ui.changeIndicator.changed', { from: 15, to: '5 phrases' })).toBe('Changed from 15 to 5 phrases')
+  })
+})
