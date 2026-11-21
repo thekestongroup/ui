@@ -1,0 +1,17 @@
+# Opens pull requests for outdated dependencies, so security fixes arrive
+# without anyone having to remember. Patch and minor updates are grouped to
+# keep the number of pull requests down; major ones come one at a time.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      npm-minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
