@@ -112,19 +112,15 @@ prop, component or token).
 
 1. With each change, run `pnpm changeset` and commit the file it creates.
    Merging only collects changes: nothing is released yet.
-2. When you want a release, run the **Release** workflow: Actions → Release →
-   Run workflow, or:
-
-   ```sh
-   gh workflow run release.yml -R thekestongroup/ui
-   ```
-
-   It tests and builds, works out the version from the changesets waiting,
-   updates `package.json` and `CHANGELOG.md`, commits and tags that on
-   `main`, and creates a GitHub Release. Then it starts the **Publish**
+2. The **Release PR** workflow keeps a "Release vX" pull request up to date
+   with every changeset waiting on `main`: the new version in `package.json`
+   and the entry in `CHANGELOG.md`. It only proposes the release. You can also
+   run it by hand: Actions → Release PR → Run workflow.
+3. When you want a release, merge that pull request. The **Tag release**
+   workflow then tags it, creates a GitHub Release and starts the **Publish**
    workflow, which stages the release on npm (trusted publishing, no token
-   needed). With no changesets waiting, it stops without releasing.
-3. Approve the staged release on npmjs.com to make it live.
+   needed).
+4. Approve the staged release on npmjs.com to make it live.
 
 If staging on npm fails, run **Publish** again by hand on the release's tag
 (e.g. `v0.4.0`); it skips a version that's already on npm.
