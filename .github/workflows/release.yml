@@ -65,7 +65,7 @@ jobs:
 
       - name: Setup pnpm
         if: steps.pending.outputs.found == 'true'
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Setup Node
         if: steps.pending.outputs.found == 'true'
