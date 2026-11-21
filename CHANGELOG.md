@@ -1,5 +1,12 @@
 # @thekestongroup/ui
 
+## 0.11.0
+
+### Minor Changes
+
+- 8a11350: `StatTile` can be a link: give it an `href` (or `as`, e.g. `RouterLink`, with its `to`) and the whole tile is clickable. An arrow in the corner shows it, the border darkens on hover and the background on press, and keyboard focus gets the usual ring. Static tiles are unchanged. (A link tile doesn't show the `footer` slot.)
+- 402c2ea: Header and AppShell: new `organisation` slot replaces the organisation heading at the top of the account menu (for example with a row that switches organisation), with a divider under it. The account menu is now `w-80`, so the Switch account and Log out buttons have the same 16px padding on both sides instead of overflowing on the right.
+
 ## 0.10.0
 
 ### Minor Changes
