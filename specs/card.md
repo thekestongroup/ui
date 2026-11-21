@@ -53,7 +53,7 @@
 
 ## States
 
-Not interactive: one state.
+Not interactive: one state. A clickable stat is a StatTile with `href` or `as`, which adds the arrow and hover, pressed and focus states around a Card.
 
 ## Layout
 
