@@ -8,6 +8,9 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Also by hand: the release workflow starts it on the release branch, where
+  # pull requests made with the workflow's token don't start workflows.
+  workflow_dispatch:
   schedule:
     - cron: "41 5 * * 1"
 

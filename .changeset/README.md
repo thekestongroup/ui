@@ -11,6 +11,6 @@ Pick **patch** (bug fix), **minor** (something new, nothing breaks) or
 write one line describing the change. Commit the generated file with your
 change.
 
-The Release workflow collects these into a "Version Packages" pull request
-that bumps the version and writes CHANGELOG.md. Merging that pull request
-publishes the release.
+The Release PR workflow collects these into a "Release vX" pull request that
+bumps the version and writes CHANGELOG.md. Merging that pull request releases
+it: the Tag release workflow tags it and stages it on npm.

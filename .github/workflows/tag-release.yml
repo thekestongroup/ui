@@ -1,0 +1,69 @@
+name: Tag release
+
+# Runs when a version change reaches main (the merged "Release vX" pull
+# request): tags it, creates the GitHub Release from CHANGELOG.md, then starts
+# Publish (stages it on npm) and Docs (the changelog page). Does nothing when
+# package.json changed but its version already has a tag, e.g. a dependency
+# update.
+
+on:
+  push:
+    branches: [main]
+    paths: [package.json]
+  workflow_dispatch:
+
+permissions:
+  contents: write # create the tag and the GitHub Release
+  actions: write # start publish.yml and docs.yml
+
+concurrency:
+  group: tag-release
+  cancel-in-progress: false
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Check whether this version is new
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if git rev-parse -q --verify "refs/tags/v$VERSION" >/dev/null; then
+            echo "new=false" >> "$GITHUB_OUTPUT"
+            echo "v$VERSION is already tagged: nothing to release." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "new=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create the tag and GitHub Release
+        if: steps.version.outputs.new == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          awk -v v="## $VERSION" '$0 == v {found=1; next} found && /^## / {exit} found' CHANGELOG.md > release-notes.md
+          gh release create "v$VERSION" --target "$GITHUB_SHA" --title "v$VERSION" --notes-file release-notes.md
+
+      # A push by this workflow doesn't start other workflows, so start them.
+      - name: Stage on npm and update the docs
+        if: steps.version.outputs.new == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          gh workflow run publish.yml --ref "v$VERSION"
+          gh workflow run docs.yml --ref main
+          {
+            echo "## Released v$VERSION"
+            echo
+            cat release-notes.md
+            echo
+            echo "Publish is staging it on npm. Approve it on npmjs.com to make it live."
+          } >> "$GITHUB_STEP_SUMMARY"

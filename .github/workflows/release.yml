@@ -1,19 +1,19 @@
-name: Release
+name: Release PR
 
-# Releases a new version on its own whenever changesets reach main (a merged
-# PR that includes one), so the only step left is approving the staged
-# release on npmjs.com. It can also be run by hand: Actions → Release → Run
-# workflow, or `gh workflow run release.yml -R thekestongroup/ui`.
+# Keeps a "Release vX" pull request up to date with every changeset waiting on
+# main. Nothing is released by this: it only proposes the new version
+# (package.json and CHANGELOG.md, with the changesets used up). Merging that
+# pull request is the release: tag-release.yml then tags it, creates the GitHub
+# Release and stages it on npm.
 #
-# It takes every changeset merged since the last release, works out the
-# version (any major → major, else any minor → minor, else patch), updates
-# package.json and CHANGELOG.md, commits and tags that on main, creates a
-# GitHub Release, then starts publish.yml to stage it on npm. Approve the
-# staged release on npmjs.com to make it live.
+# Runs whenever changesets reach main, and by hand: Actions → Release PR → Run
+# workflow. With no changesets waiting it closes any open release PR.
 #
-# With no changesets waiting, it stops without releasing anything. Its own
-# "Release vX" commit doesn't start it again (pushes made with the workflow's
-# token don't trigger workflows).
+# The pull request is made with the workflow's token, and pull requests made
+# that way don't start other workflows. The required checks are therefore
+# started here by hand (security.yml and codeql.yml, on the release branch), so
+# they report on the pull request. Needs Settings → Actions → General → "Allow
+# GitHub Actions to create and approve pull requests".
 
 on:
   push:
@@ -22,16 +22,20 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write # commit the version, push the tag, create the GitHub Release
-  actions: write # start publish.yml and docs.yml
+  contents: write # push the release branch
+  pull-requests: write # open and update the pull request
+  actions: write # start the checks on the release branch
 
-# One release at a time.
+# One at a time, so two quick merges don't race to update the branch.
 concurrency:
-  group: release
+  group: release-pr
   cancel-in-progress: false
 
+env:
+  BRANCH: changeset-release/main
+
 jobs:
-  release:
+  release-pr:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main
@@ -47,8 +51,17 @@ jobs:
             echo "found=true" >> "$GITHUB_OUTPUT"
           else
             echo "found=false" >> "$GITHUB_OUTPUT"
-            echo "Nothing to release: no changesets since the last release." >> "$GITHUB_STEP_SUMMARY"
+            echo "No changesets waiting, so no release pull request." >> "$GITHUB_STEP_SUMMARY"
           fi
+
+      # Nothing to release (e.g. the release pull request was just merged):
+      # close a release PR that is still open.
+      - name: Close a stale release pull request
+        if: steps.pending.outputs.found == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr close "$BRANCH" --delete-branch --comment "No changesets are waiting any more." || true
 
       - name: Setup pnpm
         if: steps.pending.outputs.found == 'true'
@@ -65,7 +78,7 @@ jobs:
         if: steps.pending.outputs.found == 'true'
         run: pnpm install --frozen-lockfile
 
-      # Don't release something that doesn't build or pass its tests.
+      # Don't propose a release that doesn't build or pass its tests.
       - name: Test and build
         if: steps.pending.outputs.found == 'true'
         run: |
@@ -79,42 +92,44 @@ jobs:
           pnpm changeset version
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          # This version's changelog entry, for the GitHub Release notes.
+          # This version's changelog entry, for the pull request description.
           awk -v v="## $VERSION" '$0 == v {found=1; next} found && /^## / {exit} found' CHANGELOG.md > release-notes.md
 
-      - name: Commit and tag
+      - name: Push the release branch
         if: steps.pending.outputs.found == 'true'
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH"
           git add package.json CHANGELOG.md .changeset
           git commit -m "Release v$VERSION"
-          git tag "v$VERSION"
-          git push origin HEAD:main "v$VERSION"
+          git push --force origin "$BRANCH"
 
-      - name: Create GitHub Release
-        if: steps.pending.outputs.found == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ steps.version.outputs.version }}
-        run: gh release create "v$VERSION" --title "v$VERSION" --notes-file release-notes.md
-
-      # A push by this workflow doesn't start other workflows, so start them:
-      # Publish (stages the release on npm) and Docs (the changelog page).
-      - name: Stage on npm and update the docs
+      - name: Open or update the pull request
         if: steps.pending.outputs.found == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          gh workflow run publish.yml --ref "v$VERSION"
-          gh workflow run docs.yml --ref main
           {
-            echo "## Released v$VERSION"
-            echo
             cat release-notes.md
             echo
-            echo "Publish is staging it on npm. Approve it on npmjs.com to make it live."
-          } >> "$GITHUB_STEP_SUMMARY"
+            echo "---"
+            echo "Merging this releases v$VERSION: it is tagged, a GitHub Release is created and it is staged on npm (approve it on npmjs.com to make it live)."
+          } > pr-body.md
+          if gh pr view "$BRANCH" --json state -q .state 2>/dev/null | grep -q OPEN; then
+            gh pr edit "$BRANCH" --title "Release v$VERSION" --body-file pr-body.md
+          else
+            gh pr create --base main --head "$BRANCH" --title "Release v$VERSION" --body-file pr-body.md
+          fi
+
+      # Required checks only count if they ran on the branch's latest commit.
+      - name: Start the required checks
+        if: steps.pending.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run security.yml --ref "$BRANCH"
+          gh workflow run codeql.yml --ref "$BRANCH"
