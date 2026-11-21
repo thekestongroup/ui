@@ -30,7 +30,9 @@ export type HeaderUserAction = 'account-settings' | 'switch-account' | 'log-out'
  * fills the space between title and trailing), trailing (actions before the
  * account menu), account (replaces the account menu, or the Sign in button),
  * account-menu (extra content in the account menu, above Switch account /
- * Log out: `{ close }`).
+ * Log out: `{ close }`), organisation (replaces the organisation heading at the
+ * very top of the account menu, e.g. with a row that switches organisation:
+ * `{ close }`).
  */
 export interface HeaderProps {
   /** Name of the app or area, shown next to the menu button. */
@@ -108,6 +110,7 @@ defineSlots<{
   trailing?(): unknown
   account?(): unknown
   'account-menu'?(props: { close: () => void }): unknown
+  organisation?(props: { close: () => void }): unknown
 }>()
 
 // "Ben Smith" → "BS", "Ben" → "B".
@@ -192,20 +195,22 @@ function runAction(action: HeaderUserAction, close: () => void) {
       <slot name="account">
         <!-- Account menu: the user's avatar opens a panel with who is signed
              in and the account actions. -->
-        <Popover v-if="user" :content="{ align: 'end' }" :ui="{ content: cn('w-72', ui?.userMenu) }">
+        <Popover v-if="user" :content="{ align: 'end' }" :ui="{ content: cn('w-80', ui?.userMenu) }">
           <Button variant="ghost" square :aria-label="accountLabel" class="-mr-1.5 rounded-full">
             <Avatar :user="user" size="sm" decorative />
           </Button>
 
           <template #content="{ close }">
             <div class="flex flex-col">
-              <p
-                v-if="user.organisation"
-                class="truncate px-4 pt-3 text-xs font-bold text-black/65 uppercase"
-                :title="user.organisation"
-              >
-                {{ user.organisation }}
-              </p>
+              <!-- The organisation at the top, with a divider under it. The
+                   organisation slot replaces the plain heading. -->
+              <div v-if="user.organisation || $slots.organisation" class="border-b border-black/15">
+                <slot name="organisation" :close="close">
+                  <p class="truncate px-4 py-3 text-xs font-bold text-black/65 uppercase" :title="user.organisation">
+                    {{ user.organisation }}
+                  </p>
+                </slot>
+              </div>
               <!-- Two columns: the avatar at the top left, beside the name and
                    email; Account settings sits under them in the text column,
                    without moving the avatar. -->

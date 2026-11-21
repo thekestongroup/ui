@@ -94,6 +94,35 @@ export const CustomUserMenu: Story = {
   }),
 };
 
+/**
+ * The organisation slot replaces the organisation heading at the top of the
+ * account menu, e.g. with a row that switches organisation. A divider sits
+ * under it.
+ */
+export const OrganisationSwitcher: Story = {
+  render: (args) => ({
+    components: { Header, Building2, ChevronRight },
+    setup: () => ({ args }),
+    template: `
+      <Header v-bind="args">
+        <template #organisation="{ close }">
+          <button
+            type="button"
+            class="flex w-full items-center gap-2 px-4 py-3 text-left text-sm hover:bg-black/5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus"
+            @click="close"
+          >
+            <Building2 class="size-4 shrink-0" aria-hidden="true" />
+            <span class="flex min-w-0 flex-1 flex-col">
+              <span class="truncate font-bold">The Keston School</span>
+              <span class="text-xs text-black/65">Switch organisation</span>
+            </span>
+            <ChevronRight class="size-4 shrink-0" aria-hidden="true" />
+          </button>
+        </template>
+      </Header>`,
+  }),
+};
+
 /** The whole account area replaced with the account slot. */
 export const CustomUser: Story = {
   render: (args) => ({

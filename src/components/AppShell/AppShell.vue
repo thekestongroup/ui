@@ -29,7 +29,7 @@ import Slideover from '../Slideover/Slideover.vue'
  * account-settings, switch-account, log-out (and sign-in when signed out).
  *
  * Slots: default (the page), header-leading, header-middle, header-trailing,
- * account, account-menu (passed to Header), sidebar-header and sidebar-footer (passed to Sidebar;
+ * account, account-menu and organisation (passed to Header), sidebar-header and sidebar-footer (passed to Sidebar;
  * sidebar-header is only shown on wide screens, as the Slideover has its own
  * title).
  */
@@ -86,6 +86,7 @@ defineSlots<{
   'header-trailing'?(): unknown
   account?(): unknown
   'account-menu'?(props: { close: () => void }): unknown
+  organisation?(props: { close: () => void }): unknown
   'sidebar-header'?(props: { collapsed: boolean }): unknown
   'sidebar-footer'?(props: { collapsed: boolean; mobile: boolean }): unknown
 }>()
@@ -166,6 +167,7 @@ const sidebarId = `${uid}-sidebar`
       <template v-if="$slots['header-trailing']" #trailing><slot name="header-trailing" /></template>
       <template v-if="$slots.account" #account><slot name="account" /></template>
       <template v-if="$slots['account-menu']" #account-menu="slotProps"><slot name="account-menu" v-bind="slotProps" /></template>
+      <template v-if="$slots.organisation" #organisation="slotProps"><slot name="organisation" v-bind="slotProps" /></template>
     </Header>
 
     <div class="flex flex-1">

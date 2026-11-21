@@ -22,7 +22,7 @@
 | middle | No | Fills the space between title and trailing, e.g. breadcrumbs. |
 | trailing | No | Actions before the account menu, e.g. notifications. |
 | account | No | Round avatar (picture or initials) opening the account menu; Sign in button when signed out. Slot `account` replaces it. |
-| account menu | No | Panel under the avatar: organisation, large avatar, name, email, with a small basic Account settings button under them; then a row of basic buttons, Switch account (left) and Log out (right). Slot `account-menu` adds content above that row. |
+| account menu | No | Panel under the avatar: organisation (with a divider under it), large avatar, name, email, with a small basic Account settings button under them; then a row of basic buttons, Switch account (left) and Log out (right). Slot `organisation` replaces the plain organisation heading at the top (e.g. with a row that switches organisation); slot `account-menu` adds content above the bottom row. |
 
 ## Properties
 
@@ -59,7 +59,7 @@
 ## Behaviour
 
 - Menu button: press emits `menu`; the app opens the Sidebar (in a Slideover) itself.
-- Account menu: opens on click / tap / Enter below the avatar, aligned to its right edge (w-72). Focus moves into it; Escape or clicking outside closes it. Choosing an action closes it, then emits the event; the app does the navigation or sign-out.
+- Account menu: opens on click / tap / Enter below the avatar, aligned to its right edge (w-80, so the bottom row's two buttons fit with 16px either side). Focus moves into it; Escape or clicking outside closes it. Choosing an action closes it, then emits the event; the app does the navigation or sign-out.
 - The menu button's icon lines up with the header's padding (negative margin), like the × in Slideover.
 
 ## Accessibility
