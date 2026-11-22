@@ -1,5 +1,11 @@
 # @thekestongroup/ui
 
+## 0.11.1
+
+### Patch Changes
+
+- 0043b5c: Docs: releases now go through a "Release vX" pull request, which is merged to release.
+
 ## 0.11.0
 
 ### Minor Changes
