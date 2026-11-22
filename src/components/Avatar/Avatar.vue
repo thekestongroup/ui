@@ -59,6 +59,9 @@ const sizes: Record<NonNullable<AvatarProps['size']>, string> = {
   xl: 'size-16 text-xl'
 }
 
+// Pixel size of each `sizes` entry, so the browser can reserve the space before the image loads.
+const pixels: Record<NonNullable<AvatarProps['size']>, number> = { xs: 20, sm: 28, md: 36, lg: 48, xl: 64 }
+
 const circle = 'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary font-bold text-white select-none'
 </script>
 
@@ -74,7 +77,7 @@ const circle = 'relative inline-flex shrink-0 items-center justify-center overfl
         props.class
       )"
     >
-      <img v-if="showImage" :src="user.avatar" alt="" class="size-full object-cover" @error="failed = true">
+      <img v-if="showImage" :src="user.avatar" :width="pixels[size]" :height="pixels[size]" loading="lazy" decoding="async" alt="" class="size-full object-cover" @error="failed = true">
       <span v-else aria-hidden="true">{{ initials }}</span>
     </button>
 
@@ -85,7 +88,7 @@ const circle = 'relative inline-flex shrink-0 items-center justify-center overfl
         </p>
         <div class="flex items-center gap-3 px-4 py-3">
           <span :class="cn(circle, sizes.lg)" aria-hidden="true">
-            <img v-if="showImage" :src="user.avatar" alt="" class="size-full object-cover">
+            <img v-if="showImage" :src="user.avatar" :width="pixels.lg" :height="pixels.lg" loading="lazy" decoding="async" alt="" class="size-full object-cover">
             <template v-else>{{ initials }}</template>
           </span>
           <div class="flex min-w-0 flex-col">
@@ -112,7 +115,7 @@ const circle = 'relative inline-flex shrink-0 items-center justify-center overfl
     :aria-hidden="decorative || undefined"
     :class="cn(circle, sizes[size], props.class)"
   >
-    <img v-if="showImage" :src="user.avatar" alt="" class="size-full object-cover" @error="failed = true">
+    <img v-if="showImage" :src="user.avatar" :width="pixels[size]" :height="pixels[size]" loading="lazy" decoding="async" alt="" class="size-full object-cover" @error="failed = true">
     <span v-else aria-hidden="true">{{ initials }}</span>
   </span>
 </template>
