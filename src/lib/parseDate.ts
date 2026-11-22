@@ -183,7 +183,7 @@ type Start =
 function pick(candidates: (CalendarDate | undefined)[], today: CalendarDate, prefer: DatePreference) {
   const dates = candidates.filter((d): d is CalendarDate => !!d).sort((a, b) => a.compare(b))
   if (prefer === 'future') return dates.find((d) => d.compare(today) >= 0)
-  if (prefer === 'past') return [...dates].reverse().find((d) => d.compare(today) <= 0)
+  if (prefer === 'past') return dates.findLast((d) => d.compare(today) <= 0)
   // nearest; ties go to the future
   return dates.reduce<CalendarDate | undefined>((best, d) => {
     if (!best) return d
