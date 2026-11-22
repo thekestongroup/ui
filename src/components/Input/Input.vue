@@ -82,6 +82,7 @@ const statusText = computed(() => props.statusText ?? lengthError.value)
       <input
         :id="id"
         v-model="model"
+        :spellcheck="$attrs.type === 'email' ? false : undefined"
         v-bind="$attrs"
         :disabled="disabled"
         :aria-invalid="invalid"

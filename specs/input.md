@@ -40,7 +40,7 @@
 | maxLength | number | — | Shows "Must be N characters or fewer" straight away. Typing isn't blocked. |
 | disabled | boolean | false | 40% opacity, not editable. |
 
-Attributes such as `type`, `name`, `placeholder` and `autocomplete` go to the `<input>`.
+Attributes such as `type`, `name`, `placeholder` and `autocomplete` go to the `<input>`. Email fields (`type="email"`) turn spellcheck off by default, since an address isn't prose; pass `spellcheck` to override.
 
 ## States
 
