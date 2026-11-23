@@ -196,7 +196,7 @@ export const StudentRecord: Story = {
             <div class="grid grid-cols-1 items-start gap-6 @4xl:grid-cols-[minmax(0,1fr)_20rem]">
               <div class="flex flex-col gap-6">
                 <!-- This term at a glance -->
-                <div class="grid grid-cols-1 gap-4 @lg:grid-cols-3">
+                <div class="grid grid-cols-1 gap-6 @lg:grid-cols-3">
                   <StatTile label="Attendance" value="96.4%" change="+1.2%" change-label="on last term" trend="up">
                     <template #footer>
                       <span class="flex items-center gap-1 text-xs text-black/65">
@@ -414,7 +414,7 @@ export const ApplicationReview: Story = {
         <div class="flex flex-col gap-6 p-4 sm:p-6">
           <PageHeader title="Applications" description="Applications for entry in 2027. Newest first." />
 
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
             <StatTile v-for="stat in stats" :key="stat.label" v-bind="stat" />
           </div>
 

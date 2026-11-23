@@ -59,7 +59,7 @@ Not interactive: one state. A clickable stat is a StatTile with `href` or `as`, 
 
 | Rule | Value |
 |---|---|
-| Space between cards | 16px in a grid, 24px stacked in a column |
+| Space between cards | 24px, in a grid or stacked in a column (stat tiles in a grid use the same gap) |
 | Background behind cards | Page background `#E1E1E1` |
 | Children's layout | Use container queries (`@sm:`, `@lg:` …), so content lays out by the card's width, not the window's |
 
