@@ -100,7 +100,7 @@ const pageTemplate = `
       </template>
     </PageHeader>
 
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
       <StatTile v-for="stat in stats" :key="stat.label" v-bind="stat" />
     </div>
 

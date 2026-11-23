@@ -92,7 +92,7 @@ A tile with `href` or `as` is a link. A static tile has one state.
 
 | Rule | Value |
 |---|---|
-| In a row | A grid: 1 column on phones, 2–4 as space allows, 16px gap |
+| In a row | A grid: 1 column on phones, 2–4 as space allows, 24px gap, the same as cards |
 | How many | 3–4 per row; more and none stands out |
 
 ## Platform adaptation

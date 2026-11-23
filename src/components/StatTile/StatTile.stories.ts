@@ -42,7 +42,7 @@ export const Grid: Story = {
     components: { StatTile },
     setup: () => ({ Users, FileText, CalendarCheck, UserX }),
     template: `
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile label="Students on roll" value="1,204" :icon="Users" change="+38" change-label="since September" trend="up" />
         <StatTile label="Open applications" value="48" :icon="FileText" change="+12%" change-label="on last year" trend="up" />
         <StatTile label="Attendance" value="95.8%" :icon="CalendarCheck" change="0.0 pts" change-label="on last week" trend="flat" href="#attendance" />

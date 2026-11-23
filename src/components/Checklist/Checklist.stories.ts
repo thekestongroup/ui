@@ -58,7 +58,7 @@ export const FollowingAForm: Story = {
     template: `
       <!-- Laid out by the space it has (container query), not the window. -->
       <div class="@container max-w-160">
-      <div class="grid grid-cols-1 items-start gap-4 @lg:grid-cols-[minmax(0,1fr)_14rem]">
+      <div class="grid grid-cols-1 items-start gap-6 @lg:grid-cols-[minmax(0,1fr)_14rem]">
         <Card title="Documents">
           <Checkbox v-model="form.address" label="Proof of address received" />
           <Checkbox v-model="form.report" label="School report received" />

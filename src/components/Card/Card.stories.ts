@@ -78,7 +78,7 @@ export const Stats: Story = {
   render: () => ({
     components: { Card, Badge },
     template: `
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
         <Card v-for="stat in [['Open applications', '48'], ['Interviews this week', '9'], ['Offers accepted', '31']]" :key="stat[0]" padding="sm" :ui="{ body: 'gap-1' }">
           <span class="text-sm text-black/65">{{ stat[0] }}</span>
           <span class="text-2xl font-bold">{{ stat[1] }}</span>
