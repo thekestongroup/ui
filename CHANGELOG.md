@@ -1,5 +1,11 @@
 # @thekestongroup/ui
 
+## 0.13.0
+
+### Minor Changes
+
+- a3a6d95: Add AppLauncher: a grid button in the header that opens a panel of the Keston apps (Keston ID, Admin, Work, Utilities, Design system), with the current app marked. AppShell gets a `launcher` prop to show it, and `kestonApps` lists the default apps.
+
 ## 0.12.0
 
 ### Minor Changes
