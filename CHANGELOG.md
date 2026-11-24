@@ -1,5 +1,17 @@
 # @thekestongroup/ui
 
+## 0.12.0
+
+### Minor Changes
+
+- 16d218e: New Footer component for every app: Help & support, Privacy Policy and Terms & Conditions on the left, and the app's name, version and build with the copyright on the right. AppShell takes a `footer` prop to show it under the page. Also exports `kestonFooterLinks` (the default links) and `kestonGroupLinks` (the other Keston apps, to pass as `moreLinks`).
+
+### Patch Changes
+
+- f1d3981: Avatar: images now load lazily and reserve their space, so long lists of avatars no longer load off-screen pictures or shift the layout.
+- f1d3981: Input: email fields no longer spellcheck by default, so browsers stop underlining addresses. Pass `spellcheck` to override.
+- 589f61e: Docs: stat tiles and cards in a grid use the same 24px gap, in the specs and the Storybook examples.
+
 ## 0.11.1
 
 ### Patch Changes
