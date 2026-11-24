@@ -55,8 +55,14 @@ export default defineConfig({ define: { __APP_VERSION__: JSON.stringify(pkg.vers
 declare const __APP_VERSION__: string
 ```
 
+Vue templates can't read these build constants directly, so put them in a `const` in `<script>` and pass that:
+
 ```vue
-<AppShell :footer="{ appName: 'Keston Admin', version: __APP_VERSION__, since: 2024 }" … />
+<script setup lang="ts">
+const footer = { appName: 'Keston Admin', version: __APP_VERSION__, since: 2024 }
+</script>
+
+<AppShell :footer="footer" … />
 ```
 
 The build comes from CI, as another constant: in the build step, `GITHUB_SHA` (or the run number) goes in with `define`, so every deployed build says which commit it is. Locally there is none, so the build is left out.
@@ -68,8 +74,8 @@ define: {
 }
 ```
 
-```vue
-<AppShell :footer="{ appName: 'Keston Admin', version: __APP_VERSION__, build: __APP_BUILD__ || undefined, since: 2024 }" … />
+```ts
+const footer = { appName: 'Keston Admin', version: __APP_VERSION__, build: __APP_BUILD__ || undefined, since: 2024 }
 ```
 
 ## Sizes
@@ -100,7 +106,7 @@ define: {
 ## Content guidelines
 
 - Help is "Help & support", the wording most products use for a link that leads to answers and a way to contact someone. The legal links use the documents' full names: "Privacy Policy", "Terms & Conditions". Keep the list short: add to it with `moreLinks`, don't replace it.
-- The links point at keston.co's pages unless an app has its own help and policies.
+- The links point at thekestongroup.com's pages unless an app has its own help and policies.
 - App name: the product name as in the header, e.g. "Keston Admin".
 
 ## Accessibility

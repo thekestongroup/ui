@@ -5,9 +5,9 @@ import type { FooterLink } from './Footer.vue'
  * Apps can pass their own `links`, or add to these with `moreLinks`.
  */
 export const kestonFooterLinks: FooterLink[] = [
-  { label: 'Help & support', href: 'https://keston.co/help' },
-  { label: 'Privacy Policy', href: 'https://keston.co/privacy' },
-  { label: 'Terms & Conditions', href: 'https://keston.co/terms' }
+  { label: 'Help & support', href: 'https://thekestongroup.com/help' },
+  { label: 'Privacy Policy', href: 'https://thekestongroup.com/privacy' },
+  { label: 'Terms & Conditions', href: 'https://thekestongroup.com/terms' }
 ]
 
 /** Links to the rest of the Keston Group. Not shown by default: pass them as `moreLinks` where an app should offer them. */

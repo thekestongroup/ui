@@ -27,9 +27,9 @@ describe('version', () => {
 })
 
 describe('kestonFooterLinks', () => {
-  it('are Help & support, Privacy Policy and Terms & Conditions, on secure keston.co addresses', () => {
+  it('are Help & support, Privacy Policy and Terms & Conditions, on secure thekestongroup.com addresses', () => {
     expect(kestonFooterLinks.map((l) => l.label)).toEqual(['Help & support', 'Privacy Policy', 'Terms & Conditions'])
-    for (const link of kestonFooterLinks) expect(link.href).toMatch(/^https:\/\/keston\.co\//)
+    for (const link of kestonFooterLinks) expect(link.href).toMatch(/^https:\/\/thekestongroup\.com\/(help|privacy|terms)$/)
   })
 })
 
