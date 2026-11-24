@@ -1,5 +1,11 @@
 # @thekestongroup/ui
 
+## 0.13.1
+
+### Patch Changes
+
+- fd00d2c: The default footer links now go to thekestongroup.com (Help & support, Privacy Policy, Terms & Conditions), and the Footer spec shows build constants being read in `<script>` rather than in a template.
+
 ## 0.13.0
 
 ### Minor Changes
