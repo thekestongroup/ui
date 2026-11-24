@@ -68,6 +68,11 @@ export const WithFooter: Story = {
   args: { footer: { appName: "Keston Admissions", version: "2.3.0", build: "a1b2c3d", since: 2024 } },
 };
 
+/** The Keston app launcher: a grid button in the header for moving between the Keston apps. */
+export const WithLauncher: Story = {
+  args: { launcher: { current: "admin" } },
+};
+
 /** titleTo: the app's name in the header links to its dashboard (`to` for `linkComponent`, or an href). */
 export const TitleLink: Story = {
   args: { titleTo: "#dashboard" },

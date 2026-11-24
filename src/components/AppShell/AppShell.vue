@@ -4,6 +4,7 @@ import { onBeforeUnmount, onMounted, useId, type HTMLAttributes } from 'vue'
 import { Menu } from '@lucide/vue'
 import { TooltipProvider } from 'reka-ui'
 import { cn } from '../../lib/cn'
+import AppLauncher, { type AppLauncherProps } from '../AppLauncher/AppLauncher.vue'
 import Button from '../Button/Button.vue'
 import Footer, { type FooterProps } from '../Footer/Footer.vue'
 import Header, { type HeaderProps, type HeaderUser, type HeaderUserAction } from '../Header/Header.vue'
@@ -57,6 +58,8 @@ export interface AppShellProps {
   collapsible?: boolean
   /** Show the Keston Group footer under the page. The Footer's props: `{ appName, version, … }`. Without it there is no footer. */
   footer?: FooterProps
+  /** Show the app launcher (a grid button for moving between Keston apps) in the header. `true` for the defaults, or the AppLauncher's props: `{ current: 'admin' }`. */
+  launcher?: boolean | AppLauncherProps
   /** Component used for sidebar items with `to`, and the title link, e.g. RouterLink. */
   linkComponent?: SidebarProps['linkComponent']
   /** Other Header props, e.g. `{ ui: { title: '…' } }`. */
@@ -171,7 +174,10 @@ const sidebarId = `${uid}-sidebar`
         <slot name="header-leading" />
       </template>
       <slot name="header-middle" />
-      <template v-if="$slots['header-trailing']" #trailing><slot name="header-trailing" /></template>
+      <template v-if="$slots['header-trailing'] || launcher" #trailing>
+        <slot name="header-trailing" />
+        <AppLauncher v-if="launcher" v-bind="launcher === true ? {} : launcher" />
+      </template>
       <template v-if="$slots.account" #account><slot name="account" /></template>
       <template v-if="$slots['account-menu']" #account-menu="slotProps"><slot name="account-menu" v-bind="slotProps" /></template>
       <template v-if="$slots.organisation" #organisation="slotProps"><slot name="organisation" v-bind="slotProps" /></template>

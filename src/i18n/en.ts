@@ -42,6 +42,7 @@ export const en = {
     },
     changeIndicator: { changed: 'Changed from {from} to {to}' },
     chip: { remove: 'Remove' },
+    appLauncher: { label: 'Keston apps' },
     footer: {
       label: 'Help and legal',
       version: 'Version {version}',
