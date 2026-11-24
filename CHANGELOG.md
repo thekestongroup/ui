@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
-- 16d218e: New Footer component: links to the rest of the Keston Group, the app's name and version, and the copyright. AppShell takes a `footer` prop to show it under the page. Also exports `kestonGroupLinks`.
+- 16d218e: New Footer component for every app: Help & support, Privacy Policy and Terms & Conditions on the left, and the app's name, version and build with the copyright on the right. AppShell takes a `footer` prop to show it under the page. Also exports `kestonFooterLinks` (the default links) and `kestonGroupLinks` (the other Keston apps, to pass as `moreLinks`).
 
 ### Patch Changes
 
