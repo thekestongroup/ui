@@ -14,6 +14,9 @@ export { default as PageHeader } from './components/PageHeader/PageHeader.vue'
 export type { PageHeaderAction, PageHeaderProps } from './components/PageHeader/PageHeader.vue'
 export { default as SettingsRow } from './components/SettingsRow/SettingsRow.vue'
 export type { SettingsRowProps } from './components/SettingsRow/SettingsRow.vue'
+export { default as Footer } from './components/Footer/Footer.vue'
+export type { FooterLink, FooterProps } from './components/Footer/Footer.vue'
+export { kestonFooterLinks, kestonGroupLinks } from './components/Footer/links'
 
 // Element
 export { default as Avatar } from './components/Avatar/Avatar.vue'

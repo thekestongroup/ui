@@ -5,6 +5,7 @@ import { Menu } from '@lucide/vue'
 import { TooltipProvider } from 'reka-ui'
 import { cn } from '../../lib/cn'
 import Button from '../Button/Button.vue'
+import Footer, { type FooterProps } from '../Footer/Footer.vue'
 import Header, { type HeaderProps, type HeaderUser, type HeaderUserAction } from '../Header/Header.vue'
 import Sidebar, { type SidebarItem, type SidebarProps } from '../Sidebar/Sidebar.vue'
 import Slideover from '../Slideover/Slideover.vue'
@@ -28,6 +29,10 @@ import Slideover from '../Slideover/Slideover.vue'
  * The account menu (top right) is the Header's: pass `user` and listen for
  * account-settings, switch-account, log-out (and sign-in when signed out).
  *
+ * The footer: pass `footer` (the Footer's props, e.g. `{ appName, version }`) to put the
+ * Keston Group footer at the bottom of the page, under the content. It sits at the bottom of the
+ * screen on short pages and after the content on long ones.
+ *
  * Slots: default (the page), header-leading, header-middle, header-trailing,
  * account, account-menu and organisation (passed to Header), sidebar-header and sidebar-footer (passed to Sidebar;
  * sidebar-header is only shown on wide screens, as the Slideover has its own
@@ -50,6 +55,8 @@ export interface AppShellProps {
   sections?: SidebarProps['sections']
   /** Wide screens: show the header's menu button, which collapses the sidebar to icons. */
   collapsible?: boolean
+  /** Show the Keston Group footer under the page. The Footer's props: `{ appName, version, … }`. Without it there is no footer. */
+  footer?: FooterProps
   /** Component used for sidebar items with `to`, and the title link, e.g. RouterLink. */
   linkComponent?: SidebarProps['linkComponent']
   /** Other Header props, e.g. `{ ui: { title: '…' } }`. */
@@ -220,9 +227,13 @@ const sidebarId = `${uid}-sidebar`
         </template>
       </Slideover>
 
-      <main :id="mainId" tabindex="-1" :class="cn('min-w-0 flex-1 outline-none', ui?.main)">
-        <slot />
-      </main>
+      <!-- The page, and under it the footer: the page grows, so the footer is at the bottom of a short page. -->
+      <div class="flex min-w-0 flex-1 flex-col">
+        <main :id="mainId" tabindex="-1" :class="cn('min-w-0 flex-1 outline-none', ui?.main)">
+          <slot />
+        </main>
+        <Footer v-if="footer" v-bind="{ linkComponent, ...footer }" />
+      </div>
     </div>
   </div>
   </TooltipProvider>
