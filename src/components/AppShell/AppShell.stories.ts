@@ -60,6 +60,14 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {};
 
+/**
+ * footer: the Keston Group footer under the page, with this app's name, version and build. On a short page
+ * it sits at the bottom of the screen; on a long one it follows the content (scroll down).
+ */
+export const WithFooter: Story = {
+  args: { footer: { appName: "Keston Admissions", version: "2.3.0", build: "a1b2c3d", since: 2024 } },
+};
+
 /** titleTo: the app's name in the header links to its dashboard (`to` for `linkComponent`, or an href). */
 export const TitleLink: Story = {
   args: { titleTo: "#dashboard" },

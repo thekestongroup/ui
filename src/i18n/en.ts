@@ -42,6 +42,12 @@ export const en = {
     },
     changeIndicator: { changed: 'Changed from {from} to {to}' },
     chip: { remove: 'Remove' },
+    footer: {
+      label: 'Help and legal',
+      version: 'Version {version}',
+      build: 'Build {build}',
+      copyright: '© {years} {holder}'
+    },
     formField: { about: 'About {label}' },
     header: {
       menu: 'Menu',
