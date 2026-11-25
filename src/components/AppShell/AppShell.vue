@@ -58,7 +58,7 @@ export interface AppShellProps {
   collapsible?: boolean
   /** Show the Keston Group footer under the page. The Footer's props: `{ appName, version, … }`. Without it there is no footer. */
   footer?: FooterProps
-  /** Show the app launcher (a grid button for moving between Keston apps) in the header. `true` for the defaults, or the AppLauncher's props: `{ current: 'admin' }`. */
+  /** Show the app launcher (a grid button for moving between Keston apps) at the left of the header, before the menu button. `true` for the defaults, or the AppLauncher's props: `{ current: 'admin' }`. */
   launcher?: boolean | AppLauncherProps
   /** Component used for sidebar items with `to`, and the title link, e.g. RouterLink. */
   linkComponent?: SidebarProps['linkComponent']
@@ -149,13 +149,17 @@ const sidebarId = `${uid}-sidebar`
       :user="user"
       :user-actions="userActions"
       :sign-in="signIn"
-      :ui="{ ...header?.ui, menu: cn('lg:hidden', header?.ui?.menu) }"
+      :ui="{ ...header?.ui, menu: cn('lg:hidden', launcher && 'ml-0', header?.ui?.menu) }"
       @menu="menuOpen = true"
       @account-settings="emit('account-settings')"
       @switch-account="emit('switch-account')"
       @log-out="emit('log-out')"
       @sign-in="emit('sign-in')"
     >
+      <!-- First in the header, to the left of the menu / collapse button. -->
+      <template v-if="launcher" #start>
+        <AppLauncher align="start" v-bind="launcher === true ? {} : launcher" class="-ml-2.5" />
+      </template>
       <template #leading>
         <!-- Wide screens: in place of the menu button (same look and spot),
              collapses the sidebar beside the page to icons and back. -->
@@ -166,7 +170,7 @@ const sidebarId = `${uid}-sidebar`
           :aria-label="collapsed ? t('ui.appShell.expandSidebar') : t('ui.appShell.collapseSidebar')"
           :aria-expanded="!collapsed"
           :aria-controls="sidebarId"
-          class="-ml-2.5 max-lg:hidden"
+          :class="cn('max-lg:hidden', launcher ? 'ml-0' : '-ml-2.5')"
           @click="collapsed = !collapsed"
         >
           <Menu />
@@ -174,10 +178,7 @@ const sidebarId = `${uid}-sidebar`
         <slot name="header-leading" />
       </template>
       <slot name="header-middle" />
-      <template v-if="$slots['header-trailing'] || launcher" #trailing>
-        <slot name="header-trailing" />
-        <AppLauncher v-if="launcher" v-bind="launcher === true ? {} : launcher" />
-      </template>
+      <template v-if="$slots['header-trailing']" #trailing><slot name="header-trailing" /></template>
       <template v-if="$slots.account" #account><slot name="account" /></template>
       <template v-if="$slots['account-menu']" #account-menu="slotProps"><slot name="account-menu" v-bind="slotProps" /></template>
       <template v-if="$slots.organisation" #organisation="slotProps"><slot name="organisation" v-bind="slotProps" /></template>

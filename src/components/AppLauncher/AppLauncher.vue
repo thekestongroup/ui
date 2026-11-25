@@ -43,13 +43,15 @@ export interface AppLauncherProps {
   apps?: AppLauncherApp[]
   /** The `id` of the app you are in, shown as the current page. */
   current?: string
+  /** Which edge of the button the panel lines up with: `start` when the button is at the left of the header (AppShell), `end` when at the right. Default `end`. */
+  align?: 'start' | 'end'
   /** Name of the button for screen readers. Default "Keston apps". */
   label?: string
   class?: HTMLAttributes['class']
 }
 
 const { t } = useI18n()
-const props = withDefaults(defineProps<AppLauncherProps>(), { apps: () => kestonApps })
+const props = withDefaults(defineProps<AppLauncherProps>(), { apps: () => kestonApps, align: 'end' })
 
 function iconOf(app: AppLauncherApp): Component {
   if (typeof app.icon === 'string') return builtInIcons[app.icon] ?? AppWindow
@@ -58,7 +60,7 @@ function iconOf(app: AppLauncherApp): Component {
 </script>
 
 <template>
-  <Popover :content="{ align: 'end' }" :ui="{ content: 'w-80 p-2' }">
+  <Popover :content="{ align }" :ui="{ content: 'w-80 p-2' }">
     <Button variant="ghost" square :aria-label="label ?? t('ui.appLauncher.label')" :class="props.class">
       <LayoutGrid />
     </Button>
