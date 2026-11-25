@@ -23,8 +23,6 @@ export interface AppLauncherApp {
   /** Matches `current` to mark the app you are in. */
   id: string
   label: string
-  /** A few words on what the app is for. */
-  description?: string
   href: string
   /** An icon component, or the name of one of the Keston app icons (id, admin, work, utilities, design). */
   icon?: Component | string
@@ -60,30 +58,27 @@ function iconOf(app: AppLauncherApp): Component {
 </script>
 
 <template>
-  <Popover :content="{ align }" :ui="{ content: 'w-80 p-2' }">
+  <Popover :content="{ align }" :ui="{ content: 'w-64 p-2' }">
     <Button variant="ghost" square :aria-label="label ?? t('ui.appLauncher.label')" :class="props.class">
       <LayoutGrid />
     </Button>
     <template #content="{ close }">
       <nav :aria-label="label ?? t('ui.appLauncher.label')">
-        <ul class="grid grid-cols-2 gap-1">
+        <ul>
           <li v-for="app in apps" :key="app.id">
             <a
               :href="app.href"
               :aria-current="app.id === current ? 'page' : undefined"
               :class="cn(
-                'flex h-full flex-col items-start gap-2 rounded-lg p-3 text-sm outline-none hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-focus',
+                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-bold text-black outline-none hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-focus',
                 app.id === current && 'bg-black/5'
               )"
               @click="close()"
             >
-              <span class="flex size-9 items-center justify-center rounded-lg bg-black/5 text-black">
+              <span class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-black/5">
                 <component :is="iconOf(app)" class="size-5" aria-hidden="true" />
               </span>
-              <span class="min-w-0">
-                <span class="block font-bold text-black">{{ app.label }}</span>
-                <span v-if="app.description" class="block text-xs text-black/65">{{ app.description }}</span>
-              </span>
+              <span class="min-w-0 truncate">{{ app.label }}</span>
             </a>
           </li>
         </ul>

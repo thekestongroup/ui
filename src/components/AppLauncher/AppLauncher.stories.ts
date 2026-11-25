@@ -25,7 +25,7 @@ export const Open: Story = {
 export const CustomApps: Story = {
   args: {
     apps: [
-      { id: "a", label: "Rota", description: "Who is in when", href: "#a" },
+      { id: "a", label: "Rota", href: "#a" },
       { id: "b", label: "Reports", href: "#b" },
     ],
   },
