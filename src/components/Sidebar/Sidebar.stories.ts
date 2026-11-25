@@ -116,10 +116,10 @@ export const WithFooter: Story = {
           <template #header="{ collapsed }">${Logo}</template>
           <template #footer>
             <div class="flex items-center gap-3 px-3 py-2 text-sm">
-              <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-black/10 text-xs font-bold" aria-hidden="true">BS</span>
+              <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-ink/10 text-xs font-bold" aria-hidden="true">BS</span>
               <span class="flex min-w-0 flex-col">
                 <span class="truncate font-bold">Ben Smith</span>
-                <span class="truncate text-xs text-black/65">Head of Year 9</span>
+                <span class="truncate text-xs text-ink/65">Head of Year 9</span>
               </span>
             </div>
           </template>

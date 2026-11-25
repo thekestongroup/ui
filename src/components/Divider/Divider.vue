@@ -38,11 +38,11 @@ defineSlots<{ default?(): unknown }>()
     v-if="orientation === 'horizontal' && (label || $slots.default)"
     :role="decorative ? 'presentation' : 'separator'"
     :aria-label="decorative ? undefined : label"
-    :class="cn('flex w-full items-center gap-3 text-xs text-black/65', props.class)"
+    :class="cn('flex w-full items-center gap-3 text-xs text-ink/65', props.class)"
   >
-    <span aria-hidden="true" class="h-px flex-1 bg-black/15" />
+    <span aria-hidden="true" class="h-px flex-1 bg-ink/10" />
     <span class="shrink-0"><slot>{{ label }}</slot></span>
-    <span aria-hidden="true" class="h-px flex-1 bg-black/15" />
+    <span aria-hidden="true" class="h-px flex-1 bg-ink/10" />
   </div>
 
   <Separator
@@ -50,7 +50,7 @@ defineSlots<{ default?(): unknown }>()
     :orientation="orientation"
     :decorative="decorative"
     :class="cn(
-      'shrink-0 bg-black/15',
+      'shrink-0 bg-ink/10',
       orientation === 'horizontal' ? 'h-px w-full' : 'w-px self-stretch',
       props.class
     )"

@@ -154,25 +154,28 @@ const announcement = computed(() => {
 const base = [
   // overflow-hidden: content briefly wider than the button while its width animates is clipped
   'relative inline-flex shrink-0 items-center justify-center whitespace-nowrap select-none overflow-hidden',
-  'border border-black/15 cursor-pointer transition',
+  'border border-ink/10 cursor-pointer transition',
   'disabled:cursor-not-allowed disabled:opacity-40',
   'aria-busy:cursor-progress',
   'outline-2 outline-offset-1 outline-transparent forced-colors:not-focus-visible:outline-0',
   'focus-visible:outline-focus'
 ]
 
-// Hover / pressed only apply when the button is usable.
+// Hover / pressed only apply when the button is usable. The theme's state
+// colours (theme.css, "States") keep this the same as every other component:
+// - coloured fills (primary, danger) darken
+// - basic (surface fill) takes the solid surface-hover / -pressed colours,
+//   which lighten in dark mode rather than darken
+// - ghost has no fill, so it takes the see-through hover / pressed tints. Its
+//   border stays (transparent) so it lines up with the other variants.
 const interactive = 'not-disabled:not-aria-disabled:hover:brightness-90 not-disabled:not-aria-disabled:active:brightness-80'
-
-// Ghost has no fill to darken, so hover / press tint it with black instead
-// (10% / 15%, matching the other variants' 90% / 80% brightness). The border
-// stays (transparent) so it lines up with the other variants.
-const ghostInteractive = 'not-disabled:not-aria-disabled:hover:bg-black/10 not-disabled:not-aria-disabled:active:bg-black/15'
+const surfaceInteractive = 'not-disabled:not-aria-disabled:hover:bg-surface-hover not-disabled:not-aria-disabled:active:bg-surface-pressed'
+const ghostInteractive = 'not-disabled:not-aria-disabled:hover:bg-hover not-disabled:not-aria-disabled:active:bg-pressed'
 
 const variants: Record<NonNullable<ButtonProps['variant']>, string> = {
-  basic: `bg-white text-black ${interactive}`,
+  basic: `bg-surface text-ink shadow-xs ${surfaceInteractive}`,
   primary: `bg-primary text-white ${interactive}`,
-  ghost: `bg-transparent text-black border-transparent ${ghostInteractive}`,
+  ghost: `bg-transparent text-ink border-transparent ${ghostInteractive}`,
   danger: `bg-red text-white ${interactive}`
 }
 

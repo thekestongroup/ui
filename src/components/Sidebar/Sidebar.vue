@@ -247,22 +247,22 @@ const itemBase = [
   // Inset, so the ring isn't clipped by the scrolling body.
   'outline-2 -outline-offset-2 outline-transparent forced-colors:not-focus-visible:outline-0',
   'focus-visible:outline-focus',
-  'not-aria-disabled:not-disabled:hover:bg-black/10 not-aria-disabled:not-disabled:active:bg-black/15',
+  'not-aria-disabled:not-disabled:hover:bg-hover not-aria-disabled:not-disabled:active:bg-pressed',
   'disabled:cursor-not-allowed disabled:opacity-40 aria-disabled:cursor-not-allowed aria-disabled:opacity-40'
 ]
 
-const itemActive = 'bg-primary/10 font-bold text-primary not-aria-disabled:not-disabled:hover:bg-primary/15'
+const itemActive = 'bg-primary/10 font-bold text-primary-fg not-aria-disabled:not-disabled:hover:bg-primary/15'
 
 // A parent of the current page: bold primary text, no fill, so it reads as
 // "you are in here" without looking like the page itself.
-const itemActiveParent = 'font-bold text-primary'
+const itemActiveParent = 'font-bold text-primary-fg'
 </script>
 
 <template>
   <aside
     :data-collapsed="collapsed || undefined"
     :class="cn(
-      'flex h-full shrink-0 flex-col border-r border-black/15 bg-white text-black',
+      'flex h-full shrink-0 flex-col border-r border-ink/10 bg-surface text-ink',
       'w-64 transition-[width] duration-300 ease-out motion-reduce:transition-none',
       collapsed && 'w-14',
       props.class
@@ -270,7 +270,7 @@ const itemActiveParent = 'font-bold text-primary'
   >
     <div
       v-if="$slots.header"
-      :class="cn('flex h-12 shrink-0 items-center gap-2 overflow-hidden border-b border-black/15 px-4', ui?.header)"
+      :class="cn('flex h-12 shrink-0 items-center gap-2 overflow-hidden border-b border-ink/10 px-4', ui?.header)"
     >
       <slot name="header" :collapsed="collapsed" />
     </div>
@@ -290,7 +290,7 @@ const itemActiveParent = 'font-bold text-primary'
         <div :key="levelKey" :data-level="levelKey" class="flex flex-col gap-4">
           <!-- Inside a nested item: ‹ and its label, back to the level above.
                The divider under it keeps the list's gap-4 rhythm with sections. -->
-          <div v-if="current" class="-mb-2 flex flex-col gap-1 border-b border-black/15 pb-2">
+          <div v-if="current" class="-mb-2 flex flex-col gap-1 border-b border-ink/10 pb-2">
             <button
               type="button"
               data-back
@@ -311,13 +311,13 @@ const itemActiveParent = 'font-bold text-primary'
             <div v-if="section.label" class="relative flex h-6 items-center px-3">
               <div
                 :id="`${uid}-section-${s}`"
-                :class="cn('truncate text-xs font-bold text-black/65 uppercase', fade, collapsed && 'opacity-0')"
+                :class="cn('truncate text-xs font-bold text-ink/65 uppercase', fade, collapsed && 'opacity-0')"
               >
                 {{ section.label }}
               </div>
               <div
                 aria-hidden="true"
-                :class="cn('absolute inset-x-2 top-1/2 border-t border-black/15', fade, !collapsed && 'opacity-0')"
+                :class="cn('absolute inset-x-2 top-1/2 border-t border-ink/10', fade, !collapsed && 'opacity-0')"
               />
             </div>
 
@@ -363,7 +363,7 @@ const itemActiveParent = 'font-bold text-primary'
 
     <div
       v-if="$slots.footer || collapsible"
-      :class="cn('flex shrink-0 flex-col gap-1 overflow-hidden border-t border-black/15 p-2', ui?.footer)"
+      :class="cn('flex shrink-0 flex-col gap-1 overflow-hidden border-t border-ink/10 p-2', ui?.footer)"
     >
       <slot name="footer" :collapsed="collapsed" />
       <Button

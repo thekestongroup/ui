@@ -68,7 +68,7 @@ export const WithDescriptionAndFooter: Story = {
     setup: () => ({ args }),
     template: `
       <StatTile v-bind="args">
-        <template #footer><a href="#" class="font-bold text-primary underline-offset-2 hover:underline">View applications</a></template>
+        <template #footer><a href="#" class="font-bold text-primary-fg underline-offset-2 hover:underline">View applications</a></template>
       </StatTile>`,
   }),
 };
@@ -79,6 +79,6 @@ export const WithUnit: Story = {
   render: (args) => ({
     components: { StatTile },
     setup: () => ({ args }),
-    template: `<StatTile v-bind="args"><template #value>27.4 <span class="text-sm font-normal text-black/65">students</span></template></StatTile>`,
+    template: `<StatTile v-bind="args"><template #value>27.4 <span class="text-sm font-normal text-ink/65">students</span></template></StatTile>`,
   }),
 };

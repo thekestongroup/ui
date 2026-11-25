@@ -27,7 +27,7 @@ const meta = {
     setup: () => ({ args, value: ref<(string | number)[]>(["admissions"]) }),
     template: `
       <CheckboxGroup v-bind="args" v-model="value" />
-      <pre class="mt-4 text-xs text-black/65">{{ value }}</pre>`,
+      <pre class="mt-4 text-xs text-ink/65">{{ value }}</pre>`,
   }),
 } satisfies Meta<typeof CheckboxGroup>;
 

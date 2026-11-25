@@ -70,12 +70,12 @@ function iconOf(app: AppLauncherApp): Component {
               :href="app.href"
               :aria-current="app.id === current ? 'page' : undefined"
               :class="cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-bold text-black outline-none hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-focus',
-                app.id === current && 'bg-black/5'
+                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-bold text-ink outline-none hover:bg-hover focus-visible:outline-2 focus-visible:outline-focus',
+                app.id === current && 'bg-selected'
               )"
               @click="close()"
             >
-              <span class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-black/5">
+              <span class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-ink/5">
                 <component :is="iconOf(app)" class="size-5" aria-hidden="true" />
               </span>
               <span class="min-w-0 truncate">{{ app.label }}</span>

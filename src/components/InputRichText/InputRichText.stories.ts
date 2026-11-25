@@ -23,7 +23,7 @@ const meta = {
     setup: () => ({ args, value: ref("") }),
     template: `
       <InputRichText v-bind="args" v-model="value" />
-      <pre class="mt-4 text-xs whitespace-pre-wrap text-black/65">{{ value || '(empty)' }}</pre>`,
+      <pre class="mt-4 text-xs whitespace-pre-wrap text-ink/65">{{ value || '(empty)' }}</pre>`,
   }),
 } satisfies Meta<typeof InputRichText>;
 

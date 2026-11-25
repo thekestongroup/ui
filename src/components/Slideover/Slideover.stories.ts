@@ -32,7 +32,7 @@ const meta = {
       <Slideover v-bind="args">
         <Button>Open slideover</Button>
         <template #body>
-          <p class="text-sm text-black/65">Nothing new.</p>
+          <p class="text-sm text-ink/65">Nothing new.</p>
         </template>
       </Slideover>`,
   }),
@@ -160,7 +160,7 @@ export const Sides: Story = {
       <div class="flex gap-2">
         <Slideover v-for="side in ['right', 'left', 'top', 'bottom']" :key="side" v-bind="args" :side="side" :title="'From the ' + side">
           <Button>{{ side }}</Button>
-          <template #body><p class="text-sm text-black/65">Slides in from the {{ side }}.</p></template>
+          <template #body><p class="text-sm text-ink/65">Slides in from the {{ side }}.</p></template>
         </Slideover>
       </div>`,
   }),
@@ -177,7 +177,7 @@ export const LongContent: Story = {
         <Button>Open log</Button>
         <template #body>
           <ul class="flex flex-col gap-3 text-sm">
-            <li v-for="n in 40" :key="n" class="rounded border border-black/15 p-3">Entry {{ n }}</li>
+            <li v-for="n in 40" :key="n" class="rounded border border-ink/10 p-3">Entry {{ n }}</li>
           </ul>
         </template>
         <template #footer="{ close }"><Button @click="close">Done</Button></template>
@@ -197,7 +197,7 @@ export const NotDismissible: Story = {
     template: `
       <Slideover v-bind="args" @close:prevent="attempts++">
         <Button>Open</Button>
-        <template #body><p class="text-sm text-black/65">Blocked close attempts: {{ attempts }}</p></template>
+        <template #body><p class="text-sm text-ink/65">Blocked close attempts: {{ attempts }}</p></template>
         <template #footer="{ close }">
           <Button @click="close">Discard</Button>
           <Button variant="primary" @click="close">Save</Button>
@@ -218,7 +218,7 @@ export const Controlled: Story = {
       <div>
         <Button variant="primary" @click="open = true">Open from code</Button>
         <Slideover v-bind="args" v-model:open="open">
-          <template #body><p class="text-sm text-black/65">Opened with v-model:open.</p></template>
+          <template #body><p class="text-sm text-ink/65">Opened with v-model:open.</p></template>
         </Slideover>
       </div>`,
   }),

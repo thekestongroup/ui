@@ -62,7 +62,7 @@ function pressControl(event: MouseEvent, id: string) {
 // 16px. Off is a mid grey, dark enough to see against the page.
 const track = [
   'inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors',
-  'bg-black/45 not-disabled:hover:bg-black/55 data-[state=checked]:bg-primary data-[state=checked]:hover:bg-primary',
+  'bg-ink/45 not-disabled:hover:bg-ink/55 data-[state=checked]:bg-primary data-[state=checked]:hover:bg-primary',
   'disabled:cursor-not-allowed',
   'outline-2 outline-offset-2 outline-transparent focus-visible:outline-focus'
 ]
@@ -70,7 +70,7 @@ const thumb = 'size-4 rounded-full bg-white shadow-sm transition-transform data-
 </script>
 
 <template>
-  <div :class="cn('flex flex-col gap-1.5 text-black', disabled && 'opacity-40', props.class)">
+  <div :class="cn('flex flex-col gap-1.5 text-ink', disabled && 'opacity-40', props.class)">
     <div class="flex items-start gap-2">
       <SwitchRoot
         :id="controlId"
@@ -88,7 +88,7 @@ const thumb = 'size-4 rounded-full bg-white shadow-sm transition-transform data-
         @click="pressControl($event, controlId)"
       >
         <label :for="controlId" :class="cn('text-sm', disabled ? 'cursor-not-allowed' : 'cursor-pointer')">{{ label }}</label>
-        <p v-if="description" :id="descriptionId" class="text-xs text-black/65">
+        <p v-if="description" :id="descriptionId" class="text-xs text-ink/65">
           {{ description }}
         </p>
       </div>

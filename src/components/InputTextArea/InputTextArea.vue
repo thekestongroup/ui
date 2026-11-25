@@ -82,7 +82,7 @@ defineExpose({ focus: () => area.value?.focus() })
         :disabled="disabled"
         :aria-invalid="invalid"
         :aria-describedby="describedBy"
-        class="field-sizing-content -my-0.5 max-h-80 min-h-24 min-w-0 flex-1 resize-none bg-transparent text-sm leading-5 outline-none placeholder:text-black/55 disabled:cursor-not-allowed pointer-coarse:text-base"
+        class="field-sizing-content -my-0.5 max-h-80 min-h-24 min-w-0 flex-1 resize-none bg-transparent text-sm leading-5 outline-none placeholder:text-ink/55 disabled:cursor-not-allowed pointer-coarse:text-base"
       />
     </template>
   </FormField>

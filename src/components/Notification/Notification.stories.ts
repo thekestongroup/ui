@@ -79,8 +79,8 @@ export const Rows: Story = {
     components: { Notification },
     setup: () => ({ items: createNotifications(sampleNotifications()).items }),
     template: `
-      <ul class="rounded border border-black/15 bg-white">
-        <li v-for="item in items" :key="item.id" class="border-b border-black/15 last:border-b-0">
+      <ul class="rounded border border-ink/10 bg-surface">
+        <li v-for="item in items" :key="item.id" class="border-b border-ink/10 last:border-b-0">
           <Notification appearance="row" v-bind="item" :created-at="item.createdAt" :unread="!item.read" />
         </li>
       </ul>`,
@@ -171,7 +171,7 @@ export const Playground: Story = {
         <template #trailing><NotificationPane :notifications="notifications" /></template>
       </Header>
       <div class="flex flex-col gap-4 p-6">
-        <p class="max-w-prose text-sm text-black/65">Each button sends a notification. It pops up as a toast and is added to the bell.</p>
+        <p class="max-w-prose text-sm text-ink/65">Each button sends a notification. It pops up as a toast and is added to the bell.</p>
         <div class="flex flex-wrap gap-2">
           <Button @click="notifications.notify(samples.info)">Info</Button>
           <Button @click="notifications.notify(samples.success)">Success</Button>

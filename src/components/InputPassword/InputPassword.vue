@@ -79,9 +79,9 @@ const statusText = computed(() => props.statusText ?? (capsLock.value ? t('ui.in
 // [ password | 👁 ]. Pressing it keeps focus (and the caret) in the input.
 const toggle = [
   'flex w-9 shrink-0 -my-2 -mr-3 self-stretch items-center justify-center',
-  'bg-white rounded-r border-l border-black/15 cursor-pointer transition',
-  'not-disabled:hover:brightness-90 not-disabled:active:brightness-80 [&_svg]:opacity-100!',
-  'outline-none focus-visible:bg-black/5 disabled:cursor-not-allowed'
+  'bg-surface rounded-r border-l border-ink/10 cursor-pointer transition',
+  'not-disabled:hover:bg-surface-hover not-disabled:active:bg-surface-pressed [&_svg]:opacity-100!',
+  'outline-none focus-visible:bg-surface-hover disabled:cursor-not-allowed'
 ]
 </script>
 
@@ -114,7 +114,7 @@ const toggle = [
         :disabled="disabled"
         :aria-invalid="invalid"
         :aria-describedby="describedBy"
-        class="h-5 min-w-0 flex-1 bg-transparent outline-none placeholder:text-black/55 disabled:cursor-not-allowed"
+        class="h-5 min-w-0 flex-1 bg-transparent outline-none placeholder:text-ink/55 disabled:cursor-not-allowed"
         @keydown="checkCapsLock"
         @keyup="checkCapsLock"
         @blur="capsLock = false"

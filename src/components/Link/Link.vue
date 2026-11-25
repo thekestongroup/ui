@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<LinkProps>(), {
 // thickens the line. Keyboard focus gets the usual focus ring.
 const base = [
   'cursor-pointer rounded-xs underline underline-offset-2 transition-colors',
-  'hover:text-black hover:decoration-2',
+  'hover:text-ink hover:decoration-2',
   'outline-2 outline-offset-2 outline-transparent focus-visible:outline-focus'
 ]
 </script>

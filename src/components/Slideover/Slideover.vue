@@ -262,7 +262,7 @@ const sides: Record<NonNullable<SlideoverProps['side']>, string> = {
 }
 
 const panel = [
-  'fixed z-50 flex flex-col bg-white text-black border-black/15 shadow-xl outline-none',
+  'fixed z-50 flex flex-col bg-surface text-ink border-ink/10 shadow-xl outline-none',
   // Reduced motion: fade instead of sliding.
   'motion-reduce:data-[state=open]:animate-fade-in motion-reduce:data-[state=closed]:animate-fade-out'
 ]
@@ -293,11 +293,11 @@ const panel = [
         <slot name="content" :close="closePanel">
           <header
             v-if="title || description || close || steps || $slots.header || $slots.title"
-            :class="cn('flex flex-col gap-4 border-b border-black/15 px-6 py-4', ui?.header)"
+            :class="cn('flex flex-col gap-4 border-b border-ink/10 px-6 py-4', ui?.header)"
           >
             <!-- The step sits above its progress bar. -->
-            <p v-if="steps" :id="stepLabelId" class="text-sm text-black/65">
-              Step {{ step + 1 }} of {{ stepCount }}: <span class="text-black">{{ steps[step] }}</span>
+            <p v-if="steps" :id="stepLabelId" class="text-sm text-ink/65">
+              Step {{ step + 1 }} of {{ stepCount }}: <span class="text-ink">{{ steps[step] }}</span>
             </p>
             <Progress v-if="steps" :label="title ?? t('ui.slideover.steps')" segments :value="step + 1" :max="stepCount" />
             <div class="flex items-start gap-4">
@@ -311,7 +311,7 @@ const panel = [
                 <DialogDescription
                   v-if="description || $slots.description || steps"
                   as="div"
-                  class="flex flex-col gap-1 text-sm text-black/65"
+                  class="flex flex-col gap-1 text-sm text-ink/65"
                 >
                   <p v-if="description || $slots.description"><slot name="description">{{ description }}</slot></p>
                   <p v-if="steps" class="sr-only">{{ stepText }}</p>
@@ -341,7 +341,7 @@ const panel = [
 
           <footer
             v-if="$slots.footer || steps"
-            :class="cn('flex justify-end gap-2 border-t border-black/15 px-6 py-4', ui?.footer)"
+            :class="cn('flex justify-end gap-2 border-t border-ink/10 px-6 py-4', ui?.footer)"
           >
             <slot name="footer" :close="closePanel">
               <!-- Steps: Cancel or Previous on the left, Next or Finish on the right. -->

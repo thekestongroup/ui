@@ -399,7 +399,10 @@ const parts = computed(() =>
 // The trigger (or the search box's anchor) fills FormField's box: negative
 // margins cancel its padding, so the whole box opens the list. The box draws
 // the border and focus ring.
-const fill = '-mx-3 -my-2 flex min-w-0 flex-1 items-center gap-2 self-stretch px-3 py-2'
+//
+// Anything that isn't text sits as far from the side as from the top and
+// bottom: icons and the chevron 10px (like FormField), chips 8px.
+const fill = '-mx-3 -my-2 flex min-w-0 flex-1 items-center gap-2 self-stretch px-3 py-2 [&>svg:first-child]:-ml-0.5 [&>svg:last-child]:-mr-0.5'
 
 // The list is at least as wide as the field and no taller than the space
 // below / above it; it scrolls inside.
@@ -411,12 +414,13 @@ const content = computed(() => cn(
     : 'max-h-(--reka-select-content-available-height) min-w-(--reka-select-trigger-width) max-w-[max(var(--reka-select-trigger-width),--spacing(80))]'
 ))
 
-// Compact rows: 32px tall with a label only (6px + 20px line + 6px), 8px
-// either side, tinted like a ghost Button. A description adds lines below;
+// Compact rows: 32px tall with a label only (6px + 20px line + 6px), running
+// the full width of the panel and square (the panel keeps its rounded
+// corners), text 12px from the edge, tinted when highlighted. A description adds lines below;
 // the icon and tick stay level with the label (h-5 slots, top-aligned).
 const item = [
-  'relative flex min-h-8 cursor-pointer items-start gap-2 rounded px-2 py-1.5 text-sm outline-none select-none',
-  'data-highlighted:bg-black/10',
+  'relative flex min-h-8 cursor-pointer items-start gap-2 px-3 py-1.5 text-sm outline-none select-none',
+  'data-highlighted:bg-selected',
   'data-disabled:cursor-not-allowed data-disabled:opacity-40'
 ]
 
@@ -471,7 +475,7 @@ const chevron = 'transition-transform duration-150 in-data-[state=open]:rotate-1
           <!-- Multiple: a chip per chosen option, then the search box, wrapping
                onto more lines as needed. × removes one (mouse); keyboard users
                press Backspace in the empty box, or untick it in the list. -->
-          <span :class="multiple ? 'flex min-w-0 flex-1 flex-wrap items-center gap-1' : 'contents'">
+          <span :class="multiple ? cn('flex min-w-0 flex-1 flex-wrap items-center gap-1', chosen.length && '-ml-1') : 'contents'">
             <!-- pointerdown.stop keeps a press on × from opening the list. -->
             <Chip
               v-for="option in chosen"
@@ -496,7 +500,7 @@ const chevron = 'transition-transform duration-150 in-data-[state=open]:rotate-1
               :aria-invalid="invalid"
               :aria-describedby="describedBy"
               autocomplete="off"
-              :class="cn('h-5 min-w-0 flex-1 bg-transparent outline-none placeholder:text-black/55 disabled:cursor-not-allowed', multiple && 'min-w-16')"
+              :class="cn('h-5 min-w-0 flex-1 bg-transparent outline-none placeholder:text-ink/55 disabled:cursor-not-allowed', multiple && 'min-w-16')"
               :data-pointer-focus="pointerFocus || undefined"
               @focus="onSearchFocus"
               @blur="pointerFocus = false"
@@ -504,7 +508,7 @@ const chevron = 'transition-transform duration-150 in-data-[state=open]:rotate-1
               @keydown.backspace="onSearchBackspace"
             />
           </span>
-          <ComboboxTrigger tabindex="-1" :aria-label="t('ui.select.showOptions')" class="flex cursor-pointer disabled:cursor-not-allowed">
+          <ComboboxTrigger tabindex="-1" :aria-label="t('ui.select.showOptions')" class="-mr-0.5 flex cursor-pointer disabled:cursor-not-allowed">
             <ChevronDown aria-hidden="true" :class="chevron" />
           </ComboboxTrigger>
         </ComboboxAnchor>
@@ -517,7 +521,7 @@ const chevron = 'transition-transform duration-150 in-data-[state=open]:rotate-1
           :aria-describedby="describedBy"
           :data-pointer-focus="pointerFocus || undefined"
           @blur="pointerFocus = false"
-          :class="cn(fill, 'cursor-pointer text-left outline-none disabled:cursor-not-allowed data-placeholder:text-black/55')"
+          :class="cn(fill, 'cursor-pointer text-left outline-none disabled:cursor-not-allowed data-placeholder:text-ink/55')"
         >
           <slot name="leading">
             <component :is="selected.icon" v-if="selected?.icon" aria-hidden="true" />
@@ -526,7 +530,7 @@ const chevron = 'transition-transform duration-150 in-data-[state=open]:rotate-1
                SelectValue, which only knows the options currently showing (a
                nested choice isn't, once the list is back at the top). -->
           <!-- Multiple: a chip per chosen option, wrapping onto more lines. -->
-          <span v-if="multiple && chosen.length" class="flex min-w-0 flex-1 flex-wrap gap-1">
+          <span v-if="multiple && chosen.length" class="-ml-1 flex min-w-0 flex-1 flex-wrap gap-1">
             <Chip v-for="option in chosen" :key="String(option.value)" size="sm">
               <template v-if="option.icon" #leading><component :is="option.icon" aria-hidden="true" /></template>
               {{ option.label }}
@@ -553,9 +557,9 @@ const chevron = 'transition-transform duration-150 in-data-[state=open]:rotate-1
                  one so long lists look scrollable. -->
             <component
               :is="parts.Viewport"
-              class="flex flex-col gap-0.5 p-1 [scrollbar-width:thin]! [&::-webkit-scrollbar]:block!"
+              class="flex flex-col py-1 [scrollbar-width:thin]! [&::-webkit-scrollbar]:block!"
             >
-              <ComboboxEmpty v-if="searchable" class="px-2 py-1.5 text-sm text-black/65">
+              <ComboboxEmpty v-if="searchable" class="px-3 py-1.5 text-sm text-ink/65">
                 {{ emptyText ?? t('ui.select.noMatches') }}
               </ComboboxEmpty>
 
@@ -575,20 +579,20 @@ const chevron = 'transition-transform duration-150 in-data-[state=open]:rotate-1
                   <!-- Names the level being shown; pressing it goes up one. -->
                   <span class="min-w-0 flex-1 truncate"><span class="sr-only">Back from </span>{{ current!.label }}</span>
                 </component>
-                <component :is="parts.Separator" class="-mx-1 my-0.5 border-t border-black/15" />
+                <component :is="parts.Separator" class="my-1 border-t border-ink/10" />
               </template>
 
               <template v-for="(group, g) in shownGroups" :key="g">
                 <component
                   :is="parts.Separator"
                   v-if="g > 0 && !search"
-                  class="-mx-1 my-0.5 border-t border-black/15"
+                  class="my-1 border-t border-ink/10"
                 />
-                <component :is="parts.Group" class="flex flex-col gap-0.5">
+                <component :is="parts.Group" class="flex flex-col">
                   <component
                     :is="parts.Label"
                     v-if="group.label"
-                    class="flex h-6 items-center gap-1.5 px-2 text-xs font-bold text-black/65 uppercase"
+                    class="flex h-6 items-center gap-1.5 px-3 text-xs font-bold text-ink/65 uppercase"
                   >
                     <component :is="group.icon" v-if="group.icon" aria-hidden="true" class="size-3.5 shrink-0" />
                     <span class="truncate">{{ group.label }}</span>
@@ -613,8 +617,8 @@ const chevron = 'transition-transform duration-150 in-data-[state=open]:rotate-1
                       <component :is="parts.ItemText" class="truncate in-data-[state=checked]:font-bold">
                         {{ row.option.label }}<span v-if="row.parent" class="sr-only">, more options</span>
                       </component>
-                      <span v-if="row.path" class="text-xs text-black/65">{{ row.path }}</span>
-                      <span v-if="row.option.description" class="text-xs text-black/65">{{ row.option.description }}</span>
+                      <span v-if="row.path" class="text-xs text-ink/65">{{ row.path }}</span>
+                      <span v-if="row.option.description" class="text-xs text-ink/65">{{ row.option.description }}</span>
                     </span>
                     <!-- Parents: an arrow into their options. Others: the tick's
                          space, reserved on every row so labels don't shift. -->

@@ -34,9 +34,9 @@ watch(
 )
 
 const colour: Record<FieldStatus, string> = {
-  error: 'text-red',
-  success: 'text-green',
-  loading: 'text-black/65'
+  error: 'text-red-fg',
+  success: 'text-green-fg',
+  loading: 'text-ink/65'
 }
 
 const icon = { error: CircleAlert, success: CircleCheck } as const

@@ -65,7 +65,7 @@ export const Removable: Story = {
           <template #leading><component :is="subject.icon" /></template>
           {{ subject.label }}
         </Chip>
-        <span v-if="!subjects.length" class="text-sm text-black/65">All removed</span>
+        <span v-if="!subjects.length" class="text-sm text-ink/65">All removed</span>
       </div>`,
   }),
 };

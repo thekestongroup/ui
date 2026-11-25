@@ -15,7 +15,7 @@ const meta = {
       <Card class="w-fit">
         <Calendar v-bind="args" v-model="value" />
       </Card>
-      <p class="mt-3 text-sm text-black/65">Chosen: {{ value ?? 'nothing yet' }}</p>`,
+      <p class="mt-3 text-sm text-ink/65">Chosen: {{ value ?? 'nothing yet' }}</p>`,
   }),
 } satisfies Meta<typeof Calendar>;
 
@@ -42,7 +42,7 @@ export const InterviewDay: Story = {
       <div class="flex flex-wrap items-start gap-4">
         <Card class="w-fit"><Calendar v-bind="args" v-model="value" /></Card>
         <Card :title="'Interviews on ' + new Date(value).toLocaleDateString('en-GB', { dateStyle: 'long' })" class="min-w-64 flex-1">
-          <p class="text-sm text-black/65">3 interviews booked, 2 slots free.</p>
+          <p class="text-sm text-ink/65">3 interviews booked, 2 slots free.</p>
         </Card>
       </div>`,
   }),

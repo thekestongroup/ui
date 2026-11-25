@@ -62,8 +62,8 @@ export const WithActionsAndFooter: Story = {
           <Button variant="ghost" size="sm"><template #leading><Pencil /></template>Edit</Button>
         </template>
         <dl class="grid grid-cols-[8rem_1fr] gap-y-2 text-sm">
-          <dt class="text-black/65">Email</dt><dd>office@keston.school</dd>
-          <dt class="text-black/65">Phone</dt><dd>020 7946 0000</dd>
+          <dt class="text-ink/65">Email</dt><dd>office@keston.school</dd>
+          <dt class="text-ink/65">Phone</dt><dd>020 7946 0000</dd>
         </dl>
         <template #footer>
           <Button>Cancel</Button>
@@ -80,7 +80,7 @@ export const Stats: Story = {
     template: `
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
         <Card v-for="stat in [['Open applications', '48'], ['Interviews this week', '9'], ['Offers accepted', '31']]" :key="stat[0]" padding="sm" :ui="{ body: 'gap-1' }">
-          <span class="text-sm text-black/65">{{ stat[0] }}</span>
+          <span class="text-sm text-ink/65">{{ stat[0] }}</span>
           <span class="text-2xl font-bold">{{ stat[1] }}</span>
         </Card>
       </div>`,
@@ -96,11 +96,11 @@ export const Table: Story = {
     template: `
       <Card v-bind="args" :ui="{ body: 'overflow-x-auto' }">
         <table class="w-full text-left text-sm">
-          <thead class="border-b border-black/15 text-black/65">
+          <thead class="border-b border-ink/10 text-ink/65">
             <tr><th class="px-4 py-3 font-bold">Applicant</th><th class="px-4 py-3 font-bold">Year</th><th class="px-4 py-3 font-bold">Status</th></tr>
           </thead>
           <tbody>
-            <tr class="border-b border-black/15"><td class="px-4 py-3 font-bold">Amelia Clarke</td><td class="px-4 py-3">Year 7</td><td class="px-4 py-3"><Badge size="sm" color="green">Offered</Badge></td></tr>
+            <tr class="border-b border-ink/10"><td class="px-4 py-3 font-bold">Amelia Clarke</td><td class="px-4 py-3">Year 7</td><td class="px-4 py-3"><Badge size="sm" color="green">Offered</Badge></td></tr>
             <tr><td class="px-4 py-3 font-bold">Noah Patel</td><td class="px-4 py-3">Year 9</td><td class="px-4 py-3"><Badge size="sm" color="blue">Interview</Badge></td></tr>
           </tbody>
         </table>

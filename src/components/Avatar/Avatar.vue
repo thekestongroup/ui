@@ -83,7 +83,7 @@ const circle = 'relative inline-flex shrink-0 items-center justify-center overfl
 
     <template #content>
       <div class="flex flex-col">
-        <p v-if="user.organisation" class="truncate px-4 pt-3 text-xs font-bold text-black/65 uppercase">
+        <p v-if="user.organisation" class="truncate px-4 pt-3 text-xs font-bold text-ink/65 uppercase">
           {{ user.organisation }}
         </p>
         <div class="flex items-center gap-3 px-4 py-3">
@@ -93,11 +93,11 @@ const circle = 'relative inline-flex shrink-0 items-center justify-center overfl
           </span>
           <div class="flex min-w-0 flex-col">
             <span class="truncate font-bold">{{ user.name }}</span>
-            <span v-if="user.role" class="truncate text-sm text-black/65">{{ user.role }}</span>
+            <span v-if="user.role" class="truncate text-sm text-ink/65">{{ user.role }}</span>
             <a
               v-if="user.email"
               :href="`mailto:${user.email}`"
-              class="truncate rounded-sm text-sm text-black/65 underline-offset-2 hover:text-black hover:underline outline-2 outline-offset-1 outline-transparent focus-visible:outline-focus"
+              class="truncate rounded-sm text-sm text-ink/65 underline-offset-2 hover:text-ink hover:underline outline-2 outline-offset-1 outline-transparent focus-visible:outline-focus"
             >
               {{ user.email }}
             </a>

@@ -106,7 +106,7 @@ const pageTemplate = `
 
     <Card padding="none">
       <Table :columns="columns" :rows="rows" row-key="name" :caption="current">
-        <template #cell-date="{ value }"><span class="text-black/65">{{ value }}</span></template>
+        <template #cell-date="{ value }"><span class="text-ink/65">{{ value }}</span></template>
         <template #cell-status="{ row }"><Badge :color="row.color" size="sm">{{ row.status }}</Badge></template>
       </Table>
     </Card>
@@ -416,7 +416,7 @@ export const NewSchoolYearSetup: Story = {
                 Start new year
               </Button>
             </template>
-            <p v-if="checked && errorCount" role="alert" class="text-sm text-red">
+            <p v-if="checked && errorCount" role="alert" class="text-sm text-red-fg">
               {{ errorCount === 1 ? 'There is 1 thing' : 'There are ' + errorCount + ' things' }} to fix before the new year can start.
             </p>
           </PageHeader>
@@ -487,7 +487,7 @@ export const NewSchoolYearSetup: Story = {
               <Divider />
               <div class="flex flex-col gap-2">
                 <h3 class="text-sm font-bold">Sign-off</h3>
-                <p class="text-sm text-black/65">Starting the year needs one of these people.</p>
+                <p class="text-sm text-ink/65">Starting the year needs one of these people.</p>
                 <AvatarGroup :users="signOff" size="sm" label="People who can sign off" />
               </div>
             </Card>

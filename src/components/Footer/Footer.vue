@@ -84,7 +84,7 @@ function linkAttrs(link: FooterLink) {
 <template>
   <footer
     :class="cn(
-      'flex shrink-0 flex-col gap-3 border-t border-black/15 bg-white px-4 py-4 text-sm text-black/65 sm:flex-row sm:items-center sm:justify-between sm:px-6',
+      'flex shrink-0 flex-col gap-3 border-t border-ink/10 bg-surface px-4 py-4 text-sm text-ink/65 sm:flex-row sm:items-center sm:justify-between sm:px-6',
       props.class
     )"
   >
@@ -94,7 +94,7 @@ function linkAttrs(link: FooterLink) {
           <li v-for="link in links" :key="link.label">
             <Link v-bind="linkAttrs(link)" :icon="false">{{ link.label }}</Link>
           </li>
-          <li v-if="moreLinks.length" class="hidden h-4 w-px bg-black/15 sm:block" aria-hidden="true"></li>
+          <li v-if="moreLinks.length" class="hidden h-4 w-px bg-ink/10 sm:block" aria-hidden="true"></li>
           <li v-for="link in moreLinks" :key="link.label">
             <Link v-bind="linkAttrs(link)" :icon="false">{{ link.label }}</Link>
           </li>
@@ -104,7 +104,7 @@ function linkAttrs(link: FooterLink) {
 
     <div :class="cn('flex flex-wrap items-center gap-x-3 gap-y-1 sm:justify-end', ui?.meta)">
       <p v-if="appName || version || build" class="flex flex-wrap items-baseline gap-x-1.5">
-        <span v-if="appName" class="font-bold text-black/80">{{ appName }}</span>
+        <span v-if="appName" class="font-bold text-ink/80">{{ appName }}</span>
         <!-- Shows as "v1.4.2" but reads as "Version 1.4.2". -->
         <span v-if="version">
           <span class="sr-only">{{ versionLabel }}</span>
@@ -113,7 +113,7 @@ function linkAttrs(link: FooterLink) {
         <!-- Shows as "a1b2c3d" in monospace but reads as "Build a1b2c3d". -->
         <span v-if="build" :title="buildLabel">
           <span class="sr-only">{{ buildLabel }}</span>
-          <span class="font-mono text-xs text-black/55" aria-hidden="true">{{ build }}</span>
+          <span class="font-mono text-xs text-ink/55" aria-hidden="true">{{ build }}</span>
         </span>
       </p>
       <p>{{ t('ui.footer.copyright', { years, holder }) }}</p>

@@ -57,15 +57,15 @@ const valueText = computed(() =>
 // split from the value by a divider, so the field looks like
 // [ − | value | + ]. Negative margins cancel the box's padding (px-3 py-2), so
 // each button is 36×36 inside the 38px box. They behave like a basic Button:
-// white fill that darkens on hover / press, icon at full colour (the box mutes
+// surface fill with the surface hover / pressed colours, icon at full colour (the box mutes
 // decorative icons). When disabled (min / max reached) only the icon fades.
 const stepButton = [
-  'flex w-9 shrink-0 -my-2 self-stretch items-center justify-center bg-white cursor-pointer transition',
-  'not-disabled:hover:brightness-90 not-disabled:active:brightness-80 [&_svg]:opacity-100!',
+  'flex w-9 shrink-0 -my-2 self-stretch items-center justify-center bg-surface cursor-pointer transition',
+  'not-disabled:hover:bg-surface-hover not-disabled:active:bg-surface-pressed [&_svg]:opacity-100!',
   'disabled:cursor-not-allowed disabled:[&_svg]:opacity-40!'
 ]
-const decrement = '-ml-3 rounded-l border-r border-black/15'
-const increment = '-mr-3 rounded-r border-l border-black/15'
+const decrement = '-ml-3 rounded-l border-r border-ink/10'
+const increment = '-mr-3 rounded-r border-l border-ink/10'
 </script>
 
 <template>
@@ -101,7 +101,7 @@ const increment = '-mr-3 rounded-r border-l border-black/15'
           :aria-invalid="invalid"
           :aria-describedby="describedBy"
           :aria-valuetext="valueText"
-          class="h-5 min-w-0 flex-1 bg-transparent text-center tabular-nums outline-none placeholder:text-black/55 disabled:cursor-not-allowed"
+          class="h-5 min-w-0 flex-1 bg-transparent text-center tabular-nums outline-none placeholder:text-ink/55 disabled:cursor-not-allowed"
         />
         <NumberFieldIncrement :class="[stepButton, increment]">
           <Plus />

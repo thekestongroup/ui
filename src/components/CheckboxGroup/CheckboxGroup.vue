@@ -61,14 +61,14 @@ function toggle(value: CheckboxGroupValue, on: boolean) {
 </script>
 
 <template>
-  <div :class="cn('flex flex-col gap-1.5 text-black', props.class)">
+  <div :class="cn('flex flex-col gap-1.5 text-ink', props.class)">
     <div :class="cn('flex flex-col gap-0.5', hideLabel && 'sr-only')">
       <div class="flex items-center gap-1">
         <span :id="labelId" class="text-sm">{{ label }}</span>
         <InfoTip v-if="helper && helperPlacement === 'icon'" :text="helper" :label="t('ui.formField.about', { label })" />
       </div>
       <!-- Behind the ?: hidden, but still the group's description. -->
-      <p v-if="helper" :id="helperId" :hidden="helperPlacement === 'icon'" class="text-xs text-black/65">
+      <p v-if="helper" :id="helperId" :hidden="helperPlacement === 'icon'" class="text-xs text-ink/65">
         {{ helper }}
       </p>
     </div>

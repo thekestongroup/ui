@@ -77,7 +77,7 @@ const footerPaddings: Record<NonNullable<CardProps['padding']>, string> = {
     :aria-labelledby="title ? headingId : undefined"
     :class="
       cn(
-        '@container flex flex-col rounded-lg border border-black/15 bg-white text-black',
+        '@container flex flex-col rounded-lg border border-ink/10 bg-surface text-ink shadow-xs',
         // Content that runs to the edges (a table's header, a list's rows) is
         // clipped to the rounded corners. clip, not hidden: it doesn't make a
         // scroll container, so sticky content inside still sticks to the page.
@@ -96,7 +96,7 @@ const footerPaddings: Record<NonNullable<CardProps['padding']>, string> = {
             <component :is="`h${headingLevel}`" v-if="title" :id="headingId" class="text-base font-bold">
               {{ title }}
             </component>
-            <p v-if="description" class="text-sm text-black/65">{{ description }}</p>
+            <p v-if="description" class="text-sm text-ink/65">{{ description }}</p>
           </div>
         </slot>
         <div v-if="$slots.actions" class="flex shrink-0 items-center gap-2">
@@ -109,7 +109,7 @@ const footerPaddings: Record<NonNullable<CardProps['padding']>, string> = {
 
     <div
       v-if="$slots.footer"
-      :class="cn('flex flex-wrap justify-end gap-2 border-t border-black/15', footerPaddings[padding], ui?.footer)"
+      :class="cn('flex flex-wrap justify-end gap-2 border-t border-ink/10', footerPaddings[padding], ui?.footer)"
     >
       <slot name="footer" />
     </div>

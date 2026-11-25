@@ -426,7 +426,7 @@ const positions = {
           type="button"
           :class="
             cn(
-              'flex cursor-pointer items-center justify-center overflow-hidden border border-black/15 bg-white font-bold whitespace-nowrap text-black shadow-md hover:bg-surface-elevated',
+              'flex cursor-pointer items-center justify-center overflow-hidden border border-ink/10 bg-surface font-bold whitespace-nowrap text-ink shadow-md hover:bg-surface-hover',
               'h-7 w-24 rounded-2xl text-xs',
               hidden && 'in-data-expanded:h-9 in-data-expanded:w-full in-data-expanded:rounded in-data-expanded:text-sm',
               'transition-[width,height,border-radius,font-size,background-color] duration-300 ease-out motion-reduce:transition-none',

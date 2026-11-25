@@ -68,22 +68,22 @@ function pressControl(event: MouseEvent, id: string) {
 // 16px circle, level with the first line of the label; the chosen one gets a
 // dot. The border is darker than a text box's so each circle is easy to see.
 const circle = [
-  'mt-0.5 flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full border bg-white transition',
-  'not-disabled:hover:border-black disabled:cursor-not-allowed',
+  'mt-0.5 flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full border bg-surface transition',
+  'not-disabled:hover:border-ink disabled:cursor-not-allowed',
   'data-[state=checked]:border-primary data-[state=checked]:hover:border-primary',
   'outline-2 outline-offset-2 outline-transparent focus-visible:outline-focus'
 ]
 </script>
 
 <template>
-  <div :class="cn('flex flex-col gap-1.5 text-black', disabled && 'opacity-40', props.class)">
+  <div :class="cn('flex flex-col gap-1.5 text-ink', disabled && 'opacity-40', props.class)">
     <div class="flex flex-col gap-0.5">
       <div class="flex items-center gap-1">
         <span :id="labelId" class="text-sm">{{ label }}</span>
         <InfoTip v-if="helper && helperPlacement === 'icon'" :text="helper" :label="t('ui.formField.about', { label })" />
       </div>
       <!-- Behind the ?: hidden, but still the group's description. -->
-      <p v-if="helper" :id="helperId" :hidden="helperPlacement === 'icon'" class="text-xs text-black/65">
+      <p v-if="helper" :id="helperId" :hidden="helperPlacement === 'icon'" class="text-xs text-ink/65">
         {{ helper }}
       </p>
     </div>
@@ -104,7 +104,7 @@ const circle = [
           :value="option.value"
           :disabled="option.disabled"
           :aria-describedby="option.description ? `${id}-${i}-description` : undefined"
-          :class="cn(circle, errorText ? 'border-red' : 'border-black/55', option.disabled && !disabled && 'opacity-40')"
+          :class="cn(circle, errorText ? 'border-red' : 'border-ink/45', option.disabled && !disabled && 'opacity-40')"
         >
           <RadioGroupIndicator class="size-2 rounded-full bg-primary" />
         </RadioGroupItem>
@@ -122,7 +122,7 @@ const circle = [
           >
             {{ option.label }}
           </label>
-          <p v-if="option.description" :id="`${id}-${i}-description`" class="text-xs text-black/65">
+          <p v-if="option.description" :id="`${id}-${i}-description`" class="text-xs text-ink/65">
             {{ option.description }}
           </p>
         </div>

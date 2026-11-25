@@ -87,7 +87,7 @@ const statusText = computed(() => props.statusText ?? lengthError.value)
         :disabled="disabled"
         :aria-invalid="invalid"
         :aria-describedby="describedBy"
-        class="h-5 min-w-0 flex-1 bg-transparent outline-none placeholder:text-black/55 disabled:cursor-not-allowed"
+        class="h-5 min-w-0 flex-1 bg-transparent outline-none placeholder:text-ink/55 disabled:cursor-not-allowed"
         @blur="touched = true"
       />
     </template>

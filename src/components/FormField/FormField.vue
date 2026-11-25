@@ -105,9 +105,14 @@ function focusUnlabelable() {
 //
 // Text is 16px on touch screens: iPhone zooms the page into any field with
 // smaller text when it's tapped. 16px stops that without blocking pinch-zoom.
+//
+// Text sits 12px from the sides. An icon at either end sits 10px from the
+// edge instead, the same as above and below it (16px icon in a 20px line,
+// plus 8px padding), so it looks evenly placed.
 const box = [
   'flex items-center gap-2 px-3 py-2 text-sm pointer-coarse:text-base [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:opacity-70',
-  'bg-white text-black border border-black/15 rounded cursor-text transition',
+  '[&>svg:first-child]:-ml-0.5 [&>svg:last-child]:-mr-0.5',
+  'bg-surface text-ink border border-ink/45 rounded shadow-xs cursor-text transition',
   'outline-2 outline-offset-1 outline-transparent forced-colors:not-has-focus-visible:outline-0',
   'has-focus-visible:outline-focus',
   // A control can mark itself data-pointer-focus to hide the ring while it
@@ -124,7 +129,7 @@ const statusBorder: Record<FormFieldStatus, string> = {
 </script>
 
 <template>
-  <div :class="cn('flex flex-col gap-1.5 text-black', props.class)">
+  <div :class="cn('flex flex-col gap-1.5 text-ink', props.class)">
     <!-- Label row and box in a grid, so label-trailing can come after the
          box in the page (and the Tab order) but show at the end of the label row. -->
     <div :class="cn('grid grid-cols-[minmax(0,1fr)_auto]', !hideLabel && 'gap-y-1.5', $slots['label-trailing'] && 'gap-x-3')">
@@ -138,7 +143,7 @@ const statusBorder: Record<FormFieldStatus, string> = {
         </div>
 
         <!-- Behind the ?: hidden, but still the control's description. -->
-        <p v-if="helper" :id="helperId" :hidden="helperPlacement === 'icon'" class="text-xs text-black/65">
+        <p v-if="helper" :id="helperId" :hidden="helperPlacement === 'icon'" class="text-xs text-ink/65">
           {{ helper }}
         </p>
       </div>

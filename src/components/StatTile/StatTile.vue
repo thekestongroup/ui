@@ -70,7 +70,7 @@ const tone = computed(() => {
   return 'neutral'
 })
 
-const toneClasses = { positive: 'text-green', negative: 'text-red', neutral: 'text-black/65' } as const
+const toneClasses = { positive: 'text-green-fg', negative: 'text-red-fg', neutral: 'text-ink/65' } as const
 const trendIcon = computed(() =>
   props.trend === 'up' ? ArrowUpRight : props.trend === 'down' ? ArrowDownRight : props.trend === 'flat' ? ArrowRight : undefined
 )
@@ -90,16 +90,16 @@ const trendWords = computed(() => ({ up: t('ui.statTile.up'), down: t('ui.statTi
     :class="
       cn(
         isLink &&
-          'relative h-full transition-[border-color,box-shadow,background-color] duration-150 motion-reduce:transition-none group-hover:border-black/40 group-hover:shadow-md group-active:bg-black/1',
+          'relative h-full transition-[border-color,box-shadow,background-color] duration-150 motion-reduce:transition-none group-hover:border-ink/20 group-hover:shadow-sm group-active:bg-surface-hover',
         props.class
       )
     "
     :ui="{ body: 'gap-1' }"
   >
     <!-- Still, decorative: the link role is what screen readers get. -->
-    <ArrowUpRight v-if="isLink" class="absolute end-4 top-4 size-4 text-black/65" aria-hidden="true" />
+    <ArrowUpRight v-if="isLink" class="absolute end-4 top-4 size-4 text-ink/65" aria-hidden="true" />
 
-    <p :class="cn('flex items-center gap-2 text-sm text-black/65', isLink && 'pe-6')">
+    <p :class="cn('flex items-center gap-2 text-sm text-ink/65', isLink && 'pe-6')">
       <component :is="icon" v-if="icon" class="size-4 shrink-0" aria-hidden="true" />
       {{ label }}
     </p>
@@ -112,11 +112,11 @@ const trendWords = computed(() => ({ up: t('ui.statTile.up'), down: t('ui.statTi
         <component :is="trendIcon" v-if="trendIcon" class="size-4 shrink-0" aria-hidden="true" />
         <span v-if="trend" class="sr-only">{{ trendWords[trend] }}</span>
         <span v-if="change" class="font-bold tabular-nums">{{ change }}</span>
-        <span v-if="changeLabel" class="text-black/65">&nbsp;{{ changeLabel }}</span>
+        <span v-if="changeLabel" class="text-ink/65">&nbsp;{{ changeLabel }}</span>
       </p>
     </div>
 
-    <p v-if="description || $slots.description" class="text-sm text-black/65">
+    <p v-if="description || $slots.description" class="text-sm text-ink/65">
       <slot name="description">{{ description }}</slot>
     </p>
 

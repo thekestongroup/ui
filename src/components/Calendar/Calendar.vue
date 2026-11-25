@@ -186,7 +186,7 @@ const isCurrentYear = (year: number) => year === today(getLocalTimeZone()).year
 // "October ▾" / "2026 ▾" in the heading.
 const headingButton = [
   'inline-flex items-center gap-0.5 rounded px-1.5 py-1 text-sm cursor-pointer transition',
-  'hover:bg-black/10 active:bg-black/15 [&_svg]:size-3.5',
+  'hover:bg-hover active:bg-pressed [&_svg]:size-3.5',
   'disabled:cursor-not-allowed disabled:hover:bg-transparent',
   'outline-2 outline-offset-1 outline-transparent focus-visible:outline-focus'
 ]
@@ -206,9 +206,9 @@ const pickCell = [
   ...todayMark,
   'aria-[current=date]:after:bottom-2',
   'flex h-12 items-center justify-center rounded text-sm tabular-nums cursor-pointer transition',
-  'hover:bg-black/10',
+  'hover:bg-hover',
   'aria-pressed:bg-primary aria-pressed:text-white aria-pressed:hover:bg-primary',
-  'disabled:cursor-not-allowed disabled:text-black/25 disabled:hover:bg-transparent',
+  'disabled:cursor-not-allowed disabled:text-ink/25 disabled:hover:bg-transparent',
   'outline-2 outline-offset-1 outline-transparent focus-visible:outline-focus'
 ]
 
@@ -216,10 +216,10 @@ const day = [
   ...todayMark,
   'aria-[current=date]:after:bottom-0.5',
   'flex size-8 items-center justify-center rounded text-sm tabular-nums cursor-pointer transition',
-  'hover:bg-black/10',
-  'data-[outside-view]:text-black/35',
+  'hover:bg-hover',
+  'data-[outside-view]:text-ink/55',
   'data-[selected]:bg-primary data-[selected]:text-white data-[selected]:hover:bg-primary',
-  'data-[disabled]:cursor-not-allowed data-[disabled]:text-black/25 data-[disabled]:hover:bg-transparent',
+  'data-[disabled]:cursor-not-allowed data-[disabled]:text-ink/25 data-[disabled]:hover:bg-transparent',
   'data-[unavailable]:line-through',
   'outline-2 outline-offset-1 outline-transparent focus-visible:outline-focus'
 ]
@@ -237,7 +237,7 @@ const day = [
     :initial-focus="initialFocus"
     :week-starts-on="1"
     fixed-weeks
-    :class="cn('w-fit text-black', disabled && 'opacity-40', props.class)"
+    :class="cn('w-fit text-ink', disabled && 'opacity-40', props.class)"
     @update:model-value="setValue"
     @update:placeholder="onPlaceholderChange"
   >
@@ -343,7 +343,7 @@ const day = [
           <CalendarHeadCell
             v-for="weekDay in weekDays"
             :key="weekDay"
-            class="w-8 pb-1 text-xs font-normal text-black/55"
+            class="w-8 pb-1 text-xs font-normal text-ink/55"
           >
             {{ weekDay }}
           </CalendarHeadCell>

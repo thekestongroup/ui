@@ -199,7 +199,7 @@ export const StudentRecord: Story = {
                 <div class="grid grid-cols-1 gap-6 @lg:grid-cols-3">
                   <StatTile label="Attendance" value="96.4%" change="+1.2%" change-label="on last term" trend="up">
                     <template #footer>
-                      <span class="flex items-center gap-1 text-xs text-black/65">
+                      <span class="flex items-center gap-1 text-xs text-ink/65">
                         This term
                         <InfoTip label="About attendance" text="Sessions attended as a share of possible sessions. Authorised absences count against it." />
                       </span>
@@ -236,7 +236,7 @@ export const StudentRecord: Story = {
                             {{ contact.name }}
                             <Badge v-if="contact.primary" size="sm">Primary</Badge>
                           </span>
-                          <span class="text-xs text-black/65">{{ contact.relation }}</span>
+                          <span class="text-xs text-ink/65">{{ contact.relation }}</span>
                         </div>
                       </div>
                       <div class="flex flex-wrap gap-2">
@@ -251,7 +251,7 @@ export const StudentRecord: Story = {
                   <ul class="flex flex-col gap-3 text-sm">
                     <li v-for="item in activity" :key="item.text" class="flex flex-col gap-0.5">
                       <span>{{ item.text }}</span>
-                      <span class="text-xs text-black/65">{{ item.by }} · <RelativeTime :date="item.at" :now="now" /></span>
+                      <span class="text-xs text-ink/65">{{ item.by }} · <RelativeTime :date="item.at" :now="now" /></span>
                     </li>
                   </ul>
                 </Card>
@@ -420,7 +420,7 @@ export const ApplicationReview: Story = {
 
           <Card padding="none">
             <Table v-model:sort="sort" :columns="columns" :rows="applications" row-key="id" caption="Applications">
-              <template #cell-submitted="{ row }"><span class="text-black/65"><RelativeTime :date="row.submitted" :now="now" /></span></template>
+              <template #cell-submitted="{ row }"><span class="text-ink/65"><RelativeTime :date="row.submitted" :now="now" /></span></template>
               <template #cell-status="{ row }"><Badge :color="statusColour[row.status]" size="sm">{{ row.status }}</Badge></template>
               <template #cell-review="{ row }">
                 <Button size="sm" :aria-label="'Review ' + row.name" @click="review(row)">Review</Button>
@@ -547,7 +547,7 @@ export const InterviewBooking: Story = {
               </Card>
 
               <Card :title="dayLabel ? 'Times on ' + dayLabel : 'Times'">
-                <p v-if="weekend" class="text-sm text-black/65">No interviews at weekends. Choose a weekday.</p>
+                <p v-if="weekend" class="text-sm text-ink/65">No interviews at weekends. Choose a weekday.</p>
                 <template v-else>
                   <RadioGroup v-model="slot" label="Time" :options="slots" :error-text="slotError" />
                   <Select v-model="interviewer" label="Interviewer" :options="interviewers" placeholder="Choose…" :error-text="interviewerError" />

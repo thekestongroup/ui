@@ -14,7 +14,7 @@ const meta = {
   render: (args) => ({
     components: { Spinner },
     setup: () => ({ args }),
-    template: '<Spinner v-bind="args" class="text-primary" />',
+    template: '<Spinner v-bind="args" class="text-primary-fg" />',
   }),
 } satisfies Meta<typeof Spinner>;
 
@@ -42,7 +42,7 @@ export const Filling: Story = {
       onBeforeUnmount(() => clearInterval(timer));
       return { args, value };
     },
-    template: '<Spinner v-bind="args" :value="value" class="text-primary" />',
+    template: '<Spinner v-bind="args" :value="value" class="text-primary-fg" />',
   }),
 };
 
@@ -50,7 +50,7 @@ export const Sizes: Story = {
   render: () => ({
     components: { Spinner },
     template: `
-      <div class="flex items-center gap-6 text-primary">
+      <div class="flex items-center gap-6 text-primary-fg">
         <Spinner size="sm" />
         <Spinner size="md" />
         <Spinner size="lg" />
@@ -67,10 +67,10 @@ export const Colours: Story = {
     components: { Spinner },
     template: `
       <div class="flex items-center gap-6">
-        <Spinner class="text-primary" :value="70" />
-        <Spinner class="text-green" :value="70" />
-        <Spinner class="text-red" :value="70" />
-        <Spinner class="text-black" />
+        <Spinner class="text-primary-fg" :value="70" />
+        <Spinner class="text-green-fg" :value="70" />
+        <Spinner class="text-red-fg" :value="70" />
+        <Spinner class="text-ink" />
         <span class="inline-flex rounded bg-primary p-2 text-white">
           <Spinner />
         </span>

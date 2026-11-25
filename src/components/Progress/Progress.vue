@@ -43,7 +43,7 @@ const valueText = () =>
       ? t('ui.progress.stepOf', { current: clamped.value, total: props.max })
       : `${Math.round(percent.value)}%`
 
-const track = 'h-1.5 overflow-hidden rounded-full bg-black/10'
+const track = 'h-1.5 overflow-hidden rounded-full bg-ink/10'
 // Filling and segments colouring in ease over 300ms.
 const fill = 'h-full rounded-full bg-primary transition-[translate,background-color] duration-300 ease-out motion-reduce:transition-none'
 </script>

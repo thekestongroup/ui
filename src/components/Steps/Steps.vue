@@ -26,11 +26,11 @@ const props = defineProps<StepsProps>()
 
 <template>
   <div :class="cn('flex flex-col gap-3', props.class)">
-    <p class="text-sm text-black/65" aria-live="polite">
+    <p class="text-sm text-ink/65" aria-live="polite">
       <I18nT keypath="ui.steps.stepOfNamed" scope="global" tag="span">
         <template #current>{{ step + 1 }}</template>
         <template #total>{{ steps.length }}</template>
-        <template #name><span class="text-black">{{ steps[step] }}</span></template>
+        <template #name><span class="text-ink">{{ steps[step] }}</span></template>
       </I18nT>
     </p>
     <Progress :label="label" segments :value="step + 1" :max="steps.length" />

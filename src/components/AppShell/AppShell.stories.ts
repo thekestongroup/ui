@@ -44,7 +44,7 @@ const meta = {
           <Button variant="ghost" square aria-label="Notifications"><Bell /></Button>
         </template>
         <h1 class="text-2xl font-bold">{{ current }}</h1>
-        <p v-for="n in 40" :key="n" class="mt-3 text-sm text-black/65">
+        <p v-for="n in 40" :key="n" class="mt-3 text-sm text-ink/65">
           Line {{ n }}. Scroll: the header stays at the top and the sidebar stays beside the page.
         </p>
       </AppShell>`,
@@ -136,7 +136,7 @@ export const WithBreadcrumb: Story = {
       <AppShell v-bind="args" :items="items" :ui="{ main: 'p-6' }">
         <Breadcrumb :items="trail" />
         <h1 class="mt-2 text-2xl font-bold">{{ current }}</h1>
-        <p class="mt-3 text-sm text-black/65">Choose pages in the sidebar: the breadcrumb follows.</p>
+        <p class="mt-3 text-sm text-ink/65">Choose pages in the sidebar: the breadcrumb follows.</p>
       </AppShell>`,
   }),
 };

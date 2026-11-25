@@ -62,12 +62,13 @@ function attrsFor(item: MenuItem) {
   return {}
 }
 
-// Like Select's options: 32px rows, 8px either side, tinted like a ghost
-// Button when highlighted.
+// Like Select's options: 32px rows running the full width of the panel,
+// square (the panel keeps its rounded corners), text 12px from the edge,
+// tinted when highlighted.
 const item = [
-  'flex min-h-8 cursor-pointer items-center gap-2 rounded px-2 py-1.5 text-sm text-black no-underline outline-none select-none',
+  'flex min-h-8 cursor-pointer items-center gap-2 px-3 py-1.5 text-sm text-ink no-underline outline-none select-none',
   '[&_svg]:size-4 [&_svg]:shrink-0',
-  'data-highlighted:bg-black/10',
+  'data-highlighted:bg-selected',
   'data-disabled:cursor-not-allowed data-disabled:opacity-40'
 ]
 </script>
@@ -84,7 +85,7 @@ const item = [
         align="end"
         :side-offset="4"
         :collision-padding="8"
-        :class="cn(popoverContent, 'min-w-48 p-1')"
+        :class="cn(popoverContent, 'min-w-48 overflow-hidden py-1')"
       >
         <DropdownMenuItem
           v-for="i in items"

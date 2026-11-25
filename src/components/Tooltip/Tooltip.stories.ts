@@ -50,7 +50,7 @@ export const OnText: Story = {
       <p class="text-sm">
         Fees are due by the
         <Tooltip text="Usually the first school day of each term">
-          <span tabindex="0" class="underline decoration-black/40 decoration-dotted underline-offset-2 outline-focus focus-visible:outline-2">start of term</span>
+          <span tabindex="0" class="underline decoration-ink/40 decoration-dotted underline-offset-2 outline-focus focus-visible:outline-2">start of term</span>
         </Tooltip>.
       </p>`,
   }),

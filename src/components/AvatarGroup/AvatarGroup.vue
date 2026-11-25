@@ -66,18 +66,18 @@ const counterSizes: Record<NonNullable<AvatarProps['size']>, string> = {
     <span
       v-for="(user, i) in shown"
       :key="`${user.name}-${i}`"
-      :class="cn('relative flex rounded-full ring-white hover:z-10 focus-within:z-10', rings[size], i > 0 && overlaps[size])"
+      :class="cn('relative flex rounded-full ring-surface hover:z-10 focus-within:z-10', rings[size], i > 0 && overlaps[size])"
     >
       <Avatar :user="user" :size="size" :profile="profile" />
     </span>
 
-    <span v-if="hidden.length" :class="cn('relative flex rounded-full ring-white hover:z-10 focus-within:z-10', rings[size], overlaps[size])">
+    <span v-if="hidden.length" :class="cn('relative flex rounded-full ring-surface hover:z-10 focus-within:z-10', rings[size], overlaps[size])">
       <Popover mode="hover" :open-delay="300" :close-delay="150" :content="{ side: 'bottom', align: 'start', sideOffset: 6 }" :ui="{ content: 'w-56' }">
         <button
           type="button"
           :aria-label="t('ui.avatarGroup.more', { count: hidden.length, names: hidden.map((u) => u.name).join(', ') })"
           :class="cn(
-            'inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full bg-surface font-bold text-black select-none',
+            'inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full bg-surface-muted font-bold text-ink select-none',
             'outline-2 outline-offset-1 outline-transparent transition focus-visible:outline-focus',
             counterSizes[size]
           )"
@@ -89,7 +89,7 @@ const counterSizes: Record<NonNullable<AvatarProps['size']>, string> = {
             <li v-for="(user, i) in hidden" :key="`${user.name}-${i}`" class="flex items-center gap-2">
               <Avatar :user="user" size="xs" decorative />
               <span class="min-w-0 truncate">{{ user.name }}</span>
-              <span v-if="user.role" class="ml-auto shrink-0 truncate text-xs text-black/65">{{ user.role }}</span>
+              <span v-if="user.role" class="ml-auto shrink-0 truncate text-xs text-ink/65">{{ user.role }}</span>
             </li>
           </ul>
         </template>

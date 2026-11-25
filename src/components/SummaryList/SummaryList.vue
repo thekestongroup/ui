@@ -61,7 +61,7 @@ const labelWidths = {
 </script>
 
 <template>
-  <div :class="cn('@container text-sm text-black', props.class)">
+  <div :class="cn('@container text-sm text-ink', props.class)">
     <dl
       :class="
         cn(
@@ -78,18 +78,18 @@ const labelWidths = {
           :key="item.label"
           :class="
             cn(
-              'grid grid-cols-[1fr_auto] gap-x-4 gap-y-1 border-b border-black/15 py-3 first:pt-0 last:border-b-0 last:pb-0',
+              'grid grid-cols-[1fr_auto] gap-x-4 gap-y-1 border-b border-ink/10 py-3 first:pt-0 last:border-b-0 last:pb-0',
               labelWidths[labelWidth]
             )
           "
         >
-          <dt class="col-span-2 text-black/65 @sm:col-span-1">{{ item.label }}</dt>
+          <dt class="col-span-2 text-ink/65 @sm:col-span-1">{{ item.label }}</dt>
           <dd :class="cn('min-w-0 break-words', item.emphasis && 'font-bold', !$slots.action && 'col-span-2')">
             <slot name="value" :item="item" :index="index">
               <template v-if="!isEmpty(item.value)">{{ item.value }}</template>
-              <template v-else><span class="text-black/40" aria-hidden="true">—</span><span class="sr-only">{{ emptyLabel ?? t('ui.summaryList.notSet') }}</span></template>
+              <template v-else><span class="text-ink/40" aria-hidden="true">—</span><span class="sr-only">{{ emptyLabel ?? t('ui.summaryList.notSet') }}</span></template>
             </slot>
-            <span v-if="item.description" class="mt-0.5 block text-black/65">{{ item.description }}</span>
+            <span v-if="item.description" class="mt-0.5 block text-ink/65">{{ item.description }}</span>
           </dd>
           <dd v-if="$slots.action" class="justify-self-end">
             <slot name="action" :item="item" :index="index" />
@@ -104,7 +104,7 @@ const labelWidths = {
           :key="item.label"
           :class="layout === 'compact' ? 'col-span-2 grid grid-cols-subgrid items-baseline' : 'flex min-w-0 flex-col gap-1'"
         >
-          <dt class="text-black/65">{{ item.label }}</dt>
+          <dt class="text-ink/65">{{ item.label }}</dt>
           <dd
             :class="
               cn(
@@ -116,9 +116,9 @@ const labelWidths = {
           >
             <slot name="value" :item="item" :index="index">
               <template v-if="!isEmpty(item.value)">{{ item.value }}</template>
-              <template v-else><span class="text-black/40" aria-hidden="true">—</span><span class="sr-only">{{ emptyLabel ?? t('ui.summaryList.notSet') }}</span></template>
+              <template v-else><span class="text-ink/40" aria-hidden="true">—</span><span class="sr-only">{{ emptyLabel ?? t('ui.summaryList.notSet') }}</span></template>
             </slot>
-            <span v-if="item.description" class="mt-0.5 block font-normal text-black/65">{{ item.description }}</span>
+            <span v-if="item.description" class="mt-0.5 block font-normal text-ink/65">{{ item.description }}</span>
             <span v-if="$slots.action" class="mt-1 block font-normal"><slot name="action" :item="item" :index="index" /></span>
           </dd>
         </div>
