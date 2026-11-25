@@ -26,7 +26,7 @@ export type HeaderUserAction = 'account-settings' | 'switch-account' | 'log-out'
  * the right (Account settings, Switch account, Log out). Each part can be
  * overridden with a slot.
  *
- * Slots: leading (before the title, e.g. a logo), title, default (the middle,
+ * Slots: start (the very first thing, before the menu button, e.g. the app launcher; give it a `-ml-2.5` button to line up with the padding), leading (before the title, e.g. a logo), title, default (the middle,
  * fills the space between title and trailing), trailing (actions before the
  * account menu), account (replaces the account menu, or the Sign in button),
  * account-menu (extra content in the account menu, above Switch account /
@@ -104,6 +104,7 @@ const emit = defineEmits<{
 }>()
 
 defineSlots<{
+  start?(): unknown
   leading?(): unknown
   title?(): unknown
   default?(): unknown
@@ -156,6 +157,8 @@ function runAction(action: HeaderUserAction, close: () => void) {
       props.class
     )"
   >
+    <slot name="start" />
+
     <!-- A ghost icon Button; the negative margin lines its icon up with the
          header's padding, as the × does in Slideover. -->
     <Button
