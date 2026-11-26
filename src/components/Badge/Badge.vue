@@ -39,10 +39,10 @@ defineSlots<{
 
 // The same border and colours as Button's variants (basic white, the rest
 // solid with white text, except yellow, which needs black text to be readable).
-const base = 'inline-flex shrink-0 items-center whitespace-nowrap rounded-full border border-black/15 font-bold'
+const base = 'inline-flex shrink-0 items-center whitespace-nowrap rounded-full border border-ink/10 font-bold'
 
 const colors: Record<NonNullable<BadgeProps['color']>, string> = {
-  basic: 'bg-white text-black',
+  basic: 'bg-surface text-ink',
   primary: 'bg-primary text-white',
   red: 'bg-red text-white',
   green: 'bg-green text-white',

@@ -67,7 +67,7 @@ export const Hover: Story = {
     setup: () => ({ args }),
     template: `
       <Popover v-bind="args">
-        <button type="button" aria-label="About attendance codes" class="inline-flex rounded-full p-1 transition hover:bg-black/10 [&_svg]:size-4">
+        <button type="button" aria-label="About attendance codes" class="inline-flex rounded-full p-1 transition hover:bg-hover [&_svg]:size-4">
           <CircleHelp />
         </button>
         <template #content>
@@ -107,7 +107,7 @@ export const NotDismissible: Story = {
         <template #content="{ close }">
           <div class="flex w-64 flex-col gap-3 p-3 text-sm">
             <p>Only the button below closes this.</p>
-            <p class="text-black/60">Blocked close attempts: {{ attempts }}</p>
+            <p class="text-ink/60">Blocked close attempts: {{ attempts }}</p>
             <Button size="sm" @click="close">Close</Button>
           </div>
         </template>

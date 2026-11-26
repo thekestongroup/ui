@@ -11,7 +11,7 @@ import { cn } from '../../lib/cn'
  * - `value` from 0 to `max`: a ring that fills as the value goes up.
  *
  * It takes the surrounding text colour, like an icon, so put a text colour
- * class on it or its parent (e.g. `class="text-primary"`).
+ * class on it or its parent (e.g. `class="text-primary-fg"`).
  */
 export interface SpinnerProps {
   /** Progress from 0 to `max`. Leave out (or null) for a continuous spinner. */

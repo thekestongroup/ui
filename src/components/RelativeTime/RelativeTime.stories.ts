@@ -61,7 +61,7 @@ export const Ages: Story = {
     },
     template: `
       <table class="text-left">
-        <thead class="text-black/65"><tr><th class="pr-8 pb-2 font-bold">Student</th><th class="pb-2 text-right font-bold">Age</th></tr></thead>
+        <thead class="text-ink/65"><tr><th class="pr-8 pb-2 font-bold">Student</th><th class="pb-2 text-right font-bold">Age</th></tr></thead>
         <tbody>
           <tr v-for="s in students" :key="s.name">
             <td class="py-1 pr-8">{{ s.name }}</td>

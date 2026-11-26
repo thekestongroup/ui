@@ -199,7 +199,7 @@ export const StatusDemo: Story = {
     template: `
       <div class="flex flex-col items-start gap-3">
         <Button v-bind="buttonProps" v-model:status="status" @click="run">${buttonContent}</Button>
-        <small class="text-xs text-black/60">
+        <small class="text-xs text-ink/60">
           Last result: {{ lastResult ?? "—" }}
         </small>
       </div>`,

@@ -203,9 +203,9 @@ function onCalendarPick(value: string | undefined) {
 // InputNumber's + button. Negative margins cancel the box's padding.
 const trigger = [
   'flex w-9 shrink-0 -my-2 -mr-3 self-stretch items-center justify-center',
-  'rounded-r border-l border-black/15 bg-white cursor-pointer transition',
-  'not-disabled:hover:brightness-90 not-disabled:active:brightness-80 [&_svg]:opacity-100!',
-  'data-[state=open]:brightness-90 disabled:cursor-not-allowed',
+  'rounded-r border-l border-ink/10 bg-surface cursor-pointer transition',
+  'not-disabled:hover:bg-surface-hover not-disabled:active:bg-surface-pressed [&_svg]:opacity-100!',
+  'data-[state=open]:bg-surface-pressed disabled:cursor-not-allowed',
   'outline-2 -outline-offset-2 outline-transparent focus-visible:outline-focus'
 ]
 </script>
@@ -235,14 +235,14 @@ const trigger = [
           :disabled="disabled"
           :aria-invalid="invalid"
           :aria-describedby="describedBy"
-          class="h-5 min-w-0 flex-1 bg-transparent tabular-nums outline-none placeholder:text-black/55 disabled:cursor-not-allowed"
+          class="h-5 min-w-0 flex-1 bg-transparent tabular-nums outline-none placeholder:text-ink/55 disabled:cursor-not-allowed"
           @input="onTextInput"
           @blur="onTextBlur"
           @keydown.enter="onTextEnter"
         />
 
         <!-- The date a typed phrase means, e.g. "tmrw" → 11/11/2026. -->
-        <span v-if="phrasePreview" aria-hidden="true" class="shrink-0 tabular-nums text-black/55">
+        <span v-if="phrasePreview" aria-hidden="true" class="shrink-0 tabular-nums text-ink/55">
           {{ phrasePreview }}
         </span>
 

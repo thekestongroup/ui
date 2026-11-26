@@ -61,8 +61,8 @@ function pressControl(event: MouseEvent, id: string) {
 // 16px box, level with the first line of the label (20px line: 2px above).
 // The border is darker than a text box's so the box itself is easy to see.
 const box = [
-  'mt-0.5 flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-sm border bg-white text-white transition',
-  'not-disabled:hover:border-black disabled:cursor-not-allowed',
+  'mt-0.5 flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-sm border bg-surface text-white transition',
+  'not-disabled:hover:border-ink disabled:cursor-not-allowed',
   'data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:hover:border-primary',
   'data-[state=indeterminate]:border-primary data-[state=indeterminate]:bg-primary data-[state=indeterminate]:hover:border-primary',
   'outline-2 outline-offset-2 outline-transparent focus-visible:outline-focus',
@@ -71,7 +71,7 @@ const box = [
 </script>
 
 <template>
-  <div :class="cn('flex flex-col gap-1.5 text-black', disabled && 'opacity-40', props.class)">
+  <div :class="cn('flex flex-col gap-1.5 text-ink', disabled && 'opacity-40', props.class)">
     <div class="flex items-start gap-2">
       <CheckboxRoot
         :id="controlId"
@@ -82,7 +82,7 @@ const box = [
         :disabled="disabled"
         :aria-invalid="errorText ? true : undefined"
         :aria-describedby="describedBy"
-        :class="cn(box, errorText ? 'border-red' : 'border-black/55')"
+        :class="cn(box, errorText ? 'border-red' : 'border-ink/45')"
       >
         <CheckboxIndicator class="flex">
           <Minus v-if="model === 'indeterminate'" aria-hidden="true" />
@@ -94,7 +94,7 @@ const box = [
         @click="pressControl($event, controlId)"
       >
         <label :for="controlId" :class="cn('text-sm', disabled ? 'cursor-not-allowed' : 'cursor-pointer')">{{ label }}</label>
-        <p v-if="description" :id="descriptionId" class="text-xs text-black/65">
+        <p v-if="description" :id="descriptionId" class="text-xs text-ink/65">
           {{ description }}
         </p>
       </div>

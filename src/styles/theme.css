@@ -26,19 +26,72 @@
 
 @theme {
   --font-sans: "Lato", sans-serif;
+
+  /*
+   * Colours
+   * -------
+   * Each colour holds its light and dark value: light-dark(light, dark). The
+   * browser picks one from the element's color-scheme, set by data-theme (see
+   * "Dark mode" at the end of this file). Tailwind's shades are named in
+   * comments; hex values for native apps are in tokens/README.md.
+   *
+   * black / white never change. Use them only where the colour must stay the
+   * same in both modes: white text on a coloured fill, black text on yellow,
+   * the dimmed backdrop behind a Slideover.
+   *
+   * Everything else uses the colours below:
+   * - ink: text, icons, borders and tints, usually with an opacity:
+   *   text-ink (body text), text-ink/65 (secondary text), border-ink/10
+   *   (cards, dividers, buttons), border-ink/45 (outlines of form fields,
+   *   checkboxes and radios: 3:1 contrast, WCAG 1.4.11).
+   * - background: the page. surface: cards, fields, header, sidebar.
+   *   surface-elevated: things that float (popovers, menus, toasts). In dark
+   *   mode it's a step lighter, as shadows barely show on dark.
+   *   surface-muted: a solid grey fill, e.g. the "+3" in an AvatarGroup.
+   */
   --color-white: #fafafa;
   --color-black: #050505;
-  --color-primary: var(--color-kblue);
+  --color-ink: light-dark(#050505, oklch(98.5% 0 0)); /* dark: neutral-50 */
+  --color-background: light-dark(oklch(97% 0 0), oklch(14.5% 0 0)); /* neutral-100 / 950 */
+  --color-surface: light-dark(#ffffff, oklch(20.5% 0 0)); /* white / neutral-900 */
+  --color-surface-elevated: light-dark(#ffffff, oklch(26.9% 0 0)); /* white / neutral-800 */
+  --color-surface-muted: light-dark(oklch(92.2% 0 0), oklch(26.9% 0 0)); /* neutral-200 / 800 */
+
+  /* Brand and status colours as fills: white text on them (black on yellow).
+     Dark mode lightens Keston blue (sky-700) so primary buttons, switches and
+     checkboxes stand out from the dark page; white text on it still passes. */
   --color-kblue: #023750;
-  --color-background: #e1e1e1;
-  --color-surface: #ebebeb;
-  --color-surface-elevated: #f2f2f2;
+  --color-primary: light-dark(var(--color-kblue), oklch(50% 0.134 242.749)); /* dark: sky-700 */
   --color-green: #007a16;
   --color-yellow: #f1c70b;
   --color-red: #d2042d;
   --color-blue: #035483;
   --color-focus: #007fc9;
-  /* Colours        e.g. --color-primary: …; */
+
+  /* The same colours as text or icons, e.g. text-red-fg for an error message.
+     Light: the fill colour, or a darker amber for yellow (yellow text on
+     white fails contrast). Dark: lighter shades that pass 4.5:1. */
+  --color-primary-fg: light-dark(var(--color-kblue), oklch(82.8% 0.111 230.318)); /* dark: sky-300 */
+  --color-green-fg: light-dark(var(--color-green), oklch(79.2% 0.209 151.711)); /* dark: green-400 */
+  --color-red-fg: light-dark(var(--color-red), oklch(70.4% 0.191 22.216)); /* dark: red-400 */
+  --color-blue-fg: light-dark(var(--color-blue), oklch(80.9% 0.105 251.813)); /* dark: blue-300 */
+  --color-yellow-fg: light-dark(oklch(55.4% 0.135 66.442), var(--color-yellow)); /* light: yellow-700 */
+
+  /*
+   * States: one look for hover, press and selection everywhere.
+   * - hover / pressed / selected: see-through tints for things with no fill
+   *   of their own (ghost buttons, menu items, table rows, sidebar items).
+   * - surface-hover / surface-pressed: solid, for things filled with surface
+   *   (basic buttons, the buttons inside fields), so they lighten in dark
+   *   mode rather than darken.
+   * Coloured fills (primary, danger) darken instead: brightness-90 / 80.
+   * Disabled is opacity-40. Focus is a 2px outline-focus ring, keyboard only.
+   */
+  --color-hover: color-mix(in oklab, var(--color-ink) 5%, transparent);
+  --color-pressed: color-mix(in oklab, var(--color-ink) 10%, transparent);
+  --color-selected: var(--color-pressed);
+  --color-surface-hover: color-mix(in oklab, var(--color-surface) 95%, var(--color-ink));
+  --color-surface-pressed: color-mix(in oklab, var(--color-surface) 90%, var(--color-ink));
 
   /* Radius         e.g. --radius-control: …; */
 
@@ -97,5 +150,41 @@
     40% { rotate: 12deg; }
     60% { rotate: -8deg; }
     80% { rotate: 4deg; }
+  }
+}
+
+/*
+ * Dark mode
+ * ---------
+ * Opt-in per app, on the <html> element (or any element, for one section):
+ *
+ *   data-theme="light"   always light (also the default with no attribute)
+ *   data-theme="dark"    always dark
+ *   data-theme="system"  follows the device setting
+ *
+ * color-scheme drives every light-dark() colour above, and also the browser's
+ * own parts: scrollbars, date pickers, autofill.
+ */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+}
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+[data-theme="system"] {
+  color-scheme: light dark;
+}
+
+/* Tailwind's dark: variant follows the same switch, for the rare case a
+   colour token can't express (e.g. Tooltip). */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where([data-theme="system"], [data-theme="system"] *) {
+      @slot;
+    }
   }
 }

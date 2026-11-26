@@ -129,11 +129,11 @@ const sidebarId = `${uid}-sidebar`
   <!-- One provider for every Tooltip in the app, so moving from one to the
        next shows it without waiting again. -->
   <TooltipProvider :delay-duration="400" :skip-delay-duration="300">
-  <div :class="cn('flex min-h-dvh flex-col bg-background text-black', props.class)">
+  <div :class="cn('flex min-h-dvh flex-col bg-background text-ink', props.class)">
     <!-- First thing keyboard users reach: jumps past the header and sidebar. -->
     <a
       :href="`#${mainId}`"
-      class="sr-only z-50 rounded bg-white px-4 py-2 text-sm focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:outline-2 focus:outline-focus"
+      class="sr-only z-50 rounded bg-surface px-4 py-2 text-sm focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:outline-2 focus:outline-focus"
     >
       Skip to content
     </a>

@@ -72,7 +72,7 @@ const MaybeProvider: FunctionalComponent = (_, { slots }) =>
           :collision-padding="8"
           :class="
             cn(
-              'z-100 max-w-72 rounded-md bg-gray-900 px-2.5 py-1.5 text-xs/4 font-medium text-white shadow-lg ring-1 ring-white/10',
+              'z-100 max-w-72 rounded-md bg-neutral-900 dark:bg-neutral-700 px-2.5 py-1.5 text-xs/4 font-medium text-white shadow-lg ring-1 ring-white/10',
               'data-[state=closed]:animate-fade-out data-[state=delayed-open]:animate-fade-in data-[state=instant-open]:animate-fade-in',
               props.class
             )

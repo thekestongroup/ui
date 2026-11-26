@@ -30,7 +30,7 @@ defineSlots<{
     <div class="flex min-w-0 flex-col gap-0.5">
       <!-- The control has this name too (hide-label), so it isn't read twice. -->
       <p class="text-sm" aria-hidden="true">{{ label }}</p>
-      <p v-if="description" class="text-xs text-black/65">{{ description }}</p>
+      <p v-if="description" class="text-xs text-ink/65">{{ description }}</p>
     </div>
     <div class="w-full shrink-0 sm:w-80">
       <slot />

@@ -142,7 +142,7 @@ const overflow = computed<MenuItem[]>(() => (props.toolbar ?? []).slice(shown.va
           <h1 :class="cn('min-w-0 text-2xl font-bold break-words', ui?.title)">{{ title }}</h1>
           <slot name="badge" />
         </div>
-        <p v-if="description || $slots.description" :class="cn('max-w-prose text-sm text-black/65', ui?.description)">
+        <p v-if="description || $slots.description" :class="cn('max-w-prose text-sm text-ink/65', ui?.description)">
           <slot name="description">{{ description }}</slot>
         </p>
       </div>
@@ -158,7 +158,7 @@ const overflow = computed<MenuItem[]>(() => (props.toolbar ?? []).slice(shown.va
       v-if="hasToolbar"
       role="group"
       :aria-label="t('ui.pageHeader.actions', { title })"
-      :class="cn('flex items-center gap-1 rounded-lg border border-black/15 bg-white p-1', ui?.toolbar)"
+      :class="cn('flex items-center gap-1 rounded-lg border border-ink/10 bg-surface p-1 shadow-xs', ui?.toolbar)"
     >
       <!-- Text here reads as the toolbar's own: bold, spaced like a button. -->
       <div v-if="$slots['toolbar-start']" class="flex shrink-0 items-center gap-2 px-3 text-sm font-bold" aria-live="polite">

@@ -68,8 +68,8 @@ function select(item: BreadcrumbItem, event: MouseEvent) {
 const step = 'inline-flex max-w-60 min-w-0 items-center gap-1.5 [&_svg]:size-3.5 [&_svg]:shrink-0'
 
 const link = [
-  'cursor-pointer rounded-sm text-black/65 underline-offset-2 transition',
-  'hover:text-black hover:underline',
+  'cursor-pointer rounded-sm text-ink/65 underline-offset-2 transition',
+  'hover:text-ink hover:underline',
   'outline-2 outline-offset-1 outline-transparent focus-visible:outline-focus'
 ]
 </script>
@@ -79,7 +79,7 @@ const link = [
     <ol class="flex flex-wrap items-center gap-x-1.5 gap-y-1">
       <li v-for="(item, i) in items" :key="`${item.label}-${i}`" class="flex min-w-0 items-center gap-1.5">
         <!-- The current page. -->
-        <span v-if="i === items.length - 1" aria-current="page" :title="item.label" :class="cn(step, 'text-black')">
+        <span v-if="i === items.length - 1" aria-current="page" :title="item.label" :class="cn(step, 'text-ink')">
           <component :is="item.icon" v-if="item.icon" aria-hidden="true" />
           <span class="truncate">{{ item.label }}</span>
         </span>
@@ -98,12 +98,12 @@ const link = [
         </component>
 
         <!-- A step that isn't a page itself, e.g. a group. -->
-        <span v-else :title="item.label" :class="cn(step, 'text-black/65')">
+        <span v-else :title="item.label" :class="cn(step, 'text-ink/65')">
           <component :is="item.icon" v-if="item.icon" aria-hidden="true" />
           <span class="truncate">{{ item.label }}</span>
         </span>
 
-        <ChevronRight v-if="i < items.length - 1" aria-hidden="true" class="size-3.5 shrink-0 text-black/40" />
+        <ChevronRight v-if="i < items.length - 1" aria-hidden="true" class="size-3.5 shrink-0 text-ink/40" />
       </li>
     </ol>
   </nav>

@@ -32,7 +32,7 @@ const meta = {
             :disabled="args.disabled"
             :aria-invalid="invalid"
             :aria-describedby="describedBy"
-            class="min-h-5 min-w-0 flex-1 resize-y bg-transparent outline-none placeholder:text-black/55 disabled:cursor-not-allowed"
+            class="min-h-5 min-w-0 flex-1 resize-y bg-transparent outline-none placeholder:text-ink/55 disabled:cursor-not-allowed"
           />
         </template>
       </FormField>`,

@@ -69,7 +69,7 @@ const saving = computed(() => props.status === 'loading')
       :class="cn('fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-4 pointer-events-none', props.class)"
     >
       <div
-        class="pointer-events-auto flex w-full max-w-2xl items-center justify-between gap-3 rounded-lg border border-black/15 bg-white p-3 pl-4 shadow-lg"
+        class="pointer-events-auto flex w-full max-w-2xl items-center justify-between gap-3 rounded-lg border border-ink/10 bg-surface-elevated p-3 pl-4 shadow-lg"
       >
         <p role="status" class="flex items-center gap-2 text-sm font-bold">
           <span aria-hidden="true" class="size-2 shrink-0 rounded-full bg-yellow" />

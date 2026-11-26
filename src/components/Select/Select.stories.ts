@@ -31,7 +31,7 @@ const meta = {
     },
     template: `
       <Select v-bind="args" v-model="value" />
-      <p class="mt-4 text-xs text-black/65">Value: {{ value === undefined ? "undefined" : JSON.stringify(value) }}</p>`,
+      <p class="mt-4 text-xs text-ink/65">Value: {{ value === undefined ? "undefined" : JSON.stringify(value) }}</p>`,
   }),
 } satisfies Meta<typeof Select>;
 

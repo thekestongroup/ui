@@ -175,7 +175,7 @@ const rowLinkClass = [
   'focus-visible:after:outline-focus forced-colors:not-focus-visible:after:outline-0'
 ]
 const linkedRowClass = [
-  'cursor-pointer hover:bg-black/5 has-[[data-row-link]:focus-visible]:bg-black/5',
+  'cursor-pointer hover:bg-hover has-[[data-row-link]:focus-visible]:bg-hover',
   '[&_:is(a,button,input,select,textarea,label,[tabindex]):not([data-row-link],[data-row-overlay])]:relative',
   '[&_:is(a,button,input,select,textarea,label,[tabindex]):not([data-row-link],[data-row-overlay])]:z-1'
 ]
@@ -228,19 +228,19 @@ onBeforeUnmount(() => observer?.disconnect())
     :aria-label="scrolls && !caption && !$slots.caption ? t('ui.table.table') : undefined"
   >
     <table
-      :class="cn('w-full border-separate border-spacing-0 text-left text-sm text-black', ui?.table)"
+      :class="cn('w-full border-separate border-spacing-0 text-left text-sm text-ink', ui?.table)"
       :aria-busy="loading || undefined"
     >
       <caption v-if="caption || $slots.caption" :id="captionId" :class="showCaption ? cn('px-4 pt-4 pb-2 text-left text-base font-bold', inset && 'sm:px-6') : 'sr-only'">
         <slot name="caption">{{ caption }}</slot>
       </caption>
 
-      <thead :class="cn(stickyHeader && 'sticky top-0 z-10 bg-white', ui?.header)">
+      <thead :class="cn(stickyHeader && 'sticky top-0 z-10 bg-surface', ui?.header)">
         <tr>
           <th
             v-if="selectable"
             scope="col"
-            :class="cn('border-b border-black/15', cellPadding, selectableKeys.length && selectCell)"
+            :class="cn('border-b border-ink/10', cellPadding, selectableKeys.length && selectCell)"
             @click="onCellPress($event, () => selectableKeys.length && setAll(allState !== true))"
           >
             <Checkbox
@@ -257,7 +257,7 @@ onBeforeUnmount(() => observer?.disconnect())
             :key="column.key"
             scope="col"
             :aria-sort="ariaSort(column)"
-            :class="cn('border-b border-black/15 font-bold text-black/65', cellPadding, columnClasses(column))"
+            :class="cn('border-b border-ink/10 font-bold text-ink/65', cellPadding, columnClasses(column))"
           >
             <slot :name="`header-${column.key}`" :column="column">
               <span v-if="column.hideLabel" class="sr-only">{{ column.label }}</span>
@@ -266,9 +266,9 @@ onBeforeUnmount(() => observer?.disconnect())
                 type="button"
                 :class="
                   cn(
-                    '-mx-1 inline-flex cursor-pointer items-center gap-1 rounded px-1 font-bold hover:text-black',
+                    '-mx-1 inline-flex cursor-pointer items-center gap-1 rounded px-1 font-bold hover:text-ink',
                     column.align === 'end' && 'flex-row-reverse',
-                    sort?.key === column.key && 'text-black',
+                    sort?.key === column.key && 'text-ink',
                     focusRing
                   )
                 "
@@ -277,7 +277,7 @@ onBeforeUnmount(() => observer?.disconnect())
                 {{ column.label }}
                 <ArrowUp v-if="sort?.key === column.key && sort.direction === 'asc'" class="size-4 shrink-0" aria-hidden="true" />
                 <ArrowDown v-else-if="sort?.key === column.key" class="size-4 shrink-0" aria-hidden="true" />
-                <ChevronsUpDown v-else class="size-4 shrink-0 text-black/40" aria-hidden="true" />
+                <ChevronsUpDown v-else class="size-4 shrink-0 text-ink/40" aria-hidden="true" />
               </button>
               <template v-else>{{ column.label }}</template>
             </slot>
@@ -287,7 +287,7 @@ onBeforeUnmount(() => observer?.disconnect())
 
       <tbody :class="cn(loading && shownRows.length && 'opacity-50 transition-opacity')">
         <tr v-if="!shownRows.length">
-          <td :colspan="colspan" class="px-4 py-8 text-center text-black/65">
+          <td :colspan="colspan" class="px-4 py-8 text-center text-ink/65">
             <span v-if="loading" class="inline-flex items-center gap-2">
               <Spinner size="sm" />
               Loading…
@@ -304,7 +304,7 @@ onBeforeUnmount(() => observer?.disconnect())
         >
           <td
             v-if="selectable"
-            :class="cn('border-b border-black/15 align-middle', !inset && 'group-last/row:border-b-0', cellPadding, canSelect(row) && selectCell)"
+            :class="cn('border-b border-ink/10 align-middle', !inset && 'group-last/row:border-b-0', cellPadding, canSelect(row) && selectCell)"
             @click="canSelect(row) && onCellPress($event, () => setRow(row, index, !isSelected(row, index)))"
           >
             <Checkbox
@@ -322,7 +322,7 @@ onBeforeUnmount(() => observer?.disconnect())
             :scope="column.rowHeader ? 'row' : undefined"
             :class="
               cn(
-                'border-b border-black/15 align-middle', !inset && 'group-last/row:border-b-0',
+                'border-b border-ink/10 align-middle', !inset && 'group-last/row:border-b-0',
                 column.rowHeader ? 'font-bold' : 'font-normal',
                 column.align === 'end' && 'tabular-nums',
                 cellPadding,
@@ -368,7 +368,7 @@ onBeforeUnmount(() => observer?.disconnect())
         v-if="$slots.footer"
         :class="
           cn(
-            'font-bold *:*:border-t *:*:border-black/15',
+            'font-bold *:*:border-t *:*:border-ink/10',
             size === 'sm' ? '*:*:px-4 *:*:py-2' : '*:*:px-4 *:*:py-3',
             inset && '*:*:sm:first:pl-6 *:*:sm:last:pr-6'
           )

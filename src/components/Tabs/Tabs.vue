@@ -35,10 +35,10 @@ defineSlots<Record<string, () => unknown>>()
 // Like Sidebar's items: muted until hovered or chosen; the chosen one is
 // primary, with a bar under it that slides between tabs.
 const trigger = [
-  'relative inline-flex h-10 items-center gap-2 px-3 text-sm whitespace-nowrap text-black/65 outline-none',
+  'relative inline-flex h-10 items-center gap-2 px-3 text-sm whitespace-nowrap text-ink/65 outline-none',
   '[&_svg]:size-4 [&_svg]:shrink-0',
-  'not-data-disabled:hover:text-black',
-  'data-[state=active]:font-bold data-[state=active]:text-primary',
+  'not-data-disabled:hover:text-ink',
+  'data-[state=active]:font-bold data-[state=active]:text-primary-fg',
   'focus-visible:rounded focus-visible:ring-2 focus-visible:ring-primary',
   'data-disabled:cursor-not-allowed data-disabled:opacity-40'
 ]
@@ -51,7 +51,7 @@ const trigger = [
     @update:model-value="model = String($event)"
   >
     <!-- Scrolls sideways on narrow screens rather than wrapping. -->
-    <TabsList :aria-label="label" class="relative flex overflow-x-auto overflow-y-hidden border-b border-black/15">
+    <TabsList :aria-label="label" class="relative flex overflow-x-auto overflow-y-hidden border-b border-ink/10">
       <TabsTrigger v-for="t in tabs" :key="t.value" :value="t.value" :disabled="t.disabled" :class="trigger">
         <component :is="t.icon" v-if="t.icon" aria-hidden="true" />
         {{ t.label }}

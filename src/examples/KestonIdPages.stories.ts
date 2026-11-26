@@ -102,12 +102,12 @@ const appState = () => ({
 // logo: swap it for the SVG when there is one.
 const brands = {
   tkg: `
-      <div class="flex items-center justify-center gap-2 text-primary">
+      <div class="flex items-center justify-center gap-2 text-primary-fg">
         <span class="flex size-8 items-center justify-center rounded bg-primary text-xs font-bold text-white" aria-hidden="true">TKG</span>
         <span class="text-lg font-bold">The Keston Group</span>
       </div>`,
   kestonId: `
-      <div class="flex items-center justify-center gap-2 text-primary">
+      <div class="flex items-center justify-center gap-2 text-primary-fg">
         <ShieldCheck class="size-6" aria-hidden="true" />
         <span class="text-lg font-bold">Keston ID</span>
       </div>`,
@@ -116,11 +116,11 @@ const brands = {
 // Every Keston ID page: a narrow column centred on the grey background, with
 // the branding above the card.
 const page = (body: string, brand: keyof typeof brands = "kestonId") => `
-  <div class="flex min-h-screen flex-col items-center bg-background px-4 py-12 text-black">
+  <div class="flex min-h-screen flex-col items-center bg-background px-4 py-12 text-ink">
     <div class="flex w-full max-w-100 flex-col gap-6">
       ${brands[brand]}
       ${body}
-      <nav aria-label="Legal and help" class="flex items-center justify-center gap-2 text-xs text-black/65">
+      <nav aria-label="Legal and help" class="flex items-center justify-center gap-2 text-xs text-ink/65">
         <Link href="#" new-tab class="py-1">Privacy</Link>
         <span aria-hidden="true">·</span>
         <Link href="#" new-tab class="py-1">Terms</Link>
@@ -150,7 +150,7 @@ const appName = (headingId: string) => `
                 <button
                   type="button"
                   :aria-label="mark.label"
-                  :class="client.verification === 'owned' ? 'text-kblue' : 'text-blue'"
+                  :class="client.verification === 'owned' ? 'text-kblue' : 'text-blue-fg'"
                   class="flex cursor-pointer rounded-full outline-2 outline-offset-1 outline-transparent focus-visible:outline-focus"
                 >
                   <BadgeCheck class="size-5" aria-hidden="true" />
@@ -202,14 +202,14 @@ const consentCard = `
         <div class="flex flex-col gap-6">
           <div class="flex items-center justify-center gap-3" aria-hidden="true">
             <Avatar :user="app" size="lg" decorative />
-            <ArrowLeftRight class="size-5 text-black/55" />
+            <ArrowLeftRight class="size-5 text-ink/55" />
             <Avatar :user="user" size="lg" decorative />
           </div>
 
           <div class="flex flex-col gap-1 text-center">
             ${appName("consent-heading")}
             <p class="text-base">wants to access your Keston account</p>
-            <p class="text-sm text-black/65">An app by {{ client.publisher }}</p>
+            <p class="text-sm text-ink/65">An app by {{ client.publisher }}</p>
           </div>
 
           <!-- Who's signed in, as a small Card in a row. -->
@@ -218,7 +218,7 @@ const consentCard = `
               <Avatar :user="user" size="sm" decorative />
               <div class="flex min-w-0 flex-col">
                 <span class="truncate text-sm font-bold">{{ user.name }}</span>
-                <span class="truncate text-xs text-black/65">{{ user.email }}</span>
+                <span class="truncate text-xs text-ink/65">{{ user.email }}</span>
               </div>
             </div>
             <Button size="sm" class="shrink-0">Switch account</Button>
@@ -228,10 +228,10 @@ const consentCard = `
             <h2 class="text-sm font-bold">This will let {{ client.name }}:</h2>
             <ul class="flex flex-col gap-3">
               <li v-for="scope in required" :key="scope.id" class="flex items-start gap-3">
-                <component :is="scope.icon" class="mt-0.5 size-4 shrink-0 text-black/65" aria-hidden="true" />
+                <component :is="scope.icon" class="mt-0.5 size-4 shrink-0 text-ink/65" aria-hidden="true" />
                 <div class="flex flex-col gap-0.5">
                   <span class="text-sm">{{ scope.label }}</span>
-                  <span class="text-xs text-black/65">{{ scope.description }}</span>
+                  <span class="text-xs text-ink/65">{{ scope.description }}</span>
                 </div>
               </li>
             </ul>
@@ -250,8 +250,8 @@ const consentCard = `
 
           <Divider />
 
-          <p class="text-xs text-black/65">
-            You'll be sent to <span class="font-bold text-black">{{ client.redirectHost }}</span>.
+          <p class="text-xs text-ink/65">
+            You'll be sent to <span class="font-bold text-ink">{{ client.redirectHost }}</span>.
             Make sure you trust {{ client.name }}: read its
             <Link href="#" new-tab>privacy policy</Link>
             and
@@ -266,7 +266,7 @@ const consentCard = `
             </Button>
           </div>
 
-          <p v-if="result" class="break-all rounded bg-surface px-3 py-2 font-mono text-xs" role="status">{{ result }}</p>
+          <p v-if="result" class="break-all rounded bg-surface-muted px-3 py-2 font-mono text-xs" role="status">{{ result }}</p>
         </div>
       </Card>`;
 
@@ -315,7 +315,7 @@ export const SignIn: Story = {
           <div class="flex flex-col gap-1 text-center">
             ${appName("sign-in-heading")}
             <p class="text-base">Sign in with your Keston account</p>
-            <p class="text-sm text-black/65">An app by {{ client.publisher }}</p>
+            <p class="text-sm text-ink/65">An app by {{ client.publisher }}</p>
           </div>
 
           <form class="flex flex-col gap-4" @submit.prevent="signIn">
@@ -327,7 +327,7 @@ export const SignIn: Story = {
             <InputPassword v-model="form.password" label="Password" :error-text="error">
               <template #leading><Lock /></template>
               <template #label-trailing>
-                <Link href="#" class="text-black/65">Forgot password?</Link>
+                <Link href="#" class="text-ink/65">Forgot password?</Link>
               </template>
             </InputPassword>
             <Button type="submit" variant="primary" :status="status" loading-text="Signing in" success-text="Signed in">
@@ -338,7 +338,7 @@ export const SignIn: Story = {
           <Button>Sign in with a passkey</Button>
         </div>
         <template #footer>
-          <p class="text-center text-xs text-black/65">
+          <p class="text-center text-xs text-ink/65">
             By signing in, you agree to our <Link href="#" new-tab>terms</Link>
             and <Link href="#" new-tab>privacy policy</Link>.
           </p>
@@ -392,8 +392,8 @@ export const TwoStepCode: Story = {
           <Button type="submit" variant="primary" :disabled="status === 'loading'">Continue</Button>
         </form>
         <template #footer>
-          <Link href="#" class="py-1 text-xs text-black/65">Use a backup code</Link>
-          <Link href="#" class="py-1 text-xs text-black/65">Email me a code</Link>
+          <Link href="#" class="py-1 text-xs text-ink/65">Use a backup code</Link>
+          <Link href="#" class="py-1 text-xs text-ink/65">Email me a code</Link>
         </template>
       </Card>`, "tkg"),
   }),

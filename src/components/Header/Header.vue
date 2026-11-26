@@ -135,7 +135,7 @@ const titleLink = computed(() => {
 // As a link the title looks the same, with a ghost button's hover and press
 // backgrounds round it; the negative margin keeps the text where it was.
 const titleLinkClass = [
-  '-mx-2 rounded px-2 py-1 transition-colors hover:bg-black/10 active:bg-black/15',
+  '-mx-2 rounded px-2 py-1 transition-colors hover:bg-hover active:bg-pressed',
   'outline-2 outline-offset-1 outline-transparent focus-visible:outline-focus forced-colors:not-focus-visible:outline-0'
 ]
 
@@ -152,7 +152,7 @@ function runAction(action: HeaderUserAction, close: () => void) {
 <template>
   <header
     :class="cn(
-      'flex h-12 shrink-0 items-center gap-2 border-b border-black/15 bg-white px-4 text-black',
+      'flex h-12 shrink-0 items-center gap-2 border-b border-ink/10 bg-surface px-4 text-ink',
       sticky && 'sticky top-0 z-40',
       props.class
     )"
@@ -207,9 +207,9 @@ function runAction(action: HeaderUserAction, close: () => void) {
             <div class="flex flex-col">
               <!-- The organisation at the top, with a divider under it. The
                    organisation slot replaces the plain heading. -->
-              <div v-if="user.organisation || $slots.organisation" class="border-b border-black/15">
+              <div v-if="user.organisation || $slots.organisation" class="border-b border-ink/10">
                 <slot name="organisation" :close="close">
-                  <p class="truncate px-4 py-3 text-xs font-bold text-black/65 uppercase" :title="user.organisation">
+                  <p class="truncate px-4 py-3 text-xs font-bold text-ink/65 uppercase" :title="user.organisation">
                     {{ user.organisation }}
                   </p>
                 </slot>
@@ -221,7 +221,7 @@ function runAction(action: HeaderUserAction, close: () => void) {
                 <Avatar :user="user" size="lg" decorative />
                 <div class="flex min-w-0 flex-col">
                   <span class="truncate font-bold" :title="user.name">{{ user.name }}</span>
-                  <span v-if="user.email" class="truncate text-sm text-black/65" :title="user.email">{{ user.email }}</span>
+                  <span v-if="user.email" class="truncate text-sm text-ink/65" :title="user.email">{{ user.email }}</span>
                 </div>
                 <Button
                   v-if="userActions.includes('account-settings')"
@@ -239,7 +239,7 @@ function runAction(action: HeaderUserAction, close: () => void) {
               <!-- Switch account on the left, Log out on the right. -->
               <div
                 v-if="userActions.includes('switch-account') || userActions.includes('log-out')"
-                class="flex items-center gap-2 border-t border-black/15 px-4 py-3"
+                class="flex items-center gap-2 border-t border-ink/10 px-4 py-3"
               >
                 <Button v-if="userActions.includes('switch-account')" @click="runAction('switch-account', close)">
                   <template #leading><ArrowLeftRight /></template>

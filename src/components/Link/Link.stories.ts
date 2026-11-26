@@ -14,7 +14,7 @@ const meta = {
   render: (args) => ({
     components: { Link },
     setup: () => ({ args }),
-    template: `<p class="text-sm text-black"><Link :href="args.href" :new-tab="args.newTab" :icon="args.icon">{{ args.text }}</Link></p>`,
+    template: `<p class="text-sm text-ink"><Link :href="args.href" :new-tab="args.newTab" :icon="args.icon">{{ args.text }}</Link></p>`,
   }),
 } satisfies Meta<LinkStoryArgs>;
 
@@ -35,7 +35,7 @@ export const InASentence: Story = {
   render: () => ({
     components: { Link },
     template: `
-      <p class="max-w-100 text-xs text-black/65">
+      <p class="max-w-100 text-xs text-ink/65">
         Make sure you trust Keston Admissions: read its
         <Link href="#" new-tab>privacy policy</Link> and <Link href="#" new-tab>terms</Link>.
         You can remove its access at any time in your <Link href="#">Keston account</Link>.
@@ -48,7 +48,7 @@ export const Footer: Story = {
   render: () => ({
     components: { Link },
     template: `
-      <nav aria-label="Legal and help" class="flex items-center gap-2 text-xs text-black/65">
+      <nav aria-label="Legal and help" class="flex items-center gap-2 text-xs text-ink/65">
         <Link href="#" new-tab>Privacy</Link>
         <span aria-hidden="true">·</span>
         <Link href="#" new-tab>Terms</Link>
@@ -63,7 +63,7 @@ export const Sizes: Story = {
   render: () => ({
     components: { Link },
     template: `
-      <div class="flex flex-col gap-2 text-black">
+      <div class="flex flex-col gap-2 text-ink">
         <p class="text-xs"><Link href="#" new-tab>Extra small</Link></p>
         <p class="text-sm"><Link href="#" new-tab>Small</Link></p>
         <p class="text-base"><Link href="#" new-tab>Base</Link></p>

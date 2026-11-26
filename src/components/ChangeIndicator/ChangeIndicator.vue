@@ -32,10 +32,10 @@ const label = computed(() => t('ui.changeIndicator.changed', { from: props.from,
 <template>
   <span
     v-if="changed"
-    :class="cn('inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-blue/30 bg-blue/10 px-2 text-xs font-bold text-blue', props.class)"
+    :class="cn('inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-blue-fg/30 bg-blue-fg/10 px-2 text-xs font-bold text-blue-fg', props.class)"
   >
     <span class="sr-only">{{ label }}</span>
-    <span aria-hidden="true" class="font-normal line-through decoration-blue/60">{{ from }}</span>
+    <span aria-hidden="true" class="font-normal line-through decoration-blue-fg/60">{{ from }}</span>
     <ArrowRight aria-hidden="true" class="size-3 shrink-0" />
     <span aria-hidden="true">{{ to }}<template v-if="unit"> {{ unit }}</template></span>
   </span>

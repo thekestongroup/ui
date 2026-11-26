@@ -62,10 +62,10 @@ defineSlots<{
 const titleId = `${useId()}-title`
 
 const types = {
-  info: { icon: Info, colour: 'text-blue', word: 'Information' },
-  success: { icon: CircleCheck, colour: 'text-green', word: 'Success' },
-  warning: { icon: TriangleAlert, colour: 'text-yellow', word: 'Warning' },
-  error: { icon: CircleX, colour: 'text-red', word: 'Error' }
+  info: { icon: Info, colour: 'text-blue-fg', word: 'Information' },
+  success: { icon: CircleCheck, colour: 'text-green-fg', word: 'Success' },
+  warning: { icon: TriangleAlert, colour: 'text-yellow-fg', word: 'Warning' },
+  error: { icon: CircleX, colour: 'text-red-fg', word: 'Error' }
 } as const
 
 // A string, or a render function (for bold text, links).
@@ -86,11 +86,11 @@ function runAction() {
     role="group"
     :class="
       cn(
-        'relative flex text-sm text-black',
+        'relative flex text-sm text-ink',
         oneLine ? 'items-center gap-3' : 'gap-3',
-        appearance === 'row' ? 'px-4 py-3' : 'rounded border border-black/15 bg-white',
+        appearance === 'row' ? 'px-4 py-3' : 'rounded border border-ink/10 bg-surface shadow-xs',
         appearance === 'card' && (oneLine ? cn('py-1.5 pl-5', dismissible ? 'pr-1.5' : 'pr-4') : 'py-4 pr-4 pl-5'),
-        appearance === 'row' && unread && 'bg-blue/5',
+        appearance === 'row' && unread && 'bg-blue-fg/5',
         props.class
       )
     "
@@ -102,11 +102,11 @@ function runAction() {
         <span class="sr-only">{{ types[type].word }}: </span>{{ title }}
       </p>
 
-      <div v-if="!oneLine && (description || $slots.default)" class="text-black/65 [&_a]:font-bold [&_a]:text-primary [&_a]:underline [&_b]:font-bold [&_b]:text-black [&_strong]:font-bold [&_strong]:text-black">
+      <div v-if="!oneLine && (description || $slots.default)" class="text-ink/65 [&_a]:font-bold [&_a]:text-primary-fg [&_a]:underline [&_b]:font-bold [&_b]:text-ink [&_strong]:font-bold [&_strong]:text-ink">
         <slot><Description /></slot>
       </div>
 
-      <p v-if="appearance === 'row' && (createdAt || unread)" class="flex items-center gap-1.5 text-xs text-black/65">
+      <p v-if="appearance === 'row' && (createdAt || unread)" class="flex items-center gap-1.5 text-xs text-ink/65">
         <span v-if="unread" class="size-2 shrink-0 rounded-full bg-primary" aria-hidden="true" />
         <span v-if="unread" class="sr-only">Unread, </span>
         <RelativeTime v-if="createdAt" :date="createdAt" :now="now" />

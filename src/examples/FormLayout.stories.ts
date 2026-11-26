@@ -97,10 +97,10 @@ export const AddStudent: Story = {
       return { form, errors, errorCount, status, formEl, todayIso, check, recheck, submit, reset };
     },
     template: `
-      <form ref="formEl" novalidate class="flex max-w-md flex-col gap-5 text-black" @submit.prevent="submit">
+      <form ref="formEl" novalidate class="flex max-w-md flex-col gap-5 text-ink" @submit.prevent="submit">
         <div>
           <h2 class="text-lg">Add student</h2>
-          <p class="text-sm text-black/65">Fields check themselves when you leave them. Try "Create student" with the form empty.</p>
+          <p class="text-sm text-ink/65">Fields check themselves when you leave them. Try "Create student" with the form empty.</p>
         </div>
 
         <div class="grid grid-cols-2 items-start gap-3">
@@ -167,7 +167,7 @@ export const AddStudent: Story = {
           <template #leading><IdCard /></template>
         </Input>
 
-        <div class="flex justify-end gap-2 border-t border-black/15 pt-4">
+        <div class="flex justify-end gap-2 border-t border-ink/10 pt-4">
           <Button @click="reset">Reset</Button>
           <Button
             v-model:status="status"

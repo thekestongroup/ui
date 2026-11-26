@@ -146,7 +146,7 @@ const editable = [
   'min-h-24 max-h-80 overflow-y-auto px-3 py-2 text-sm pointer-coarse:text-base outline-none cursor-text',
   '[&_p+p]:mt-2',
   '[&_p.is-editor-empty:first-child]:before:pointer-events-none [&_p.is-editor-empty:first-child]:before:float-left',
-  '[&_p.is-editor-empty:first-child]:before:h-0 [&_p.is-editor-empty:first-child]:before:text-black/55',
+  '[&_p.is-editor-empty:first-child]:before:h-0 [&_p.is-editor-empty:first-child]:before:text-ink/55',
   '[&_p.is-editor-empty:first-child]:before:content-[attr(data-placeholder)]'
 ].join(' ')
 </script>
@@ -172,7 +172,7 @@ const editable = [
           role="toolbar"
           :aria-label="t('ui.inputRichText.formattingFor', { label })"
           :aria-controls="slot.id"
-          class="flex items-center gap-0.5 border-b border-black/15 px-1.5 py-1 [&_svg]:opacity-100!"
+          class="flex items-center gap-0.5 border-b border-ink/10 px-1.5 py-1 [&_svg]:opacity-100!"
           @mousedown.prevent
         >
           <Tooltip v-for="mark in marks" :key="mark.name" :text="`${mark.label} (${mod}${mark.key})`" :disabled="disabled">
@@ -184,7 +184,7 @@ const editable = [
               :aria-pressed="active[mark.name]"
               :aria-keyshortcuts="`${isMac ? 'Meta' : 'Control'}+${mark.key}`"
               :disabled="disabled"
-              class="aria-pressed:bg-black/15"
+              class="aria-pressed:bg-selected"
               @click="mark.toggle()"
             >
               <component :is="mark.icon" />

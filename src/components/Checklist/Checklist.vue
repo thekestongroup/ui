@@ -29,10 +29,10 @@ const props = defineProps<ChecklistProps>()
     <li v-for="item in items" :key="item.label" class="flex items-start gap-2">
       <!-- h-5 keeps the icon level with the first line of a label that wraps. -->
       <span class="flex h-5 shrink-0 items-center">
-        <CircleCheck v-if="item.done" class="size-4 text-green" aria-hidden="true" />
-        <Circle v-else :class="cn('size-4', invalid ? 'text-red' : 'text-black/40')" aria-hidden="true" />
+        <CircleCheck v-if="item.done" class="size-4 text-green-fg" aria-hidden="true" />
+        <Circle v-else :class="cn('size-4', invalid ? 'text-red-fg' : 'text-ink/40')" aria-hidden="true" />
       </span>
-      <span :class="item.done ? 'text-black' : 'text-black/65'">
+      <span :class="item.done ? 'text-ink' : 'text-ink/65'">
         {{ item.label }}<span class="sr-only">{{ item.done ? ' (done)' : ' (to do)' }}</span>
       </span>
     </li>

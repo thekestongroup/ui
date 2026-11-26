@@ -88,10 +88,13 @@ const grid = computed(() => {
 // card only changes colours and gets a second, inset 1px line drawn with a
 // box-shadow, which takes no space. Text keeps the same weight. Nothing is
 // added or removed in the card, so nothing can move.
+//
+// 10px on top, 12px elsewhere: the radio and icon sit 2px down to line up
+// with the title, so this puts them 12px from the top, the same as the sides.
 const card = [
-  'group relative flex w-full cursor-pointer items-start gap-3 rounded-lg border border-black/15 bg-white p-3 text-left text-black transition-colors',
+  'group relative flex w-full cursor-pointer items-start gap-3 rounded-lg border border-ink/10 bg-surface p-3 pt-2.5 text-left text-ink shadow-xs transition-colors',
   'outline-2 outline-offset-2 outline-transparent focus-visible:outline-focus',
-  'not-disabled:not-data-[state=checked]:hover:bg-surface-elevated',
+  'not-disabled:not-data-[state=checked]:hover:bg-surface-hover',
   'data-[state=checked]:border-primary data-[state=checked]:bg-primary/6 data-[state=checked]:shadow-[inset_0_0_0_1px_var(--color-primary)]',
   'disabled:cursor-not-allowed disabled:opacity-40',
   'motion-reduce:transition-none'
@@ -99,13 +102,13 @@ const card = [
 </script>
 
 <template>
-  <div :class="cn('flex flex-col gap-2 text-black', disabled && 'opacity-40', props.class)">
+  <div :class="cn('flex flex-col gap-2 text-ink', disabled && 'opacity-40', props.class)">
     <div :class="cn('flex flex-col gap-0.5', hideLabel && 'sr-only')">
       <div class="flex items-center gap-1">
         <span :id="labelId" class="text-sm">{{ label }}</span>
         <InfoTip v-if="helper && helperPlacement === 'icon'" :text="helper" :label="t('ui.formField.about', { label })" />
       </div>
-      <p v-if="helper" :id="helperId" :hidden="helperPlacement === 'icon'" class="text-xs text-black/65">
+      <p v-if="helper" :id="helperId" :hidden="helperPlacement === 'icon'" class="text-xs text-ink/65">
         {{ helper }}
       </p>
     </div>
@@ -129,17 +132,17 @@ const card = [
         :aria-describedby="option.description ? `${id}-${i}-description` : undefined"
         :class="cn(card, errorText && 'not-data-[state=checked]:border-red')"
       >
-        <component :is="option.icon" v-if="option.icon" aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-black/65 group-data-[state=checked]:text-primary" />
+        <component :is="option.icon" v-if="option.icon" aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-ink/65 group-data-[state=checked]:text-primary-fg" />
         <span class="flex min-w-0 flex-1 flex-col gap-0.5">
           <span class="text-sm font-bold">{{ option.title }}</span>
-          <span v-if="option.description" :id="`${id}-${i}-description`" class="text-xs text-black/65">
+          <span v-if="option.description" :id="`${id}-${i}-description`" class="text-xs text-ink/65">
             {{ option.description }}
           </span>
         </span>
         <!-- Always there, so the card is the same size either way: the dot only fades and scales in. -->
         <span
           aria-hidden="true"
-          class="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full border border-black/55 bg-white group-data-[state=checked]:border-primary"
+          class="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full border border-ink/45 bg-surface group-data-[state=checked]:border-primary"
         >
           <span class="size-2 scale-0 rounded-full bg-primary transition-transform group-data-[state=checked]:scale-100 motion-reduce:transition-none" />
         </span>

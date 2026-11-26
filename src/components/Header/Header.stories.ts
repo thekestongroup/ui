@@ -41,7 +41,7 @@ const meta = {
             <Button variant="ghost" square aria-label="Notifications"><Bell /></Button>
           </template>
         </Header>
-        <p class="p-4 text-sm text-black/65">Last event: {{ last || "none" }}</p>
+        <p class="p-4 text-sm text-ink/65">Last event: {{ last || "none" }}</p>
       </div>`,
   }),
 } satisfies Meta<typeof Header>;
@@ -80,8 +80,8 @@ export const CustomUserMenu: Story = {
     template: `
       <Header v-bind="args">
         <template #account-menu="{ close }">
-          <div class="flex flex-col gap-1 border-t border-black/15 p-2">
-            <p class="px-3 pt-1 text-xs font-bold text-black/65 uppercase">Switch school</p>
+          <div class="flex flex-col gap-1 border-t border-ink/10 p-2">
+            <p class="px-3 pt-1 text-xs font-bold text-ink/65 uppercase">Switch school</p>
             <Button variant="ghost" class="w-full justify-start px-3" @click="close">
               <template #leading><Building2 /></template>Keston Prep
             </Button>
@@ -108,13 +108,13 @@ export const OrganisationSwitcher: Story = {
         <template #organisation="{ close }">
           <button
             type="button"
-            class="flex w-full items-center gap-2 px-4 py-3 text-left text-sm hover:bg-black/5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus"
+            class="flex w-full items-center gap-2 px-4 py-3 text-left text-sm hover:bg-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus"
             @click="close"
           >
             <Building2 class="size-4 shrink-0" aria-hidden="true" />
             <span class="flex min-w-0 flex-1 flex-col">
               <span class="truncate font-bold">The Keston School</span>
-              <span class="text-xs text-black/65">Switch organisation</span>
+              <span class="text-xs text-ink/65">Switch organisation</span>
             </span>
             <ChevronRight class="size-4 shrink-0" aria-hidden="true" />
           </button>
@@ -161,11 +161,11 @@ export const WithMiddle: Story = {
     setup: () => ({ args }),
     template: `
       <Header v-bind="args">
-        <nav aria-label="Breadcrumb" class="ml-2 hidden items-center gap-1 text-sm text-black/65 sm:flex [&_svg]:size-4">
+        <nav aria-label="Breadcrumb" class="ml-2 hidden items-center gap-1 text-sm text-ink/65 sm:flex [&_svg]:size-4">
           <ChevronRight aria-hidden="true" />
           <a href="#" class="hover:underline">Students</a>
           <ChevronRight aria-hidden="true" />
-          <span aria-current="page" class="text-black">Ben Smith</span>
+          <span aria-current="page" class="text-ink">Ben Smith</span>
         </nav>
         <template #trailing>
           <Button variant="ghost" square aria-label="Notifications"><Bell /></Button>
@@ -199,7 +199,7 @@ export const Sticky: Story = {
       <div class="h-96 overflow-y-auto bg-background">
         <Header v-bind="args" />
         <div class="flex flex-col gap-3 p-4">
-          <p v-for="n in 30" :key="n" class="text-sm text-black/65">Row {{ n }}</p>
+          <p v-for="n in 30" :key="n" class="text-sm text-ink/65">Row {{ n }}</p>
         </div>
       </div>`,
   }),

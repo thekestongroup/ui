@@ -135,7 +135,7 @@ async function finishClear() {
       <Bell />
       <span
         v-if="unread"
-        class="absolute top-1 left-1/2 ml-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-red px-1 text-xs leading-none font-bold text-white ring-2 ring-white"
+        class="absolute top-1 left-1/2 ml-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-red px-1 text-xs leading-none font-bold text-white ring-2 ring-surface"
         aria-hidden="true"
       >
         {{ countText }}
@@ -144,7 +144,7 @@ async function finishClear() {
 
     <template #content="{ close }">
       <section ref="pane" :aria-labelledby="headingId" class="flex min-h-0 flex-col">
-        <div class="flex h-11 shrink-0 items-center justify-between gap-2 border-b border-black/15 pr-2 pl-4">
+        <div class="flex h-11 shrink-0 items-center justify-between gap-2 border-b border-ink/10 pr-2 pl-4">
           <h2 :id="headingId" ref="heading" tabindex="-1" class="font-bold outline-none">{{ title }}</h2>
           <Button v-if="items.length" variant="ghost" size="sm" :disabled="clearing" @click="clearAll">
             {{ t('ui.notifications.clearAll') }}
@@ -159,7 +159,7 @@ async function finishClear() {
           :class="cn('min-h-0 overflow-y-auto overscroll-contain [scrollbar-width:thin]', clearing && 'animate-fade-out')"
           @animationend.self="clearing && finishClear()"
         >
-          <li v-for="(item, index) in items" :key="item.id" class="border-b border-black/15 last:border-b-0">
+          <li v-for="(item, index) in items" :key="item.id" class="border-b border-ink/10 last:border-b-0">
             <Notification
               appearance="row"
               :type="item.type"

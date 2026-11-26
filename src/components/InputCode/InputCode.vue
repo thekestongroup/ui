@@ -92,9 +92,9 @@ const onComplete = (value: Box[]) => emit('complete', toCode(value))
 // Each box looks like FormField's box (a medium basic Button), with the
 // focus ring on the box being typed in.
 const box = [
-  'size-10 shrink-0 rounded border border-black/15 bg-white text-center text-lg tabular-nums text-black transition',
+  'size-10 shrink-0 rounded border border-ink/45 bg-surface shadow-xs text-center text-lg tabular-nums text-ink transition',
   'outline-2 outline-offset-1 outline-transparent focus:outline-focus forced-colors:not-focus:outline-0',
-  'placeholder:text-black/25 disabled:cursor-not-allowed'
+  'placeholder:text-ink/25 disabled:cursor-not-allowed'
 ]
 const statusBorder: Record<InputCodeStatus, string> = {
   error: 'border-red',
@@ -104,14 +104,14 @@ const statusBorder: Record<InputCodeStatus, string> = {
 </script>
 
 <template>
-  <div :class="cn('flex flex-col gap-1.5 text-black', props.class)">
+  <div :class="cn('flex flex-col gap-1.5 text-ink', props.class)">
     <div class="flex flex-col gap-0.5">
       <div class="flex items-center gap-1">
         <label :id="labelId" :for="`${id}-0`" class="text-sm">{{ label }}</label>
         <InfoTip v-if="helper && helperPlacement === 'icon'" :text="helper" :label="t('ui.formField.about', { label })" />
       </div>
       <!-- Behind the ?: hidden, but still the boxes' description. -->
-      <p v-if="helper" :id="helperId" :hidden="helperPlacement === 'icon'" class="text-xs text-black/65">
+      <p v-if="helper" :id="helperId" :hidden="helperPlacement === 'icon'" class="text-xs text-ink/65">
         {{ helper }}
       </p>
     </div>

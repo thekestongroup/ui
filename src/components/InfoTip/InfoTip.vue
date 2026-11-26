@@ -33,7 +33,7 @@ const descriptionId = `${useId()}-description`
       :aria-label="label"
       :aria-describedby="descriptionId"
       :class="cn(
-        'inline-flex shrink-0 rounded-full p-0.5 align-middle text-black transition hover:bg-black/10 data-[state=open]:bg-black/10',
+        'inline-flex shrink-0 rounded-full p-0.5 align-middle text-ink transition hover:bg-hover data-[state=open]:bg-selected',
         'outline-2 outline-offset-1 outline-transparent focus-visible:outline-focus [&_svg]:size-4',
         props.class
       )"

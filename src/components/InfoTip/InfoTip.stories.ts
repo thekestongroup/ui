@@ -36,7 +36,7 @@ export const InTableHeading: Story = {
     setup: () => ({ args }),
     template: `
       <table class="text-sm">
-        <thead><tr class="border-b border-black/15">
+        <thead><tr class="border-b border-ink/10">
           <th class="px-3 py-2 text-left font-bold">Student</th>
           <th class="px-3 py-2 text-left font-bold"><span class="inline-flex items-center gap-1">FSM <InfoTip v-bind="args" /></span></th>
         </tr></thead>

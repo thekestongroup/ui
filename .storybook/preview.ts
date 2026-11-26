@@ -9,6 +9,30 @@ setup((app) => {
 })
 
 const preview: Preview = {
+  // Light / dark mode, switched from the toolbar. Sets data-theme on <html>,
+  // the same switch apps use (see "Dark mode" in theme.css).
+  globalTypes: {
+    theme: {
+      description: 'Colour mode',
+      toolbar: {
+        title: 'Theme',
+        icon: 'mirror',
+        items: [
+          { value: 'light', title: 'Light', icon: 'sun' },
+          { value: 'dark', title: 'Dark', icon: 'moon' },
+          { value: 'system', title: 'System', icon: 'browser' },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
+  initialGlobals: { theme: 'light' },
+  decorators: [
+    (story, context) => {
+      document.documentElement.dataset.theme = String(context.globals.theme ?? 'light')
+      return story()
+    },
+  ],
   parameters: {
     // Docs pages in Keston's colours and Lato, like the rest of the site.
     docs: { theme: kestonTheme },

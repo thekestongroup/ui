@@ -59,21 +59,21 @@ const sizes = {
 
 <template>
   <div :class="cn('flex flex-col items-center text-center', sizes[size].root, props.class)">
-    <div v-if="icon" :class="cn('flex text-black/45', size === 'md' && 'mb-1', ui?.icon)" aria-hidden="true">
+    <div v-if="icon" :class="cn('flex text-ink/45', size === 'md' && 'mb-1', ui?.icon)" aria-hidden="true">
       <component :is="icon" :class="sizes[size].icon" />
     </div>
 
     <component
       :is="headingLevel ? `h${headingLevel}` : 'p'"
       v-if="$slots.title || title"
-      :class="cn('font-bold text-black', sizes[size].title, ui?.title)"
+      :class="cn('font-bold text-ink', sizes[size].title, ui?.title)"
     >
       <slot name="title">{{ title }}</slot>
     </component>
 
     <p
       v-if="$slots.description || description"
-      :class="cn('max-w-sm text-black/65', sizes[size].description, ui?.description)"
+      :class="cn('max-w-sm text-ink/65', sizes[size].description, ui?.description)"
     >
       <slot name="description">{{ description }}</slot>
     </p>

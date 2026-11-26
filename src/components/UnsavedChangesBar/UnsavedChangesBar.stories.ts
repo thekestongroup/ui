@@ -46,7 +46,7 @@ export const SlidesInAndOut: Story = {
       <div class="flex flex-col items-start gap-4 p-6">
         <p class="text-sm">The bar leaves a gap at the end of the page, so nothing is covered.</p>
         <Button variant="primary" @click="open = true">Make a change</Button>
-        <div class="h-[60vh] w-full rounded-lg bg-surface" />
+        <div class="h-[60vh] w-full rounded-lg bg-surface-muted" />
         <p class="text-sm">Last line of the page.</p>
         <UnsavedChangesBar :open="open" :status="status" @discard="open = false" @save="save" />
       </div>`,

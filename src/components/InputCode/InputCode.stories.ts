@@ -35,7 +35,7 @@ export const Default: Story = {};
 export const EmailCode: Story = {
   args: {
     label: "Code from your email",
-    helper: "We sent a 6-digit code to b•••@keston.school. It expires in 10 minutes.",
+    helper: "We sent a 6-digit code to b***@keston.school. It expires in 10 minutes.",
   },
 };
 

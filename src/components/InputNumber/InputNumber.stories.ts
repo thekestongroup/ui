@@ -25,7 +25,7 @@ const meta = {
     },
     template: `
       <InputNumber v-bind="args" v-model="value" />
-      <small class="mt-3 block text-xs text-black/60">
+      <small class="mt-3 block text-xs text-ink/60">
         Value: {{ value === undefined ? "undefined" : value }}
       </small>`,
   }),

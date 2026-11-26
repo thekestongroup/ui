@@ -43,7 +43,7 @@ defineSlots<{
 // Light grey fill and the shared border, so it reads as a chosen item on a
 // white field without competing with buttons.
 const base = [
-  'inline-flex max-w-full shrink-0 items-center whitespace-nowrap rounded border border-black/15 bg-black/5 text-black',
+  'inline-flex max-w-full shrink-0 items-center whitespace-nowrap rounded border border-ink/10 bg-ink/5 text-ink',
   '[&_svg]:shrink-0'
 ]
 
@@ -75,7 +75,7 @@ const removeSizes: Record<NonNullable<ChipProps['size']>, string> = {
       :disabled="disabled"
       :class="cn(
         'flex shrink-0 cursor-pointer items-center justify-center rounded-sm transition',
-        'not-disabled:hover:bg-black/10 not-disabled:active:bg-black/15 disabled:cursor-not-allowed',
+        'not-disabled:hover:bg-hover not-disabled:active:bg-pressed disabled:cursor-not-allowed',
         'outline-2 outline-offset-0 outline-transparent focus-visible:outline-focus',
         removeSizes[size]
       )"
